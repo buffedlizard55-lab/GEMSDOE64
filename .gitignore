@@ -2,6 +2,10 @@
 /data/*
 !/data/README.md
 !/data/bridge/
+# The 150 MB local bridge mirrors stay local; only these two small rasters are tracked.
+/data/bridge/*
+!/data/bridge/existing_faults.tif
+!/data/bridge/sample_submission.tif
 
 # Local Python/test/build artifacts.
 .venv/

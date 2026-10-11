@@ -204,3 +204,61 @@ We audited both the **continuous probability surface before dot placement** and 
    - Maximum mutual (`min(forward, reverse)`) 3-pixel dot overlap across **all 70 registry files** (including the 7 diagnostic space-filling lattices/continuous surfaces such as `17GEMSDOE` with `5,167,373` positive pixels and `r13_lattice_s5` with `206,895` 5x5 grid points): **`0.3557 < 0.70`** (`PASS`).
 3. **Validator Check (`scripts/validate_submission.py`)**:
    - `format_pass = true`, `all_checks_passed = true`, `crs = EPSG:32611`, `shape = (3730, 3292)`, `dtype = float32`, `n_nan = 0`, `min = 0.0`, `max = 1.0`, `emitted_positive_pixels = 37,654`, `zero_dots_on_mapped_catalogue = true`.
+
+---
+
+## Appendix A — Independent cross-instrument verification (second lane artifact)
+
+A second, independent re-derivation of this same lane (session `arena/6a4ab0cf-gemsdoe64`, receipts in
+[`evidence/lane64_run_card.json`](data/lane64_run_card.json) and
+[`docs/research/findings-lane64-scarpcover.md`](research/findings-lane64-scarpcover.md)) produced a **second promoted
+artifact**: `gems64-scarpcover-60000-98d317b7-zeros.tif` (`60,000` dots, `sha256 1551f1b545a08fdb…`), gated on a
+*different* instrument — a population-matched blocked hide-and-recover over an independent compilation
+(USGS SGMC minus a 300 m collar around the mapped catalogue), which is the population the private expert labels
+are drawn from. Both artifacts are therefore declared in [`evidence/run_card.json`](data/run_card.json) and
+offered on the [overview page](index.html#artifacts).
+
+Because the private labels are unavailable, the two artifacts are compared on the two fault populations that *are*
+available. Every row below is scored with the published metric (`α = 0.2`, `β = 0.8`, 300 m triangular kernel) against
+the same truth surface, over the same **7** footprint-carrying super-blocks, each paired against an area-matched random
+control drawn from the same active lattice (1,000-draw block bootstrap; receipt
+[`evidence/artifact_comparison.json`](data/artifact_comparison.json)). **No row is a competition score.**
+
+| Artifact | Dots | Median d to catalogue (px) | Within 3 px of catalogue | DTI vs *mapped catalogue* | Δ vs same-mass random (mapped catalogue) | DTI vs *off-catalogue SGMC* | Δ vs same-mass random (off-catalogue SGMC) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `gems64-scarpcover-60000-98d317b7-zeros.tif` (this session, **second artifact**) | 60,000 | 26.08 | 0.01% | 0.0000 | +0.1952 [+0.1162, +0.2675] | 0.3409 | -0.0593 |
+| `gems64-h64-lidar-scarp-cv-20261011T220000Z.tif` (**primary artifact**) | 37,654 | 7.62 | 10.19% | 0.0130 | +0.0309 [+0.0102, +0.0516] | 0.1008 | -0.0333 |
+| `gems64-lane-ampsnr-37654-20261011.tif` (sibling arm) | 37,654 | 20.88 | 0.00% | 0.0000 | +0.0517 [-0.0045, +0.1104] | 0.1377 | -0.0411 |
+| `h33-2-b2` (0.2778 ORGANIZER-CONFIRMED) | 37,654 | 19.65 | 5.80% | 0.0067 | +0.0221 [+0.0091, +0.0378] | 0.0940 | -0.0347 |
+| `dotted-h19-5-d2-8` (0.2600 ORGANIZER-CONFIRMED) | 44,090 | 15.00 | 19.55% | 0.1618 | +0.0133 [+0.0001, +0.0277] | 0.0927 | +0.0926 |
+| `h19-5` (0.1922 ORGANIZER-CONFIRMED) | 121,131 | 14.56 | 19.97% | 0.1664 | -0.0483 [-0.0671, -0.0276] | 0.0975 | +0.0501 |
+
+Reading the table:
+
+* **The two instruments disagree by design, and the disagreement is informative.** The organizers mask every mapped
+  catalogue pixel out of scoring, so a surface that hugs the catalogue pays `FP_w` there without collecting `TP_w`.
+  The confirmed `0.2778` incumbent measures **−0.0347** against the mapped catalogue — i.e. a *negative* lift versus a
+  random field of the same size — while scoring `0.2778` on the organizers' metric. A negative value in the
+  mapped-catalogue column is therefore the *expected* signature of a novel-fault submission, not a defect.
+* **The second artifact is the only candidate here whose off-catalogue lift clears the paired two-SE bar by a wide
+  margin** (`+0.1952`,
+  95 % CI `[+0.1162, +0.2675]`),
+  roughly six times the incumbent's `+0.0221`. The primary artifact measures
+  `+0.0309`
+  (`[+0.0102, +0.0516]`).
+* **The instruments are not neutral.** A field trained on an independent compilation is advantaged on the
+  off-catalogue proxy; a field trained on spatial-CV catalogue folds is advantaged on the mapped-catalogue proxy.
+  Neither instrument measures transfer to the private labels, so **neither number can be projected into a
+  leaderboard score**, and no such projection appears anywhere in this repository.
+* **Uniqueness is unaffected.** The two artifacts share 1.3 % of their dots (Jaccard `0.013`); each independently
+  clears the registry comparison on its own receipt.
+
+**A local metric defect, found and fixed during the cross-check (irregularity IR-64-METRIC-01).** The second
+implementation's `metric_terms` accumulated `TP_w` by maximising the triangular kernel *alone*, so a truth cell with
+no dot on it was credited 0 instead of the kernel weight of its nearest dot; on random fields it read `0.0052` where
+the reference evaluator reads `0.0496`. It is now `shifted_max` over `p(x)·k(d)`, verified against
+`gems57.metric.dti_bruteforce` to < `2e-6` per component on 8 random fields, against `dti_binary` on a 60-dot binary
+field, region-additive, and `k(1 px) = 2/3` for a single off dot
+([`tests/test_lane64_metric.py`](https://github.com/buffedlizard55-lab/GEMSDOE64/blob/main/tests/test_lane64_metric.py)). **The defect was local to that reimplementation.**
+The primary artifact's evaluator (`src/gems64/metric.py`, `max_cover`/`dti_exact`) maximises `p(x)·k(d)` and is
+correct; its published numbers are unaffected, and this appendix does not revise any of them.
