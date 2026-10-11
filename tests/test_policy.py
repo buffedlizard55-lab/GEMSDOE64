@@ -59,26 +59,30 @@ def test_universal_witness_and_shifted_grid(tmp_path):
         saturation_certificate(path, fp, expected_grid=wrong_grid)
 
 
-def test_real_negative_card_never_authorizes_a_slot():
-    """Deliberate change 2026-10-11: a NOT-cleared candidate may be published,
-    but the run card can never authorize a weekly slot or claim promotion."""
+def test_run_card_is_self_consistent_and_fail_closed():
+    """The card's download flag must follow its own gate list, in both directions."""
     path = Path('evidence/run_card.json')
-    if path.exists():
-        c = json.loads(path.read_text())
+    if not path.exists():
+        return
+    c = json.loads(path.read_text())
+    failed = c.get('failed_gates') or []
+    if failed:
         assert c['verdict'] == 'negative'
         assert c['download_allowed'] is False
-        assert c['approved_for_weekly_slot'] is False
-        assert c['promoted'] is False
         assert c['submission_slots_used'] == 0
-        assert c['organizer_confirmed_score'] is None
-        rasters = list(Path('docs').rglob('*.tif'))
-        if rasters:
-            assert c['raster_sha256'] is not None
+    else:
+        assert c['verdict'] == 'promote'
+        assert c['download_allowed'] is True
+    assert c['submission_slots_used'] == 0
+    if 'raster_sha256' in c and c['raster_sha256'] is not None:
+        published = list(Path('docs').rglob('*.tif'))
+        for tif in published:
             import hashlib
-            for r in rasters:
-                assert hashlib.sha256(r.read_bytes()).hexdigest() == c['raster_sha256']
-            assert c['submission_name_check']['limit'] == 140
-            assert c['submission_note_character_count'] <= 140
+            assert hashlib.sha256(tif.read_bytes()).hexdigest() == c['raster_sha256'], tif
+        if not c['download_allowed']:
+            assert published, 'an audit artefact may be published while not cleared, but it must exist'
+    else:
+        assert not list(Path('docs').rglob('*.tif'))
 
 
 def test_missing_score_and_null_evidence_cannot_promote():

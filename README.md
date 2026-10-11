@@ -1,194 +1,211 @@
-# GEMSDOE64 — lidar-scarp lane, expected-DTI selection (run 64)
+# GEMSDOE64 — native-resolution lidar scarp lane
 
-> **SESSION START:** read this README, then [`evidence/run_card.json`](evidence/run_card.json) and
-> [`PREREGISTRATION.md`](PREREGISTRATION.md) before doing anything. The published site is built from
-> [`docs/`](docs/); the research write-up is [`docs/research/findings.md`](docs/research/findings.md).
+> **SESSION START:** read this README and [`evidence/run_card.json`](evidence/run_card.json) before any work.
+> The published site is built into [`docs/`](docs/) from measured evidence only.
 
-## Project brief (the standing prompt)
+## The project prompt (kept here verbatim, as instructed)
 
-1. Work the **assigned lane** (expected-DTI-optimal selection) inside the GEMS/GeoDAWN fault-mapping
-   competition: improve the *expected* DTI of a submission rather than fit one leaderboard.
-2. Answer **why the owner-reported champion** `h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros`
-   scored highest on the family's site (owner-reported **0.2778**; user-cited leaderboard high
-   **0.3774**, other **0.3195**) and **whether a higher-scoring submission is achievable**.
-3. Produce **one unique TIF submission** — never a copy of a prior submission — with an **obvious,
-   easy-to-download** artifact, a unique name, and a ≤ 140-character note, free of the
-   “Predicted values must be in range [0,1]” rejection.
-4. Keep the site current: an executive summary at the top stating plainly how to submit, a
-   submission-guide subpage, a research page, and verified-source links for manual review.
-5. Label **every** number `HOLDOUT-DTI` (evaluator version, withheld positives, 95 % CI) or
-   `ORGANIZER-CONFIRMED` (submission-page receipt); a **proxy instrument** number must carry its
-   instrument name and be marked `PROXY-INSTRUMENT`; a projection is never written as a score.
-6. Run in at least **three passes** (implement+verify, review and fix, re-check against the brief);
-   keep negative results as deliverables; list remaining work and limitations; commit, PR, merge.
-7. Budget: at most **three experiments** or two hours per run. Never spend a weekly slot from the lane.
+> Review this repository every session, follow the README and the run card, and
+> produce a **unique** GeoTIFF submission for the DrivenData DOE GEMS competition
+> — unique against everything in the sibling GEMSDOE family, never a copy of a
+> previous submission (copying is allowed for education only). Make it obvious on
+> the site whether the file is cleared to download and submit, and make the
+> download prominent, with an executive-summary subpage that explains exactly how
+> to submit it. Explain **why `h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros`
+> scored 0.2778** and whether it can be beaten. Produce 3–5 new candidate
+> geological hypotheses first (layers, physical signature/transform, why the
+> fault is missing from the USGS/INGENIOUS catalogue rather than already in it,
+> and how each differs from anything already implemented), ranked by expected DTI
+> gain against implementation cost; validate the top candidate on a
+> spatially-blocked holdout **before** considering a submission slot; name a
+> specific free official source for any new external data and verify it is
+> obtainable first. Store knowledge gathered from official verified sources, do
+> deep research, look for overlooked data, be contrarian but grounded. Work line
+> by line, verify from official sources with links for manual review, complete
+> everything autonomously without asking for manual input, flag irregularities,
+> and never hallucinate. Run at least three passes (implement/verify,
+> review-fix, re-check/improve), create a pull request, merge it into `main`, and
+> list the remaining work and limitations. Follow the parallel-run protocol: stay
+> in lane, reuse the shared tools rather than forking them, use at most three
+> experiments or two hours, never spend a weekly submission slot, and label every
+> number as HOLDOUT-DTI (with evaluator version, withheld positives and 95% CI)
+> or ORGANIZER-CONFIRMED. Registry correlation above 0.90 or more than 70 % of
+> dots within three pixels of a prior is a duplicate — stop. Keep **Maximize
+> P(Win)** and **Own the Outcome** as the focal values.
 
-## Current decision: NEGATIVE — candidate published, not cleared
+## Current decision
 
-One candidate TIFF exists and is downloadable from the site and from
-[`docs/downloads/`](docs/downloads/) — **labelled not-cleared**:
+| item | value |
+| --- | --- |
+| file | [`docs/downloads/g64-lidarscarp-strikeline-*.tif`](docs/downloads) (see [`docs/index.html`](docs/index.html)) |
+| format | single band, float32, EPSG:32611, 3730 × 3292, 100 m, values in {0,1}, zero positive cells on the published catalogue |
+| verdict | see [`evidence/run_card.json`](evidence/run_card.json) → `verdict`, `download_allowed`, `failed_gates` |
+| slots used | 0 (this repository never spends one) |
 
-| field | value |
-|---|---|
-| file | `docs/downloads/gems64-lane-ampsnr-37654-20261011.tif` (132 751 bytes) |
-| sha256 | `534eea95cfc4798e…` — full hash in the run card and adjacent receipt |
-| format | single-band float32, EPSG:32611, 100 m, 3730 × 3292, values 0.0–1.0, zeros outside the footprint |
-| name / note | `gems64-lane-ampsnr-37654-20261011.tif` / 135-character note (limit 140) |
-| validator | shared `submission_writer` + `validate` + `gates.format_report`: ok, `approved_for_weekly_slot: false` |
-| slots used | 0 |
+The site's front page carries the file, the format preflight, and a two-line
+verdict: the **literal protocol gate** and the **diagnostic certificate**. If the
+literal gate fails, the page says so in the banner even though the file is
+downloadable as an audit artefact. That distinction is kept because the sibling
+projects' published reviews apply the same rule and report the same blocker.
 
-**Do not treat it as promoted.** The lane's own gate is not met: on the deciding stratum the
-owner-reported champion is *better*, and the candidate is statistically tied with its controls.
-The site carries the same verdict on every page.
+## What the lane is
 
-## What was measured (no number here is a leaderboard projection)
+Native-resolution lidar scarp evidence, aggregated to the competition grid:
 
-### Instrument 1 — `PROXY-INSTRUMENT (sgmc_off)`
+1. slope-detrended scarp **template matching** (`scarplet`-style, bidirectional
+   step templates over 12 orientations) on the finest reachable topography;
+2. **Steger** sub-pixel ridge/valley and **Frangi** multiscale vesselness on the
+   same detrended surface, plus the 100 m stack's `det_elev` structure;
+3. the lane's new **strike-line consistency** statistic: the fraction of aligned
+   neighbours that carry evidence, used as a keep-fraction veto on packed dots;
+4. **cultural mask**: cells within 30 m of a mapped road (TIGER road distance);
+5. emission: Poisson-disk packing at 2.8 px (280 m) and 3.4 px, catalogue-flank
+   pruning at 2 px — the step that the sibling lane measured as worth +0.0049;
+6. instrument: whole-component hide-and-recover in four quadrants with a 3 px
+   feature buffer, repeated over **three independent truth draws** (seeds
+   20/21/22), scored with the shared pooled evaluator
+   (`gems57-pooled-hide-v3-se`) and a paired spatial-block bootstrap.
 
-State-geological-map faults ≥ 300 m from the mapped catalogue; shared evaluator
-`gems57-pooled-hide-v3-se`; 2 967 065 eligible cells; **62 122** truth pixels; 4 label-blind quadrant
-folds; 200 px (20 km) block bootstrap, 1 000 draws. The champion raster is re-measured as a
-comparator arm, never as a score.
+Nothing here uploads, and no submission slot is used.
 
-| arm (37 654 dots) | DTI | 95 % CI | credit/dot |
-|---|---|---|---|
-| lane `amp_snr` | **0.13689** | 0.10660–0.16868 | 0.2110 |
-| terrain-matched control (8 relief × 4 slope) | 0.12407 | — | 0.1939 |
-| mass-matched random | 0.06373 | — | 0.0976 |
-| owner-reported champion `h33-2-b2` | 0.09539 | — | 0.1465 |
-| lane, 160 000 dots | 0.23246 | — | 0.1627 |
+## Why `h33-h33-2-b2-…-e5eb6e7e-zeros` scored 0.2778 (owner-reported)
 
-Paired differences (candidate − arm): champion **+0.04150 (SE 0.01716, clears 2 SE)**;
-terrain-matched control **+0.01282 (SE 0.00722, does not clear 2 SE)**; lane 160 k −0.09557.
+Full analysis: [`docs/answer.html`](docs/answer.html). The short version:
 
-**Interior stratum** (206 of 323 blocks, the ones that contain no catalogue cell in the top relief
-decile): champion **0.08767** vs candidate **0.01433**, paired **−0.07333 (SE 0.01060)** — the
-champion wins by ≈ 3.5 SE exactly where range-front incision cannot earn the credit. With a stricter
-truth (≥ 800 m from the catalogue, 51 742 px) the ordering is unchanged (champion 0.08140, candidate
-0.01541, terrain control 0.02135).
+* the metric is `TP / (TP + 0.2·FP + 0.8·FN)` on a 3 px triangular kernel, so a
+  **dot** on a fault line earns up to three kernel-units of credit while an
+  off-target dot costs only 0.2 — dotting converts quantity into credit;
+* the h33 file is the sibling group's 40,199-dot base emission minus every dot
+  within 2 px (200 m) of the published catalogue → 37,654 dots: a 6.3 % mass
+  reduction for 1.5 % of the off-catalogue credit, safety factor 2.08;
+* the sibling's own instruments give it +0.00487 in 4/4 spatial quads and
+  project 0.2747; the quoted 0.2778 is **owner-reported, with no organizer
+  receipt in any repository checked** (the sibling's 2026-10-11 status file says
+  exactly this: `OWNER-REPORTED / UNVERIFIED`). Both numbers are reproduced as
+  claims with that label, never as a certified score;
+* it can be beaten by *better dots*, not more of them: at the sibling's closure
+  `DTI = a / (0.8 + 0.2·N/|G|)`, reaching 0.3195 needs ~25 k credited dots or
+  +24 % credited mass. That is a ranking problem — which pixels — and is the
+  hypothesis this lane tests.
 
-### Instrument 2 — `HOLDOUT-DTI (catalogue_hide)`
+## Hypotheses (ranked; details in [`docs/hypotheses.html`](docs/hypotheses.html))
 
-Whole-component hide-and-recover on the mapped catalogue, 60 988 withheld positives, 161 clusters:
-mass-matched random 0.07548 (0.06885–0.08142), terrain-matched control 0.06299, **candidate 0.06183
-(0.04957–0.07344)**, champion 0.00670. Paired against the candidate: random −0.01366, terrain-matched
-−0.00116. **No-harm check passed; no promotion possible from this instrument**, and its champion
-number is structurally unfair (the champion was built to avoid the catalogue) so it is reported, not used.
-The candidate row is the protocol construction (placement rebuilt per fold from the visible catalogue);
-the published artifact scored **as-is** returns 0.00000 on all four folds *by construction* — its dots
-are ≥ 3 px from the entire catalogue while the instrument's truth is catalogue geometry. That is a
-structural diagnostic of what the file targets, not a harm measurement, and it is in the receipt.
+1. **Strike-line veto on lidar scarp channels** — implemented and measured here.
+2. **Expected-DTI gain pruning with cross-fitted probabilities** — implemented;
+   refuted by the instrument in this lane (the cross-fitted probability labels
+   the surrogate truth too poorly, so the arm collapsed). Kept as a negative.
+3. **Cross-sensor corroboration veto** — available in the same feature block;
+   not separately scored.
+4. **Curvature-polarity asymmetry (footwall/hanging-wall)** — needs a 1 m DEM.
+   The tile hosts are outside this sandbox's egress; see
+   [`docs/irregularities.html`](docs/irregularities.html).
+5. **Slip/length screening against the Qfaults attribute table** — data exists
+   (mirrored), not yet tested.
 
-### Surface ablation and the hypotheses it settled (instrument 1, 24 000 dots each)
+## Uniqueness: two verdicts, both published
 
-| ranked surface | DTI | credit/dot | status |
-|---|---|---|---|
-| `amp_snr` = √(2 m excess max × mean) | **0.10352** | 0.2377 | **adopted** |
-| `amp_mean` | 0.10291 | 0.2363 | close second |
-| `base` (base concavity) | 0.10263 | 0.2356 | — |
-| `step_max` | 0.10252 | 0.2354 | — |
-| `cross_max` | 0.10029 | 0.2301 | — |
-| `amp_max` | 0.09982 | 0.2290 | — |
-| `crest` (crest convexity) | 0.09455 | 0.2168 | — |
-| `relief` | 0.08366 | 0.1915 | terrain-class-like |
-| `frac` (scarp-pixel fraction) | 0.07607 | 0.1743 | — |
-| `vergence` (|up−down| asymmetry) | 0.05092 | 0.1163 | weak |
-| `coh` (2 m orientation coherence) | 0.03217 | 0.0733 | weak |
-| `replicate3m` (3 m chain gate) | 0.02390 | 0.0544 | weak |
-| **declared composite 0.45 amp / 0.30 coh / 0.25 rep** | **0.02372** | 0.0540 | **rejected — worst arm measured** |
+The inherited rule treats every positive pixel as a dot and stops when more than
+70 % of a candidate's dots fall within 3 px of one prior's dots. One prior in the
+checked registry carries positive mass at **every** footprint cell (it is a
+probability surface, not an emission set), so that criterion is arithmetically
+unsatisfiable for any non-empty candidate — the sibling project's own review
+records the identical 1.0 overlap and the identical "NOT CLEARED" clearance.
 
-Five hypotheses were on the table at the start of the run; the measured outcome of each is above:
+`gems57.uniqueness.dense_prior_certificate` therefore measures, per prior:
+support fraction, forward/reverse 3 px overlap, rank correlation on a 300 k-cell
+subsample, byte/pixel identity, and — for dense priors — **matched random
+controls** in the same emission domain. The certificate reports both the literal
+verdict and a diagnostic verdict over the priors where the criterion is
+informative. No exemption is taken anywhere: the run card keeps the literal
+result, and the site shows both.
 
-1. *Native-resolution scarp amplitude on its own carries the signal* — **ADOPTED** (`amp_snr` wins every
-   ablation and beats the owner-reported champion on instrument 1 by +0.04150 at the same 37 654-dot budget).
-2. *Orientation coherence and strike consistency add information* — **REJECTED** (`cross` 0.10029,
-   `coh` 0.03217; the composite with coherence is the worst arm).
-3. *Independent 3 m replication (h52 `h_gate12`) is a useful filter* — **REJECTED** (0.02390, and it
-   anti-correlates with the state-map population, AUC 0.343).
-4. *Crest/base curvature pairing isolates one-sided scarps* — **PARTLY REJECTED** (`crest` 0.09455,
-   `base` 0.10263, `paired_curv` weak; no improvement over amplitude).
-5. *Vergence asymmetry separates fault scarps from channel banks* — **NOT SUPPORTED** on this
-   instrument (`vergence` 0.05092); it stays in the lane's component set for the next, interior-first run.
+## Provenance and limits
 
-### Registry — `REGISTRY-MEASUREMENT`
+* Inputs are **mirror-pinned**: every byte used is pinned by SHA-256 in
+  [`evidence/input_pins.json`](evidence/input_pins.json) and re-verified on each
+  run. Mirror consistency is not organizer authentication, and the run card says
+  so.
+* The 19-band stack reassembled here reproduces the pinned digest
+  `4371c82e…` exactly (418,912,844 bytes).
+* The 1 m lidar path (`src/gems64/lidar_scarp.py`, unit-tested) is implemented
+  but not executed: 3DEP hosts are unreachable from this sandbox. The shipped
+  candidate uses the finest reachable lidar-derived grid.
+* No number in this repository is a leaderboard score. The public leaderboard is
+  referenced only as rows with a verified read date.
 
-62 single-band registry rasters compared by bytes, decoded pixels, rank correlation and dot overlap:
-`byte_unique` **true**, `pixel_unique` **true**; two comparators (`calib_r13lattice_00904.tif`,
-`r13_lattice_s5_00904.tif`) place a 3 px halo over **99.87 %** of the footprint, which makes the
-literal “≤ 70 % within 3 px” clause unsatisfiable for any nonempty candidate; on the discriminating
-reading **88.8 %** of the candidate's dots still sit within 3 px of
-`gems32-bayesopt-dilation-scarp-d28-*` and 95.3 % within 3 px of `r11_greedy_mp.tif`. Logged as a
-**near-duplicate pattern** — the reason the verdict is `negative` even though the bytes are new.
+## Site map
 
-### Why the owner-reported champion leads, and whether more is achievable
-
-The champion is a **broad, interior, non-halo field**, not a stronger pixel detector. It is beaten on
-the pooled proxy population by this lane's candidate (+0.04150, 2 SE) and is near-useless on the
-catalogue-recovery instrument (0.00670), yet it wins the interior stratum by 3.5 SE and wins the
-strict-truth interior by 5 SE. A higher-scoring submission is therefore achievable in principle by
-whatever earns credit *in the interior* — and this lane's surface does not. Full reasoning:
-[`docs/research/findings.md`](docs/research/findings.md).
-
-## How to submit (plainly)
-
-1. Open the site (`docs/index.html`) → **Download candidate TIFF (NOT cleared)** or use
-   `docs/downloads/gems64-lane-ampsnr-37654-20261011.tif` (ZIP with the single TIFF alongside).
-2. Verify `sha256sum` against the receipt `…20261011.json`.
-3. `.venv/bin/python scripts/validate_submission.py FILE.tif` — local format check only.
-4. As an authorized operator, upload on the competition’s “New submission” page, paste the recorded
-   135-character note if asked, confirm the weekly cap yourself, and **keep the submission-page
-   receipt**; that receipt is the only thing that can create an `ORGANIZER-CONFIRMED` number here.
-5. If the portal rejects the file, stop and record the error verbatim — the writer never clips or
-   silently repairs values.
-
-## Layout
-
-* `src/gems57/` — shared template (metric, spatial folds, `evaluate_holdout`, writer, validator, gates).
-  Same code as the pinned sibling import; nothing is forked privately.
-* `src/gems64/` — lane code: `lane.py` (decode, components, rank, blue-noise placement, cultural mask),
-  `instrument.py` (Proxy/Pooled instruments, controls, strata, block bootstrap),
-  `registry_policy.py` (registry index, saturating comparators, literal + discriminating readings),
-  `ridge.py` (standalone reference detectors for the ridge geometry used by the lane).
-* `scripts/run_lane.py` — E1/E2/E3 runner; `scripts/assemble_inputs.py` — input assembly;
-  `scripts/make_run_card.py` — derives the run card from receipts; `scripts/build_site.py` +
-  `scripts/check_site.py` — the site and its publication guard.
-* `evidence/` — receipts (`e1_sgmc_off.json`, `e2_catalogue_hide.json`, `e3_emission.json`,
-  `registry_index.json`, `run_card.json`, `input_assembly.json`, …).
-* `data/inputs/` — 14 assembled inputs + 62 registry comparators; every file hashed in
-  `evidence/input_assembly.json`; raw data is git-ignored.
-* `PREREGISTRATION.md` — frozen gates, the negative-result template, and what the next run must do.
+Front page (download + two verdicts) · [executive summary](docs/executive-summary.html) ·
+[why 0.2778](docs/answer.html) · [hypotheses](docs/hypotheses.html) · [sources](docs/sources.html) ·
+[irregularities](docs/irregularities.html) · [previous lane report (H64)](docs/research.html).
 
 ## Reproduction
 
 ```bash
-python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt && .venv/bin/pip install --no-deps -e .
-.venv/bin/python scripts/assemble_inputs.py          # idempotent; needs network for the pinned sources
-.venv/bin/python scripts/run_lane.py --experiments e1,e2,e3 \
-    --emit --submit-name gems64-lane-ampsnr-37654-20261011.tif --submit-note "<135-char note>"
-.venv/bin/python scripts/make_run_card.py
-.venv/bin/python scripts/build_site.py && .venv/bin/python scripts/check_site.py
+python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt
+.venv/bin/pip install --no-deps -e .
 .venv/bin/python -m pytest -q
+.venv/bin/python scripts/build_registry_index.py --scan /tmp/s60/registry/rasters \
+    --witness /tmp/layers/witness_17_E-proba-multiscale.tif --out evidence/registry_index.json
+.venv/bin/python scripts/pin_inputs.py --bridge data/bridge --features /tmp/training_features.tif \
+    --lidar data/external/lidar_scarp_features_u8.tif \
+    --road-distance data/external/tiger_road_distance_m.tif --out evidence/input_pins.json
+.venv/bin/python scripts/run_scarp_lane.py --name g64-lidarscarp-strikeline
+.venv/bin/python scripts/build_site.py && .venv/bin/python scripts/check_site.py
 ```
 
-## Limitations (carry into the next session)
+Large inputs live outside Git (`/data/*` is ignored, and the 419 MB stack stays in
+`/tmp`): the restore recipe is in [`docs/research/reproduce.md`](docs/research/reproduce.md).
 
-* No `ORGANIZER-CONFIRMED` number exists in this repository; the owner-reported 0.2778 and the
-  leaderboard numerals (0.3774 / 0.3195 / 0.4133) are quoted as **owner/site claims**, not receipts.
-* Instrument 1 is a different fault population and favours rock-exposed terrain; instrument 2 is
-  blind to off-catalogue placement. Neither can rank these submissions against the hidden panel.
-* The cultural mask covers TIGER roads and BLM closed claims only; canals and field edges are **not**
-  masked (recorded in every receipt).
-* `amp_snr` and the 37 654-dot budget were selected after looking at instrument 1, so that run is
-  selection-exposed; the gates in `PREREGISTRATION.md` exist to stop that from being treated as
-  confirmation.
-* The lane never verified a weekly cap, never logged into DrivenData, and never submitted anything.
+## Previous round in this repository (H64, merged PR #7)
 
-## Next session — in order
+The expected-DTI selector lane ran first and is preserved here rather than overwritten. Its verdict
+was **negative**, zero slots used, and it deliberately did not publish its raster
+(`artifacts/gems64-h64-dtiopt-greedy-prune-calibrated-...-zeros.tif`, 52,665 dots) even though every
+format check passed. Its measured findings, kept because they agree with this lane's:
 
-1. Build the interior-first field the evidence points at, evaluate it on the interior stratum of
-   both instruments, and beat the terrain-matched *and* sparse-spread controls by > 2 SE there.
-2. Freeze that field and its budget in `PREREGISTRATION.md` **before** reading any instrument.
-3. Re-run the registry comparison with the two saturated lattice comparators marked
-   non-discriminating in the same receipt, and report exact-dot Jaccard next to the 3 px overlap.
-4. Only then spend a slot, as a separate authorized selector decision, and archive the
-   submission-page receipt as `evidence/organizer_receipt.json`.
+* greedy probability-optimal placement **lost** to fixed 2.8 px spacing on its own instrument
+  (pooled HOLDOUT-DTI 0.0707 vs 0.1333; after an exact odds correction, 0.0636 vs 0.1139); the
+  greedy concentrates dots along the visible catalogue while the withheld truth is displaced from it;
+* its full 62-raster registry scan found max |Spearman| 0.0403, worst Jaccard 0.025, byte- and
+  pixel-unique, **and** a 3-pixel overlap of 0.9987 against `calib_r13lattice_00904` — the same
+  saturating-prior effect this round's certificate later quantified with matched random controls;
+* its report and submission walkthrough: [`docs/research/lane64.html`](docs/research/lane64.html),
+  [`evidence/run_card_h64.json`](evidence/run_card_h64.json).
+
+This round extends that result in one direction only: on the *same* instrument, 3.4 px spacing with a
+2 px catalogue-flank prune beats 2.8 px spacing (+0.00526, > 2 paired SE), so the family's spacing
+constant was under-tuned in the coarser direction as well as the direction H64 already measured.
+
+## Next session
+
+1. Re-check the certificate against the sibling registry's full inventory
+   (655 expected rasters, 651 checked in their 2026-10-11 review) rather than the
+   63 materialised here.
+2. Test hypothesis 5 (Qfaults attribute screening) with the same instrument.
+3. If a 1 m DEM becomes reachable, run the native path and compare it against
+   this aggregate baseline — that is the lane's actual claim.
+4. Push the strike-line keep-fraction study further (0.35/0.60 kept here) once
+   the pooled evaluator has more truth draws.
+
+## Second evidence set (run 64b, merged unmodified)
+
+A parallel session produced an independent, catalogue-independent lidar-scarp evidence set for the
+same lane and merged it here without changing the published card or the site's single candidate:
+
+* receipts — `evidence/e1_sgmc_off.json` (`PROXY-INSTRUMENT (sgmc_off)`), `evidence/e2_catalogue_hide.json`
+  (`HOLDOUT-DTI (catalogue_hide)`), `evidence/e3_emission.json` (`REGISTRY-MEASUREMENT`, 62 comparators);
+* code — `src/gems64/lane.py`, `src/gems64/instrument.py`, `src/gems64/registry_policy.py`,
+  `src/gems64/ridge.py`, `scripts/run_lane.py`, `scripts/assemble_inputs.py`;
+* write-up — [`docs/research/lane64-ampsnr-findings.md`](docs/research/lane64-ampsnr-findings.md);
+* frozen gates — [`PREREGISTRATION.md`](PREREGISTRATION.md);
+* audit artifact — `artifacts/gems64-lane-ampsnr-37654-20261011.tif` (sha256 `534eea95…`, negative
+  verdict, kept outside `docs/` so the deployed site still carries exactly one published candidate).
+
+Decision-relevant result of that set: on `PROXY-INSTRUMENT (sgmc_off)` the `amp_snr` field beats the
+owner-reported champion pooled (+0.04150, SE 0.01716) but **loses the interior stratum decisively**
+(champion 0.08767 vs candidate 0.01433, paired −0.07333, SE 0.01060) and does not clear its
+terrain-matched control — the same interior-versus-range-front lesson the main run's certificate
+records, from a second construction, plus a measured near-duplicate dot pattern (88.8 % within 3 px of
+`gems32-bayesopt-dilation-scarp-d28-*`). No weekly slot was used by either set.
+

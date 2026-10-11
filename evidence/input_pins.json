@@ -1,0 +1,41 @@
+{
+  "schema": "gems64-input-pins-v1",
+  "provenance_class": "mirror-pinned, not organizer-authenticated",
+  "pins": {
+    "training_features": {
+      "path": "/tmp/training_features.tif",
+      "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+      "bytes": 418912844,
+      "source": "owner mirror: buffedlizard55-lab/GEMSDOE data/bridge/gems-geodawn-numerical-features.tif.part-000..004 (19-band stack, reassembled)",
+      "note": "sha256 of the reassembled 418,912,844-byte file matches 60GEMSDOE/registry/data_manifest.json"
+    },
+    "lidar_scarp_features": {
+      "path": "data/external/lidar_scarp_features_u8.tif",
+      "sha256": "d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568",
+      "bytes": 36943606,
+      "source": "owner mirror: buffedlizard55-lab/GEMSDOE24 data/external/lidar_scarp_features_u8.tif (owner-CI derivation from 706 USGS 3DEP 1 m tiles)",
+      "note": "integer-quantised 12-channel lidar scarp layer; sha256 pinned in the same manifest"
+    },
+    "road_distance": {
+      "path": "data/external/tiger_road_distance_m.tif",
+      "sha256": "e5350423508968fa2d32b0a6ae0d3fb4ae3ea645e3b8736f0c8e7ad9ff2f2988",
+      "bytes": 10492276,
+      "source": "owner mirror: buffedlizard55-lab/GEMSDOE24 data/external/tiger_road_distance_m.tif",
+      "note": "TIGER road distance in metres, used only for the cultural mask"
+    },
+    "sample_submission": {
+      "path": "data/bridge/sample_submission.tif",
+      "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+      "bytes": 1599597,
+      "source": "owner mirror: buffedlizard55-lab/GEMSDOE24 data/official/sample_submission.tif",
+      "note": "grid/footprint template only; never scored as truth"
+    },
+    "existing_faults": {
+      "path": "data/bridge/existing_faults.tif",
+      "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+      "bytes": 425830,
+      "source": "owner mirror: buffedlizard55-lab/GEMSDOE24 data/official/existing_faults.tif",
+      "note": "published fault catalogue used for the visible-truth mask"
+    }
+  }
+}

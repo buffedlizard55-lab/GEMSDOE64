@@ -1,0 +1,90 @@
+{
+  "schema": "gems64-claim-ledger-v1",
+  "purpose": "Every load-bearing statement in the README and the site, with its evidence class, the exact source, and what was actually checked. The reviewer should be able to falsify each line from the listed source alone. Nothing here is a leaderboard score unless the class says so.",
+  "classes": {
+    "MEASURED": "recomputed from bytes on disk in this sandbox during this session",
+    "ORGANIZER-DOCUMENTED": "stated by the competition's own pages or rules document",
+    "PUBLIC-LEADERBOARD": "read from the public leaderboard page, with a read date; not this project's score",
+    "OWNER-REPORTED": "a number an owner recorded from a DrivenData submission screen; no organizer receipt",
+    "HOLDOUT-DTI": "a surrogate hide-and-recover measurement on catalogue-derived truth; never a score"
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "claim": "The metric is a distance-weighted Tversky index with alpha=0.2, beta=0.8 and a 3 px (300 m) triangular kernel; DTI = TP/(TP + 0.2 FP + 0.8 FN).",
+      "class": "ORGANIZER-DOCUMENTED",
+      "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
+      "checked": "reproduced in src/gems57/metric.py and in a sibling repository's recorded worked example (TP=3.00, FP=1.89, FN=2.00 -> 0.60)"
+    },
+    {
+      "id": "C2",
+      "claim": "The submission grid is 3730 x 3292, 100 m, EPSG:32611, origin (243350, 4508550), with the sample template's finite-cell footprint of 5,167,373 cells and NaN outside it.",
+      "class": "MEASURED",
+      "source": "data/bridge/sample_submission.tif, sha256 2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc (pinned in evidence/input_pins.json)",
+      "checked": "rasterio read of height/width/crs/transform/NaN mask in this sandbox"
+    },
+    {
+      "id": "C3",
+      "claim": "The published fault catalogue has 60,988 positive cells and is byte-identical to labels.tif (sha256 7ba308cc...).",
+      "class": "MEASURED",
+      "source": "data/bridge/existing_faults.tif, sha256 7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+      "checked": "sha256 and band read here; equality with labels.tif recorded in the sibling data manifest"
+    },
+    {
+      "id": "C4",
+      "claim": "The 19-band official feature stack reassembles byte-exactly from five mirror parts: 418,912,844 bytes, sha256 4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5.",
+      "class": "MEASURED",
+      "source": "5GEMSDOE data/bridge parts 000-004, sha256-verified against 60GEMSDOE/registry/data_manifest.json",
+      "checked": "concatenation and digest computed in this sandbox"
+    },
+    {
+      "id": "C5",
+      "claim": "The candidate file g64-lidarscarp-strikeline is a single-band float32 EPSG:32611 100 m GeoTIFF with all cells finite, values in [0,1], and zero positive cells on the published catalogue.",
+      "class": "MEASURED",
+      "source": "docs/downloads/<name>.tif plus evidence/run_card.json validator_output",
+      "checked": "gems57.validate on the written bytes (re-read from disk)"
+    },
+    {
+      "id": "C6",
+      "claim": "h33-2-b2 (37,654 dots) is the sibling group's 40,199-dot base emission minus every dot within 2 px of the published catalogue, and the group projects a live value of 0.2747 while quoting 0.2778.",
+      "class": "OWNER-REPORTED",
+      "source": "GEMSDOE32 README (mirrored) and 60GEMSDOE/registry/registry_index.json (byte hash c55bafc4... recorded there)",
+      "checked": "the quoted sha256/bytes and the recorded pruning rule were read from the sibling files; the score itself has no organizer receipt",
+      "caveat": "The sibling project's own 2026-10-11 status file classifies this as OWNER-REPORTED / UNVERIFIED and states that no organizer receipt links the score to the TIFF bytes."
+    },
+    {
+      "id": "C7",
+      "claim": "The public leaderboard top row on 2026-10-11 is 0.4133 (xiaofanhu) with 50 rows captured; rank 38 is 0.2706 and rank 50 is 0.2448.",
+      "class": "PUBLIC-LEADERBOARD",
+      "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/ (snapshot mirrored in the sibling repository with a verified read date)",
+      "checked": "rows read from the mirrored snapshot; this is other teams' performance, not this project's"
+    },
+    {
+      "id": "C8",
+      "claim": "One prior in the checked registry (a multiscale probability surface) carries positive mass at every footprint cell, making the literal 70 % 3-pixel overlap criterion unsatisfiable for any non-empty candidate.",
+      "class": "MEASURED",
+      "source": "evidence/uniqueness_certificate.json (positive support 5,167,373 of 5,167,373 footprint cells; matched random controls all reach >= 0.70)",
+      "checked": "dense_prior_certificate scan of 63 hash-pinned priors, with random controls drawn from the same emission domain"
+    },
+    {
+      "id": "C9",
+      "claim": "The lane's arm comparison is a surrogate hide-and-recover measurement over three independent truth draws and four whole-component folds, pooled, with a paired spatial-block bootstrap; it is not a leaderboard estimate.",
+      "class": "HOLDOUT-DTI",
+      "source": "evidence/run_card.json holdout/ensemble/oof_selection blocks; evaluator gems57-pooled-hide-v3-se",
+      "checked": "withheld positive counts and CI recorded per arm; a random control drawn from the same emission domain scores close to the arms, which is why the instrument is described as domain evidence rather than ranking evidence"
+    },
+    {
+      "id": "C10",
+      "claim": "USGS 3DEP 1 m lidar tiles are free and official, but the hosts serving them were unreachable from this sandbox on 2026-10-11.",
+      "class": "MEASURED",
+      "source": "evidence/access_blockers.json (curl exit statuses for the tile hosts)",
+      "checked": "connectivity probe from the sandbox; the statement is limited to this environment and that date"
+    }
+  ],
+  "not_claimed": [
+    "that any file here has been uploaded to DrivenData, or would place on the leaderboard",
+    "that the mirror-pinned inputs are organizer-authenticated competition data",
+    "that the sibling group's quoted 0.2778 is the score of the exact TIFF bytes named in its own repository",
+    "that the literal registry gate has been satisfied by this lane (it has not; see the certificate)"
+  ]
+}

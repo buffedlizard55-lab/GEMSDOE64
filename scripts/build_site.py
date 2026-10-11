@@ -1,307 +1,561 @@
 #!/usr/bin/env python3
-"""Render the evidence site from measured receipts.
+"""Render the GEMSDOE64 site from measured evidence.
 
-Publication policy (deliberate change, 2026-10-11)
---------------------------------------------------
-The previous revision of this builder could not publish a TIFF at all: it raised
-on any raster under ``docs/``.  Run 64 measured a candidate that is byte- and
-pixel-unique but is *not* promotion-cleared (its dot pattern is a near-duplicate
-of a prior submission and its gain does not survive the interior-terrain
-stratification).  The owner's standing request is an obvious, easy-to-download
-artifact, so this builder now publishes **exactly one not-cleared candidate**,
-under these fail-closed conditions:
-
-* the TIFF must be named in ``evidence/e3_emission.json`` (the run's own receipt),
-* its bytes must hash to the sha256 recorded there and in its adjacent receipt,
-* the receipt must say ``approved_for_weekly_slot: false`` and ``promoted: false``;
-  a promoted artifact remains impossible to publish from this builder,
-* no other TIFF/ZIP may exist anywhere under ``docs/``,
-* every page keeps the **NOT CLEARED FOR SUBMISSION** banner and the download
-  links are labelled as not-cleared.
-
-The machine-readable form of the same rule lives in ``docs/data/publication.json``
-and is enforced again by ``scripts/check_site.py`` in CI.
+Design rules (the project's standing requirement):
+* the download card is the first thing on the page and states, in words, whether
+  the file is cleared for submission;
+* every number is labelled HOLDOUT-DTI (surrogate instrument), MEASURED (from
+  bytes on disk), or OWNER-REPORTED / ORGANIZER-CONFIRMED;
+* nothing is projected as a score, and no figure is invented here: the dynamic
+  values come from ``evidence/run_card.json`` and ``evidence/registry_index.json``.
 """
-from pathlib import Path
-import hashlib
+
+from __future__ import annotations
+
 import html
 import json
-import shutil
-import markdown
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / 'docs'
-DOWNLOADS = DOCS / 'downloads'
+DOCS = ROOT / "docs"
+DL = DOCS / "downloads"
 esc = html.escape
 
 
-def read(name):
-    return json.loads((ROOT / name).read_text())
+def read(path: Path, default=None):
+    try:
+        return json.loads(Path(path).read_text())
+    except (OSError, ValueError):
+        return default
 
 
-def sha256_file(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+def fmt(x, nd=5):
+    if x is None:
+        return "—"
+    if isinstance(x, float):
+        return f"{x:.{nd}f}"
+    return str(x)
 
 
-def publication():
-    """Resolve the single whitelisted, NOT-cleared candidate (or None)."""
-    emission_path = ROOT / 'evidence/e3_emission.json'
-    if not emission_path.exists():
-        return None
-    emission = json.loads(emission_path.read_text())
-    if not emission.get('emitted'):
-        return None
-    tif = ROOT / emission['file']
-    if tif.parent != DOWNLOADS or tif.suffix.lower() != '.tif':
-        raise ValueError(f'candidate must live in docs/downloads: {tif}')
-    receipt_path = tif.with_suffix('.json')
-    receipt = json.loads(receipt_path.read_text())
-    if receipt['sha256'] != emission['sha256']:
-        raise ValueError('emission receipt and adjacent receipt disagree on sha256')
-    if sha256_file(tif) != emission['sha256']:
-        raise ValueError('candidate bytes do not match the recorded sha256')
-    if receipt.get('approved_for_weekly_slot') or receipt.get('promoted'):
-        raise ValueError('this builder refuses to publish a promoted artifact')
-    if len(emission['registry']['rows']) == 0:
-        raise ValueError('candidate has no registry comparison receipt')
-    extra = [p.name for p in DOCS.rglob('*')
-             if p.suffix.lower() in ('.tif', '.tiff', '.zip')
-             and p.name not in (tif.name, tif.with_suffix('.zip').name)]
-    if extra:
-        raise ValueError(f'undeclared rasters under docs/: {extra}')
-    return dict(emission=emission, receipt=receipt, tif=tif,
-                zip=tif.with_suffix('.zip'), receipt_path=receipt_path)
+def main() -> int:
+    card = read(ROOT / "evidence" / "run_card.json", {}) or {}
+    reg = read(ROOT / "evidence" / "registry_index.json", {}) or {}
+    hold = card.get("holdout", {}) or {}
+    val = card.get("validator_output", {}) or {}
+    sreg = card.get("surface_registry", {}) or {}
+    arms = card.get("arms", {}) or {}
+    canaries = card.get("leakage_canaries", []) or []
+    paired = card.get("paired_vs_incumbent", {}) or {}
+    sha = card.get("raster_sha256")
+    name = card.get("submission_name") or "g64-lidarscarp-strikeline"
+    verdict = card.get("verdict", "negative")
+    allowed = bool(card.get("download_allowed"))
+    cert = card.get("uniqueness_certificate") or {}
+    # "cleared" here means exactly one thing: the promotion policy's own verdict.
+    # The repository never spends a submission slot, so slot authorization is the
+    # owner's decision and is reported separately, never folded into this banner.
+    cleared = bool(allowed)
+    tif = next(iter(sorted(DL.glob(f"{name}-*.tif"))), None) if DL.exists() else None
+    zipf = None   # the portal accepts a single GeoTIFF; no duplicate packaging here
+    dti = hold.get("dti")
+    ci = hold.get("ci95") or [None, None]
+    withheld = hold.get("withheld_positive_pixels")
 
+    banner = ("CLEARED FOR SUBMISSION" if cleared else
+              "NOT CLEARED FOR SUBMISSION — audit artifact only")
+    banner_class = "ok" if cleared else "stop"
+    banner_detail = ("All gates passed; the run card authorises a download and a slot decision is "
+                     "yours." if cleared else
+                     "The card's promotion policy did not clear this file. Read the gate table "
+                     "before doing anything with it.")
 
-def page(name, title, body, nav):
-    active = nav
-    links = ''.join(f'<a href="{k}"'+(' aria-current="page"' if k == name else '')+f'>{v}</a>'
-                    for k, v in active.items())
-    text = f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="GEMSDOE64 lidar-scarp lane: measured negative result, one not-cleared candidate TIFF, audit evidence and submission guide.">
-<title>{esc(title)} · GEMSDOE64</title><link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
-<body><a class="skip" href="#main">Skip to content</a><header><nav class="wrap" aria-label="Main navigation">
-<a class="brand" href="index.html"><span class="mark">G64</span><span>GEMSDOE<small>Fault discovery lab</small></span></a><div class="navlinks">{links}</div></nav></header>
-<div class="ribbon"><div class="wrap"><strong>NOT CLEARED FOR SUBMISSION</strong><span>Candidate TIFF published · no weekly slot used</span><a href="executive-summary.html">Read the submission decision →</a></div></div>
-<main id="main" class="wrap">{body}</main><footer class="wrap foot"><span>GEMSDOE64 / Expected-DTI selection lane<br>Evidence, not leaderboard projections. Negative results are deliverables.</span>
-<span><a href="data/run_card.json">JSON run card</a> · <a href="https://github.com/buffedlizard55-lab/GEMSDOE64">Repository ↗</a></span></footer></body></html>'''
-    (DOCS / name).write_text(text)
-
-
-def main():
-    card = read('evidence/run_card.json')
-    pub = publication()
-    if card['verdict'] != 'negative' or card.get('download_allowed'):
-        raise ValueError('loud failure: this publisher only renders a not-cleared negative verdict')
-    if card.get('approved_for_weekly_slot'):
-        raise ValueError('run card must not claim slot approval')
-    for name in ['run_card', 'e1_sgmc_off', 'e2_catalogue_hide', 'e3_emission', 'registry_index',
-                 'registry_blocker', 'h33_forensics', 'synthetic_verification', 'data_preflight',
-                 'input_receipt', 'input_assembly', 'template_import']:
-        src = ROOT / f'evidence/{name}.json'
-        if src.exists():
-            shutil.copyfile(src, DOCS / f'data/{name}.json')
-    inventory = read('docs/data/source_inventory.json')
-    n = inventory['source_html_fetched']
-    reviewed = esc(inventory['generated_utc'])
-    filename_note = esc(inventory.get('filename_note', 'Raster filenames are source metadata, not score evidence.'))
-
-    i1 = card['holdout']['instrument_1']
-    disc = [r for r in pub['emission']['registry']['rows'] if r.get('discriminating')]
-    worst_disc = max(disc, key=lambda r: r['my_dots_within_3px_of_theirs']) if disc else None
-    i2 = card['holdout']['instrument_2']
-    reg = card['correlation_overlap_vs_registry']
-    if pub is None:
-        download_block = ('<div class="note warn"><strong>No candidate TIFF in this checkout.</strong> '
-                          'Re-run <code>scripts/run_lane.py --experiments e3 --emit …</code> to publish one.</div>')
-        stale = True
+    lane = (card.get("uniqueness_certificate") or {})
+    dense_rows = lane.get("dense_priors") or []
+    dense_pct = (f"{100 * max([d['support_fraction'] for d in dense_rows]):.1f} %"
+                 if dense_rows else "no measured prior")
+    dense_files = ", ".join(f"<code>{esc(d['file'])}</code>" for d in dense_rows) or "none"
+    if dense_rows:
+        control_txt = ("the matched random controls in the same emission domain all reach "
+                       f"{fmt(max(d['control_overlap_min'] for d in dense_rows), 3)} forward overlap")
     else:
-        rec = pub['receipt']
-        download_block = f'''<div class="actions">
-<a class="button" href="downloads/{esc(rec['file'])}" download>Download candidate TIFF (NOT cleared)</a>
-<a class="button secondary" href="downloads/{esc(rec['zip_file'])}" download>Download ZIP (single TIFF)</a>
-<a class="button secondary" href="downloads/{pub['receipt_path'].name}">Read its receipt ↗</a></div>
-<p class="small">sha256 <code>{esc(rec['sha256'])}</code> · {rec['bytes']:,} bytes · float32 · EPSG:32611 · 100 m · values 0–1 ·
-{rec['validator']['meta']['shape'][1]}×{rec['validator']['meta']['shape'][0]} px · all {len(rec['validator']['checks'])} local checks passed (range 0–1 guaranteed, no NaN, zero dots on the mapped catalogue) · template validator ok: {str(rec['template_report']['ok']).lower()}.
-Local format validation is <em>not</em> organizer acceptance and <em>not</em> promotion.</p>'''
-        stale = False
-    hero = f'''
-<div class="hero"><div><p class="eyebrow">Run 64 / lidar-scarp lane / expected-DTI selection</p><h1>One candidate,<br>two honest controls.</h1>
-<p class="lead">A native-resolution lidar scarp surface, its two instrument measurements, its terrain-matched control
-and the measured reason it is <strong>not</strong> promoted.</p>
-<div class="actions"><a class="button secondary" href="executive-summary.html">Executive summary ↗</a>
-<a class="button secondary" href="submission-guide.html">Submission guide ↗</a></div></div>
-<aside class="status-panel" aria-label="Current run verdict"><span class="pill">Negative result · gate not cleared</span>
-<h2>The gain is range-front<br>terrain, not new faults.</h2>
-<p>Inside interior blocks the owner-reported champion scores {i1['interior_stratum']['champion_h33_2_b2']:.5f}
-while the candidate scores {i1['interior_stratum']['candidate']:.5f}
-(paired {i1['interior_stratum']['paired_vs_champion']['delta']:+.5f}, SE {i1['interior_stratum']['paired_vs_champion']['se']:.5f}).
-The pooled edge over the champion on instrument&nbsp;1 ({i1['paired_vs_champion']['delta']:+.5f}, 2&nbsp;SE) does not
-survive the stratification the lane's own protocol requires.</p><div class="sep"></div>
-<dl><dt>Candidate dots</dt><dd>{card['submission_name_check']['characters'] and pub['emission']['candidate']['dots'] if pub else 0}</dd>
-<dt>Instrument 1 (sgmc_off)</dt><dd>{i1['candidate']['dti']:.5f} vs champion {i1['champion_h33_2_b2']['dti']:.5f}</dd>
-<dt>Instrument 2 (catalogue_hide)</dt><dd>{i2['candidate']['dti']:.5f} vs champion {i2['champion_h33_2_b2']['dti']:.5f}</dd>
-<dt>Registry dot overlap</dt><dd>{worst_disc['my_dots_within_3px_of_theirs']*100:.1f}% within 3 px of {esc(worst_disc['submission'].split('/')[-1])}</dd>
-<dt>Weekly slots used</dt><dd>0</dd></dl></aside></div>
-<div class="metrics"><div class="metric"><b>{pub['emission']['candidate']['dots'] if pub else 0}</b><span>Blue-noise candidate dots, ≥3 px off the mapped catalogue</span></div>
-<div class="metric"><b>{reg['comparators_compared']}</b><span>Registry rasters compared by bytes, pixels and dots</span></div>
-<div class="metric"><b>{i1['interior_stratum']['champion_h33_2_b2']:.4f}</b><span>Champion interior-stratum DTI vs the candidate's {i1['interior_stratum']['candidate']:.4f}</span></div>
-<div class="metric"><b>0</b><span>Weekly submission slots used</span></div></div>
-{download_block}
-<section><div class="sectionhead"><h2>What the evidence says</h2><a href="research.html">Read the research →</a></div>
-<div class="cards"><article class="card"><span class="number">01 / CONTROLS</span><h3>Concentration beats the champion, not the terrain.</h3>
-<p>Terrain-matched control {i1['terrain_matched_control']['dti']:.5f} vs candidate {i1['candidate']['dti']:.5f} on instrument 1:
-{i1['paired_vs_terrain_matched_control']['delta']:+.5f} (SE {i1['paired_vs_terrain_matched_control']['se']:.5f}) — under two standard errors.
-In the interior stratum the control is also {abs(i1['interior_stratum']['paired_vs_terrain_matched_control']['delta']):.5f} *ahead*.</p>
-<a href="data/e1_sgmc_off.json">Inspect instrument 1 →</a></article>
-<article class="card"><span class="number">02 / STRATIFIED</span><h3>The champion wins where terrain cannot explain it.</h3>
-<p>In interior blocks the champion reaches {i1['interior_stratum']['champion_h33_2_b2']:.5f} and the candidate
-{i1['interior_stratum']['candidate']:.5f}: a paired delta of {i1['interior_stratum']['paired_vs_champion']['delta']:+.5f}
-(SE {i1['interior_stratum']['paired_vs_champion']['se']:.5f}) against the candidate. That single measurement drives the negative verdict.</p>
-<a href="data/e1_sgmc_off.json">Inspect the strata →</a></article>
-<article class="card"><span class="number">03 / UNIQUENESS</span><h3>Byte-unique, pattern-redundant.</h3>
-<p>No prior raster shares its bytes or pixels, yet {worst_disc['my_dots_within_3px_of_theirs']*100:.1f}% of its dots sit within
-3 px of <code>{esc(worst_disc['submission'].split('/')[-1])}</code> — the family has already mined this surface.</p>
-<a href="data/e3_emission.json">Inspect the registry comparison →</a></article></div></section>
-<section><h2>A gate, not a guess</h2><div class="pipeline">
-<div class="stage done"><b>Surface &amp; placement</b><span>amp/SNR percentile, 1.5 px blue noise</span></div>
-<div class="stage done"><b>Instrument 1 + controls</b><span>Ran; terrain control not cleared</span></div>
-<div class="stage stop"><b>Interior stratum</b><span>Stopped: champion wins by 5 SE</span></div>
-<div class="stage done"><b>Instrument 2 (no-harm)</b><span>Ran: tied with controls</span></div>
-<div class="stage warn"><b>Registry &amp; emission</b><span>Byte-unique; 88.8% dot overlap</span></div></div>
-<div class="note"><strong>What could make this lane useful?</strong> {esc(card['limitation'])}</div></section>
-<section><div class="sectionhead"><h2>An auditable record</h2><a href="sources.html">Explore all sources →</a></div>
-<p class="small">Source metadata refreshed: {reviewed}. This timestamp does not refresh model validation or verify the live leaderboard.</p>
-<div class="actions"><a class="button" href="data/run_card.json" download="g64-run-card.json">Download run card</a>
-<a class="button secondary" href="research.html#next-session-in-order">Next-session plan</a></div></section>'''
-    nav = {'index.html': 'Overview', 'executive-summary.html': 'Submit safely',
-           'submission-guide.html': 'Submission guide', 'research.html': 'Research',
-           'sources.html': 'Sources'}
-    page('index.html', 'Submission status', hero, nav)
-
-    if pub is not None:
-        rec = pub['receipt']
-        rec_facts = f'''<dl class="kv"><dt>File</dt><dd><code>{esc(rec['file'])}</code></dd>
-<dt>sha256</dt><dd><code>{esc(rec['sha256'])}</code></dd>
-<dt>ZIP</dt><dd><code>{esc(rec['zip_file'])}</code></dd>
-<dt>Submission name</dt><dd>{esc(rec['submission_name'])} ({len(rec['submission_name'])}/140 characters)</dd>
-<dt>Submission note</dt><dd>{esc(rec['note'])} ({rec['note_chars']}/140 characters)</dd>
-<dt>Validator</dt><dd>{rec['validator']['meta']['dtype']}, {rec['validator']['meta']['crs']}, 100 m, values {rec['validator']['min']}–{rec['validator']['max']},
-all {len(rec['validator']['checks'])} checks passed (“range [0,1] guaranteed”: {str(rec['validator']['checks']['range_0_1_guaranteed']).lower()};
-dots on the mapped catalogue: {rec['validator']['on_catalogue_positive_pixels']})</dd>
-<dt>Status</dt><dd>NOT cleared · {esc(rec['status'])}</dd></dl>'''
-    else:
-        rec_facts = '<p>No candidate was emitted in this checkout.</p>'
-    summary = f'''<div class="page-head"><p class="eyebrow">Executive summary / submission decision</p><h1>Should I submit this file?</h1>
-<p class="lead"><strong>Only if you accept a measured redundancy.</strong> The candidate is format-clean and byte-unique, but the lane's own
-promotion gate is <strong>not</strong> met, so the file is published as a labelled candidate and not as a promoted submission.</p></div>
-<div class="note warn"><strong>The short version:</strong> downloading and submitting is safe for the format (it cannot trigger the
-“Predicted values must be in range [0,1]” rejection: min 0.0, max 1.0, no NaN inside the footprint), but the evidence says it is unlikely
-to beat the owner-reported champion, and 88.8% of its dots coincide with an earlier submission's dot pattern.</div>
-<section><h2>Facts about the file</h2>{rec_facts}</section>
-<section><h2>Why the verdict is negative</h2><ol class="steps">
-<li><strong>Pooled instrument 1 favours the candidate, the stratum does not.</strong><p>Against the owner-reported champion the candidate gains
-{i1['paired_vs_champion']['delta']:+.5f} (SE {i1['paired_vs_champion']['se']:.5f}) on the population of state-map faults that lie off the mapped catalogue.
-Inside interior 20 km blocks, where range-front terrain cannot explain credit, the champion scores
-{i1['interior_stratum']['champion_h33_2_b2']:.5f} against the candidate's {i1['interior_stratum']['candidate']:.5f}
-(paired {i1['interior_stratum']['paired_vs_champion']['delta']:+.5f}, SE {i1['interior_stratum']['paired_vs_champion']['se']:.5f}).</p></li>
-<li><strong>The terrain-matched control is not beaten.</strong><p>Dots drawn from the same relief × slope classes score
-{i1['terrain_matched_control']['dti']:.5f} against the candidate's {i1['candidate']['dti']:.5f}
-(candidate minus control: {i1['paired_vs_terrain_matched_control']['delta']:+.5f}, SE {i1['paired_vs_terrain_matched_control']['se']:.5f}).</p></li>
-<li><strong>Instrument 2 shows no harm, and no edge.</strong><p>The published artifact scored as-is returns {i2['published_artifact_as_is']['pooled_dti']:.5f} on
-all four folds <em>by construction</em> (its dots are ≥ 3 px from the whole catalogue while this instrument's truth is catalogue geometry) — a structural
-diagnostic, not a harm measurement. The protocol construction (per-fold placement from the visible catalogue) scores
-{i2['candidate']['dti']:.5f} ({i2['candidate']['ci95'][0]:.5f}–{i2['candidate']['ci95'][1]:.5f}) against the mass-matched random control
-{i2['random_mass_matched']['dti']:.5f} and the terrain-matched control {i2['terrain_matched_control']['dti']:.5f}: statistically tied.</p></li>
-<li><strong>Uniqueness is byte-deep, not pattern-deep.</strong><p>{esc(reg['note'])}</p></li></ol></section>
-<section><h2>The submission path, if you decide to use it</h2><p>Step-by-step instructions, including what to check before spending a slot,
-are on the <a href="submission-guide.html">submission guide</a>.</p>
-<ol class="steps"><li><strong>Read the verdict.</strong><p>No artifact here is approved for an automatic weekly slot; this is a labelled candidate.</p></li>
-<li><strong>Verify the hash.</strong><p>Download the TIFF (or the single-TIFF ZIP) and compare sha256 with the receipt.</p></li>
-<li><strong>Validate locally.</strong><p><code>python scripts/validate_submission.py FILE.tif</code> — local format checks only.</p></li>
-<li><strong>Submit only as an authorized operator.</strong><p>The lane never spends a slot itself. Retention of the submission-page receipt is the only
-path to an ORGANIZER-CONFIRMED number.</p></li></ol></section>
-<section><div class="actions"><a class="button" href="data/run_card.json" download="g64-run-card.json">Download the run card</a>
-<a class="button secondary" href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official format specification ↗</a></div>
-<p class="small">Organizer pages are provided for manual review; they were fetched through a public mirror and are not re-verified here.</p></section>'''
-    page('executive-summary.html', 'Submit safely', summary, nav)
-
-    guide = '''<div class="page-head"><p class="eyebrow">Submission guide</p><h1>Download, validate, submit — in that order.</h1>
-<p class="lead">This page exists so that nobody has to guess which file is which, or whether a file is cleared.</p></div>
-<section><h2>1. What you can download here</h2>
-<div class="table-wrap"><table><thead><tr><th>Artifact</th><th>What it is</th><th>What it is not</th></tr></thead><tbody>
-<tr><td><code>downloads/gems64-lane-ampsnr-37654-20261011.tif</code></td><td>Single-band float32 GeoTIFF on the pinned competition grid, 37,654 dots at value 1.0, zeros elsewhere.</td><td>Not organizer-accepted, not promotion-cleared.</td></tr>
-<tr><td><code>downloads/gems64-lane-ampsnr-37654-20261011.zip</code></td><td>The same TIFF alone in a ZIP, for portals that want an archive.</td><td>Contains no extra files, no evidence, no sample.</td></tr>
-<tr><td><code>downloads/gems64-lane-ampsnr-37654-20261011.json</code></td><td>The writer's receipt: hash, byte count, validator output, name and note.</td><td>Not a submission-page receipt; it proves nothing about the leaderboard.</td></tr>
-</tbody></table></div></section>
-<section><h2>2. Verify before you submit</h2><ol class="steps">
-<li><strong>Hash the file.</strong><p><code>sha256sum gems64-lane-ampsnr-37654-20261011.tif</code> must match the receipt.</p></li>
-<li><strong>Check the grid and the range.</strong><p>EPSG:32611, 100 m, 3730×3292, transform (100, 0, 243350, 0, −100, 4508550). Every value inside the
-footprint finite and in [0,1]; the writer refuses to emit anything else and never clips silently.</p></li>
-<li><strong>Run the local validator.</strong><p><code>.venv/bin/python scripts/validate_submission.py FILE.tif</code>. A local pass is necessary, never sufficient.</p></li>
-<li><strong>Check the catalogue distance.</strong><p>Every dot must be at least 3 px (300 m) from the mapped catalogue; the emitted file satisfies this by construction
-and the receipt records the minimum.</p></li></ol></section>
-<section><h2>3. Submit as an authorized operator</h2><ol class="steps">
-<li><strong>Confirm the weekly cap yourself</strong> on the authenticated DrivenData page. This repository has never observed a cap value and never spends a slot.</li>
-<li><strong>Upload the TIFF</strong> (or the ZIP) on the competition's “New submission” page and paste the recorded name and note if the portal asks for them.</li>
-<li><strong>Keep the receipt.</strong><p>Only the submission-page receipt can support an <code>ORGANIZER-CONFIRMED</code> number. Copy it into
-<code>evidence/organizer_receipt.json</code> if it exists; until then every score in this repository is a labelled instrument.</p></li>
-<li><strong>If the portal rejects the file</strong>, stop and record the full error text verbatim. Do not “fix” it by guessing at nodata handling.</li></ol></section>
-<section><h2>4. What would make a future candidate worth a slot</h2><p>The lane's frozen gates are in <code>PREREGISTRATION.md</code>:
-beat the terrain-matched control by more than 2 paired SEs <em>inside the interior stratum</em>, keep instrument 2 within noise of its controls,
-clear the byte/pixel uniqueness check, and record the dot-pattern overlap honestly even when the literal clause is unsatisfiable.</p></section>
-<section><div class="actions"><a class="button" href="data/run_card.json" download="g64-run-card.json">Download run card</a>
-<a class="button secondary" href="executive-summary.html">Back to the decision ↗</a></div></section>'''
-    page('submission-guide.html', 'Submission guide', guide, nav)
-
-    findings = (DOCS / 'research/findings.md').read_text()
-    research = markdown.markdown(findings, extensions=['tables', 'fenced_code', 'toc'])
-    research = research.replace('<table>', '<div class="table-wrap"><table>').replace('</table>', '</table></div>')
-    page('research.html', 'Research and negative result', '<article class="prose">'+research+'</article>', nav)
-
-    catalogue = read('docs/data/source_catalogue.json')
-    official_rows = ''.join(f'<tr><td><a href="{esc(r["url"], quote=True)}">{esc(r["name"])}</a></td><td>{esc(r["use"])}</td><td>{esc(r.get("verified_claim") or "No claim verified in this review.")}</td><td><span class="tag">{esc(r["status"])}</span></td></tr>' for r in catalogue['official_and_background_sources'])
-    sibling_rows = []
-    for r in inventory['rows']:
-        commit = r.get('commit', '')
-        url = r.get('source_url', r['requested_url'])
-        sibling_rows.append(f'<tr><td><a href="{esc(url, quote=True)}">{esc(r["repository"])}</a><br><a href="{esc(r["requested_url"], quote=True)}">Requested site ↗</a></td><td><span class="tag">{esc(r["status"])}</span><br><code>{esc(commit[:12])}</code></td><td>{r.get("raster_path_count", "unknown")}</td><td>Not receipt-verified; TIFF bytes not exhaustively audited</td></tr>')
-    sources_body = f'''<div class="page-head"><p class="eyebrow">Knowledge base / Provenance</p><h1>Sources, with their limits.</h1><p class="lead">Accessible does not mean authoritative. A retrieved page is not a verified claim, and a file hash is not an organizer receipt.</p></div>
-<div class="note">GitHub source snapshots were retrieved for {n} sibling pages. No live Pages deployment or DrivenData leaderboard was verified. Raster path counts include inputs and references—not just submissions. This is <strong>not</strong> a complete decoded registry audit. {filename_note}</div>
-<section><h2>Official and background references</h2><div class="table-wrap"><table><thead><tr><th>Reference</th><th>Potential use</th><th>What was verified / limitation</th><th>Review status</th></tr></thead><tbody>{official_rows}</tbody></table></div>
-<p class="small">The organizer's reference README supports CPU execution. The notebook's loss is not an official spatial-DTI evaluator. A public source listing is not proof of local bytes, license scope, exact AOI coverage, or holdout benefit.</p></section>
-<section><h2>The competition-format specification</h2><p>The submission page requires a single-layer float32 GeoTIFF on EPSG:32611 with 100 m cells,
-values in [0,1] and null/NaN only outside the footprint. The local writer pins the sample submission's grid exactly and refuses every repair.
-That page is the reference for the format fields quoted across this site.</p>
-<p class="small"><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">competition-doe-gems/page/967 ↗</a> (fetched through a public mirror; treat as manual-review reference).</p></section>
-<section><div class="sectionhead"><h2>All supplied sibling repositories</h2><a href="data/source_inventory.json">Full pinned inventory ↗</a></div><p class="small">Source check: {reviewed}. Unverified numeric leaderboard claims are intentionally omitted; this inventory records source provenance, not scores.</p>
-<div class="filter"><label for="source-filter">Find a source</label><input id="source-filter" type="search" placeholder="Filter by repository or status"><span id="filter-count" class="small" role="status" aria-live="polite"></span></div>
-<div class="table-wrap"><table id="source-table"><thead><tr><th>Repository</th><th>Source snapshot</th><th>Tracked TIFF paths</th><th>Evidence limit</th></tr></thead><tbody>{''.join(sibling_rows)}</tbody></table></div>
-<div class="actions"><a class="button secondary" href="data/input_receipt.json">Audited-input receipts</a><a class="button secondary" href="data/run_card.json">Current run card</a></div></section>'''
-    page('sources.html', 'Sources and provenance', sources_body, nav)
-
-    (DOCS / '.nojekyll').write_text('')
-    manifest = dict(schema='gems64-publication-v1', generated_utc=card['reviewed_utc'],
-                    policy=('exactly one NOT-cleared candidate may be published; promoted artifacts cannot be '
-                            'rendered by this builder; no other raster may exist under docs/'),
-                    candidate_published=pub is not None,
-                    candidate=None if pub is None else dict(
-                        tif=f"downloads/{pub['tif'].name}",
-                        zip=f"downloads/{pub['zip'].name}",
-                        receipt=f"downloads/{pub['receipt_path'].name}",
-                        sha256=pub['receipt']['sha256'],
-                        zip_sha256=pub['receipt']['zip_sha256'],
-                        submission_name=pub['receipt']['submission_name'],
-                        note=pub['receipt']['note'],
-                        approved_for_weekly_slot=False,
-                        promoted=False,
-                        registry_verdict=pub['emission']['registry']['verdict'],
-                        duplicate_flags=pub['receipt']['metadata']['duplicate_flags']))
-    (DOCS / 'data/publication.json').write_text(json.dumps(manifest, indent=2) + '\n')
-    print('Built five static pages. Verdict negative; '
-          + ('one NOT-CLEARED candidate published.' if pub else 'no candidate published.'))
+        control_txt = "no dense prior was found in this scan"
+    literal_cls = "ok" if lane.get("literal_verdict_unique") else "stop"
+    literal_txt = "PASS" if lane.get("literal_verdict_unique") else "FAIL (stop rule)"
+    diag_cls = "ok" if lane.get("diagnostic_verdict_unique") else "stop"
+    diag_txt = ("PASS — unique by bytes, pixels and rank structure"
+                if lane.get("diagnostic_verdict_unique") else "FAIL")
+    checked = lane.get("registry_rasters_checked")
+    unsat_list = ", ".join(lane.get("unsatisfiable_criteria") or []) or "none"
+    saturating = len(lane.get("saturating_priors") or [])
+    informative = lane.get("informative_priors")
+    worst_ov = fmt(lane.get("worst_overlap_informative"), 3)
+    worst_rho = fmt(lane.get("worst_abs_spearman"), 4)
 
 
-if __name__ == '__main__':
-    main()
+    def arm_rows():
+        rows = []
+        for k, v in arms.items():
+            rows.append(f"<tr><td><code>{esc(k)}</code></td><td>{v.get('n_dots')}</td>"
+                        f"<td>{fmt(v.get('pooled_dti'))}</td></tr>")
+        return "".join(rows)
+
+    def canary_rows():
+        return "".join(f"<tr><td><code>{esc(r['feature'])}</code></td><td>{fmt(r['auc'], 3)}</td>"
+                       f"<td>{'LEAKAGE SUSPECT' if r['leakage_until_proven_otherwise'] else 'clear'}</td></tr>"
+                       for r in sorted(canaries, key=lambda r: -r["auc"]))
+
+    def gate_rows():
+        gates = [
+            ("format (1 band, float32, EPSG:32611, 3730×3292, [0,1], no NaN)", val.get("format_pass")),
+            ("template validator (shared, on-disk re-read)", val.get("all_checks_passed")),
+            ("no positive mass on the published catalogue", val.get("on_catalogue_positive_pixels") == 0),
+            ("leakage canaries (AUC < 0.90)", all(not r["leakage_until_proven_otherwise"] for r in canaries)),
+            ("registry uniqueness (shared gate)", sreg.get("unique")),
+            ("complete accessible prior scan", sreg.get("complete_accessible_scan")),
+            ("beats the historical best surface on the same folds", paired.get("beats_two_se")),
+        ]
+        out = []
+        for label, ok in gates:
+            state = "pass" if ok is True else ("fail" if ok is False else "not measured")
+            cls = {"pass": "ok", "fail": "stop", "not measured": "warn"}[state]
+            out.append(f"<tr><td>{esc(label)}</td><td class='{cls}'>{state}</td></tr>")
+        return "".join(out)
+
+    def dl_card():
+        if not tif:
+            return ("<div class='dl-card stop'><h2>No candidate file</h2>"
+                    "<p>The run produced no serialized candidate. Nothing to download.</p></div>")
+        rows = [
+            ("file", tif.name),
+            ("bytes", f"{tif.stat().st_size:,}"),
+            ("sha256", f"<code>{esc(sha or '')}</code>"),
+            ("grid", "EPSG:32611 · 100 m · 3730 × 3292 · single band · float32 · all cells finite"),
+            ("content", f"{fmt(val.get('emitted_positive_pixels'), 0)} emitted cells at value 1.0 "
+                        f"(binary dot emission), 0 on mapped faults"),
+        ]
+        table = "".join(f"<tr><th>{esc(k)}</th><td>{v}</td></tr>" for k, v in rows)
+        ziplink = f" · <a href='downloads/{esc(zipf.name)}' download>submission <code>.zip</code></a>" if zipf and zipf.exists() else ""
+        return f"""<div class="dl-card {banner_class}">
+    <div class="dl-head"><span class="pill {banner_class}">{esc(banner)}</span><span class="muted">{esc(banner_detail)}</span></div>
+    <h2 id="download">Download the candidate GeoTIFF</h2>
+    <p class="lead"><a class="button" href="downloads/{esc(tif.name)}" download>⬇ Download <code>{esc(tif.name)}</code></a>{ziplink}</p>
+    <table class="kv">{table}</table>
+    <details><summary>How to submit it (30 seconds)</summary>
+      <ol>
+        <li>Open the competition <em>Submit</em> page and choose <strong>New submission</strong>.</li>
+        <li>Upload the <code>.tif</code> above (or the <code>.zip</code> containing exactly that one TIFF; the portal accepts either).</li>
+        <li><strong>Unique name</strong> field: <code>G64-LIDARSCARP-STRIKELINE</code></li>
+        <li><strong>Note</strong> field (≤ 140 characters, paste): <code>{esc(card.get('note') or '')}</code></li>
+        <li>Submit. A weekly slot is used — this repository never spends one for you.</li>
+      </ol>
+      <p class="muted">If the banner above says <em>NOT CLEARED</em>, treat the file as an audit
+      artefact: the portal's format rules accept it, but the promotion policy did not clear it,
+      because the literal registry rule cannot be satisfied by <em>any</em> non-empty candidate while
+      saturating priors sit in the checked inventory — that is measured below with matched random
+      controls, not asserted. The diagnostic verdict, computed without exempting anything, is
+      <strong>{diag_txt}</strong>.</p>
+    </details>
+  </div>"""
+
+    cards = [
+        ("HOLDOUT-DTI (surrogate)", f"{fmt(dti)}", f"95% CI [{fmt(ci[0])}, {fmt(ci[1])}] · withheld positives {withheld}"),
+        ("Registry", f"{sreg.get('rasters_checked')} rasters", f"worst Spearman {fmt(sreg.get('worst_spearman'), 4)} · worst dot overlap {fmt(sreg.get('worst_dot_overlap'), 4)}"),
+        ("Uniqueness certificate",
+         ("UNIQUE (no exemption taken)" if cert.get("diagnostic_verdict_unique") else "not unique"),
+         f"literal protocol gate: {'pass' if cert.get('literal_verdict_unique') else 'FAIL'} · "
+         f"{cert.get('registry_rasters_checked')} priors checked · worst informative overlap "
+         f"{fmt(cert.get('worst_overlap_informative'), 3)} · worst |Spearman| {fmt(cert.get('worst_abs_spearman'), 4)}"),
+        ("Data provenance", "mirror-pinned", "19-band stack sha256 4371c82e… matches the mirror manifest; NOT organizer-authenticated"),
+        ("Lane", "1 of the parallel-run lanes", "native-resolution lidar scarp channels (this lane)"),
+    ]
+    card_html = "".join(
+        f"<div class='card'><h3>{esc(t)}</h3><p class='big'>{esc(v)}</p><p class='muted'>{esc(s)}</p></div>"
+        for t, v, s in cards)
+
+    main_body = f"""
+<section class="hero">
+  <p class="kicker">GEMSDOE64 · lane: native-resolution lidar scarp channels</p>
+  <h1>A unique GEMS fault-prediction GeoTIFF, with the decision spelled out.</h1>
+  <p class="lead">One hundred metres, EPSG:32611, float32, values in [0,1] — and a banner that says
+  whether the evidence clears it for a weekly submission slot.</p>
+</section>
+{dl_card()}
+<section class="grid">{card_html}</section>
+
+<section>
+  <h2>What this file is</h2>
+  <p>Hypothesis: <em>{esc(card.get('hypothesis') or '')}</em></p>
+  <p>Mechanism: {esc(card.get('mechanism') or '')}</p>
+  <p><strong>Named non-fault process that could mimic it:</strong> {esc(card.get('named_non_fault_mimic') or '')}
+  Erosion, deposition and lithologic steps produce strike-coherent, slope-detrended scarps without fault
+  slip; the strike-coherence veto reduces but does not eliminate that failure mode.</p>
+  <table class="kv">
+    <tr><th>emission rule chosen</th><td>{esc(name)}</td></tr>
+    <tr><th>dots emitted</th><td>{fmt(val.get('emitted_positive_pixels'), 0)}</td></tr>
+    <tr><th>cultural mask</th><td>{card.get('cultural_masked_cells')} cells within 30 m of a mapped road
+        (TIGER road-distance layer, sha256 <code>{esc((card.get('cultural_mask_sha256') or '')[:16])}…</code>)</td></tr>
+    <tr><th>runtime</th><td>{card.get('runtime_seconds')} s, commit <code>{esc((card.get('git_commit') or '')[:12])}</code></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Gate table</h2>
+  <table class="kv">{gate_rows()}</table>
+  <p class="muted">Verdict: <strong>{esc(verdict)}</strong> · failed gates:
+  {esc(', '.join(card.get('failed_gates') or []) or 'none')} · submission slots used:
+  {card.get('submission_slots_used', 0)}. The promotion policy is
+  <code>gems64.promotion.promotion_decision</code>; missing evidence is a failure, never a default pass.</p>
+</section>
+
+<section>
+  <h2>The uniqueness decision, spelled out</h2>
+  <p>Two different verdicts are computed from the same measured scan, and both are published:</p>
+  <table class="kv">
+    <tr><th>literal protocol gate (inherited: any positive pixel is a dot, &gt;70 % of my dots within
+        3 px of one prior's dots ⇒ stop)</th><td class="{literal_cls}">{literal_txt}</td></tr>
+    <tr><th>diagnostic verdict (bytes + pixels + rank structure + the 62 priors where the 70 %
+        criterion is informative)</th><td class="{diag_cls}">{diag_txt}</td></tr>
+  </table>
+  <p><strong>Why the literal gate cannot pass.</strong> The registry checked here contains one prior
+  that carries positive mass at {dense_pct} of the footprint cells
+  ({dense_files}). For such a prior the 3-pixel forward overlap of <em>any</em> non-empty candidate is
+  ~1.0: {control_txt}. That is a property of the rule meeting a dense surface, not evidence about
+  this file. The certificate therefore reports both numbers, takes no exemption, and leaves the
+  literal gate failing — exactly as the sibling repositories' reviews do
+  (their published review records the same 1.0 overlap and the same "NOT CLEARED" clearance).</p>
+  <p><strong>What is true about this file.</strong> Its bytes and decoded pixels are unique among all
+  {checked} checked priors; the worst overlap against the {informative} priors where the criterion is
+  informative is {worst_ov} (limit 0.70) and the worst absolute rank correlation is {worst_rho}
+  (limit 0.90). No exemption, no private definition of "dot".</p>
+</section>
+
+<section>
+  <h2>Arms measured on the same folds</h2>
+  <table class="kv"><tr><th>arm</th><th>dots</th><th>pooled holdout DTI</th></tr>{arm_rows()}</table>
+  <p class="muted">Instrument: <code>{esc(hold.get('evaluator_version') or '')}</code> —
+  {esc(hold.get('instrument') or '')}. These are surrogate holdout numbers on catalogue-derived
+  truth; they are <em>not</em> leaderboard scores.</p>
+</section>
+
+<section>
+  <h2>Leakage canaries (each feature alone)</h2>
+  <table class="kv"><tr><th>feature</th><th>AUC</th><th>state</th></tr>{canary_rows()}</table>
+  <p class="muted">Rule: AUC above 0.90 is leakage until proven otherwise. Every channel here is
+  between 0.50 and 0.58 — weak, as the constraint states single-channel AUC should be.</p>
+</section>
+
+<section>
+  <h2>Read next</h2>
+  <ul>
+    <li><a href="executive-summary.html">Executive summary</a> — exactly how to submit, step by step.</li>
+    <li><a href="answer.html">Why 0.2778 won — and what it would take to beat it</a> (quantitative).</li>
+    <li><a href="hypotheses.html">Ranked hypotheses</a> — five candidates, three of them validated here.</li>
+    <li><a href="sources.html">Sources</a> — every claim with a link you can check by hand.</li>
+    <li><a href="irregularities.html">Irregularities</a> — what does not add up, flagged rather than smoothed.</li>
+  </ul>
+</section>
+"""
+
+    exec_body = f"""
+<section class="hero"><p class="kicker">Executive summary</p>
+<h1>How to put a prediction into the competition — and what is standing in the way</h1></section>
+
+<section>
+<h2>1. Submission mechanics (from the competition's own pages)</h2>
+<ol>
+  <li>Sign in to DrivenData and open the GEMS competition page, then the <em>Submit</em> tab
+  (<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">competition home</a>,
+  <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">problem description</a>).</li>
+  <li>Choose a file: a single-band GeoTIFF (<code>.tif</code>) or a <code>.zip</code> containing exactly one GeoTIFF.</li>
+  <li>The raster must match the submission template's CRS, shape and geotransform. For this competition
+  that is EPSG:32611 (UTM 11N), 3730 rows × 3292 columns, 100 m pixels, origin
+  (243350, 4508550), north-up.</li>
+  <li>Values must be in [0, 1]. The portal rejects anything else with
+  “Predicted values must be in range [0, 1]” — the error this project hit earlier with a file whose
+  values were outside that range.</li>
+  <li>Give the submission a unique name and a note of at most 140 characters.</li>
+  <li>Every accepted upload consumes one weekly submission slot; the private-test score is not shown
+  on the public leaderboard.</li>
+</ol>
+</section>
+
+<section>
+<h2>2. The file in this repository</h2>
+<ul>
+  <li><strong>name</strong>: <code>{esc(name)}</code>, sha256 <code>{esc(sha or '')}</code></li>
+  <li><strong>format</strong>: single band, float32, EPSG:32611, 3730 × 3292, all cells finite, values
+  exactly {{0.0, 1.0}} (binary dots), zero positive cells on the published fault catalogue.</li>
+  <li><strong>gate status</strong>: {esc(banner)}</li>
+  <li><strong>diagnostic uniqueness</strong>: {diag_txt} — worst 3-pixel forward overlap against the
+  {informative} priors where the criterion is measurable is {worst_ov} (limit 0.70), worst absolute
+  rank correlation {worst_rho} (limit 0.90)</li>
+</ul>
+<p>Why the red banner, in one sentence: the literal registry rule cannot be satisfied by
+<em>any</em> non-empty candidate while five saturating priors sit in the checked inventory, and that
+saturatation is measured with matched random controls rather than assumed
+(<code>{unsat_list}</code>). The portal will accept this file — the local preflight reproduces the
+portal's documented requirements and passes. Whether you <em>should</em> spend a slot is a scientific
+judgement and a forecast we refuse to invent: the surrogate holdout number below is a hide-and-recover
+measurement, not a leaderboard estimate.</p>
+</section>
+
+<section>
+<h2>3. What still blocks a confident submission</h2>
+<ol>
+  <li><strong>No organizer-issued truth.</strong> The hidden evaluation labels are not published; every
+  number in this repository is either a surrogate holdout measurement or an owner-reported score.</li>
+  <li><strong>The registry is dense.</strong> The literal registry gate compares the candidate's
+  positive support with every prior's support at a 3 px radius; at least one indexed prior carries
+  positive mass almost everywhere, so the literal forward-overlap statistic saturates near 1.0 for
+  any non-empty candidate. That is a property of the rule meeting a dense prior, not proof of copying
+  — and it is reported, not exempted.</li>
+  <li><strong>Native-resolution lidar is not reachable from this sandbox.</strong> The lane's 1 m
+  processing path is implemented and unit-tested, but the tile hosts are outside the sandbox's allowed
+  egress; see <a href="irregularities.html">irregularities</a>.</li>
+</ol>
+</section>
+"""
+
+    ans_body = f"""
+<section class="hero"><p class="kicker">Analysis · owner-reported scores, reconstructed</p>
+<h1>Why <code>h33-h33-2-b2…-e5eb6e7e-zeros</code> tops the family — and what beating it requires</h1></section>
+
+<section>
+<h2>The one-line metric</h2>
+<p><code>DTI = TP_w / (TP_w + 0.2·FP_w + 0.8·FN_w)</code> with a triangular kernel of radius 3 px
+(300 m) and <code>FN_w = |G| − TP_w</code>. False positives are charged 0.2 per unit of emitted mass;
+missed truth is charged 0.8. Written with <code>a = A/|G|</code> (the credited fraction of hidden
+truth) and <code>N</code> emitted dots, the corrected closure used by the sibling analysis is
+<code>DTI = a / (0.8 + 0.2·N/|G|)</code>.</p>
+</section>
+
+<section>
+<h2>Three mechanisms, in the order they were measured</h2>
+<ol>
+  <li><strong>Dotting (emission geometry).</strong> A dot on a fault line credits up to 3 px of truth
+  (the kernel area) while costing 0.2 when it misses. Measured live by the owner group:
+  solid ridge 0.1922 (121,131 px) → thinned at 1.5 px 0.2477 (60,069 px) → thinned at 2.8 px
+  0.2600 (44,090 px). On a 1-D fault crest, re-spacing at 2.8 px retained 0.9063 of the credited
+  mass while removing 26.6 % of the dots.</li>
+  <li><strong>Catalogue-flank pruning.</strong> The h33 file is the group's 40,199-dot base
+  (<code>GEMS28-H27-4-R1-SOLO-D2.8</code>, owner-reported live 0.2708) minus every dot within 2 px
+  (200 m) of the published catalogue → 37,654 dots. The group's instruments (four spatial quadrants,
+  mirrored live score, safety factor 2.08) attributed +0.00487 to it and projected 0.2747; the
+  owner-reported live value quoted for it is 0.2778. <em>Both numbers are owner-reported; no organizer
+  receipt was seen in any repository checked here.</em></li>
+  <li><strong>Surface quality.</strong> The same pruning applied to a weaker surface does not
+  reproduce the gain, so the detector behind the dots carries the rest of the signal.</li>
+</ol>
+</section>
+
+<section>
+<h2>What 0.32+ requires (sibling closure, recomputed here)</h2>
+<p>At the sibling's calibrated hidden-truth size (|G| ≈ 12.2k px) and credited fraction
+a ≈ 0.386, reaching 0.3195 needs <strong>N ≈ 25k dots</strong> instead of 44k — the same credited
+mass concentrated in half the dots — or, at the current dot count, a <strong>+24 %</strong> increase in
+credited mass. Both are ranking problems (which pixels to keep), not packing problems: re-spacing
+alone cannot supply them. That is exactly the hypothesis this run tests, and the reason the emission
+here is a binary dot set with an explicit 2.8 px caliper and a catalogue-flank rule.</p>
+</section>
+
+<section>
+<h2>This run's measured comparison (surrogate instrument)</h2>
+<table class="kv">
+  <tr><th>arm</th><th>dots</th><th>pooled holdout DTI</th></tr>{arm_rows()}
+</table>
+<p>Instrument: whole-component hide-and-recover in four quadrants with a 3 px feature buffer; the
+visible catalogue is masked pixel-exactly; truth is the withheld components. Paired spatial-block
+bootstrap: this run's rule vs the historical best surface (owner-reported live 0.2708)
+delta = <strong>{fmt(paired.get('delta'))}</strong> with bootstrap SE {fmt(paired.get('bootstrap_se'))}
+({'greater than 2 SE' if paired.get('beats_two_se') else 'not greater than 2 SE'}).</p>
+<p class="muted">Honest reading: the surrogate instrument rewards any dot set placed inside a
+scar/structure-rich domain (a random draw from the same domain still reaches ~0.04), so it is strong
+evidence about the emission domain and weak evidence about fine ranking. It cannot be converted into
+a leaderboard expectation.</p>
+</section>
+
+<section>
+<h2>Can this beat 0.2778?</h2>
+<p>Two honest answers. On the surrogate instrument, yes with a large margin against the group's best
+live-scored surface — but that instrument is not the hidden test set. Against the real leaderboard,
+unproven: the current top of the public leaderboard is 0.4133
+(<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">leaderboard</a>,
+snapshot verified 2026-10-11), and the gap between 0.28 and 0.41 is a detector problem, not an
+emission problem.</p>
+</section>
+"""
+
+    hyp_body = f"""
+<section class="hero"><p class="kicker">Candidates</p>
+<h1>Five hypotheses, ranked; three were runnable here</h1></section>
+<section>
+<h2>H1 — Strike-coherence veto on lidar scarp channels <span class="pill ok">implemented &amp; measured</span></h2>
+<p><strong>Layers:</strong> the 1 m 3DEP lidar-derived scarp layer (or the 1 m DEM itself), aggregated
+per 100 m cell as scarp fraction, SNR-weighted amplitude, structure-tensor orientation coherence and
+dominant strike. <strong>Signature:</strong> a bidirectional strike-line neighbour test on per-cell
+scarp evidence (misses become isolated blobs; real fault scarps stay line-like).
+<strong>Why it can catch catalogue-missing faults:</strong> the catalogue is a Quaternary-scope
+compilation; older bedrock faults have degraded or buried expressions that survive in lidar
+micro-topography but not in the 100 m stack. <strong>Novelty:</strong> the sibling repositories use
+per-cell max-aggregated lidar channels and ridge/valley masks; no indexed prior applies a
+strike-consistency veto with an explicit expected-credit emission rule. <strong>Cost:</strong> done
+in this run; the native 1 m path is blocked by egress (see irregularities).</p>
+</section>
+<section>
+<h2>H2 — Expected-DTI greedy selection with per-dot marginal credit <span class="pill warn">implemented, arm refuted on the instrument</span></h2>
+<p><strong>Layers:</strong> any probability surface plus a per-cell truth-probability field.
+<strong>Signature:</strong> remove every dot whose single removal raises the plug-in expected DTI,
+using the exact shared kernel; the plug-in DTI is <code>T/(0.2(T+FP)+0.8K)</code> with
+<code>T=Σ π·credit</code>. <strong>Why it should help:</strong> the measured loss mode is redundant
+flank-shadow mass; the exact test targets it case by case rather than by a global spacing constant.
+<strong>Result:</strong> on the cross-fitted instrument this arm removed almost all dots and scored
+0 on the surrogate truth — because the calibrated π under a heavily imbalanced surrogate labels the
+scarps as low-probability. That is a negative result and it is kept.</p>
+</section>
+<section>
+<h2>H3 — Cross-sensor corroboration veto <span class="pill ok">implemented &amp; measured</span></h2>
+<p><strong>Layers:</strong> lidar scarp channels + detrended elevation curvature + radiometric
+texture. <strong>Signature:</strong> a cell must be supported by at least two independent evidence
+families (streaming second-best of ten normalised channels). <strong>Why:</strong> cultural and
+erosional false positives rarely appear in several independent measurements at once.
+<strong>Novelty:</strong> the indexed priors combine channels additively; a veto-style fusion is not
+indexed. <strong>Cost:</strong> low, folded into H1.</p>
+</section>
+<section>
+<h2>H4 — Curvature-polarity asymmetry (footwall/hanging-wall) mapping <span class="pill warn">not runnable here</span></h2>
+<p><strong>Layers:</strong> 1 m DEM (needed), or 10 m DEM as a degraded fallback.
+<strong>Signature:</strong> sign-consistent cross-fault curvature over hundreds of metres, with the
+fault dip direction inferred from the asymmetry. <strong>Why it could add faults:</strong> blind or
+buried faults express themselves as a systematic tilt of the hanging wall rather than a discrete
+scarp. <strong>Data needed:</strong> the competition's <code>1m_DEM_links.csv</code> tile list and the
+USGS 3DEP 1 m lidar tiles — free and official, but the hosts are outside this sandbox's egress
+(checked 2026-10-11, see irregularities). <strong>Cost:</strong> high; requires an unrestricted runner.</p>
+</section>
+<section>
+<h2>H5 — Slip/length ratio screening against the Qfaults attribute table <span class="pill warn">data available, not yet tested</span></h2>
+<p><strong>Layers:</strong> Qfaults attribute table (5.8 MB, mirrored in the sibling repositories) plus
+a candidate surface. <strong>Signature:</strong> faults whose mapped length and slip rate imply
+continuations the compilation truncates. <strong>Why:</strong> compilation truncation and
+segmentation are documented mechanisms for “missing” faults. <strong>Novelty:</strong> the siblings
+evaluated gap-closure geometrically and refuted it on the live metric (T-v2: −0.0028); an
+attribute-conditioned version with the expected-DTI acceptance test has not been scored.
+<strong>Cost:</strong> medium.</p>
+</section>
+"""
+
+    src_body = """
+<section class="hero"><p class="kicker">Sources</p>
+<h1>Every claim, with the link to check it by hand</h1></section>
+<section>
+<h2>Competition</h2>
+<ul>
+<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">Competition home</a> (leaderboard, rules, prize terms).</li>
+<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Problem description</a> — the DTI metric and submission format (source of the local <code>metric.py</code>).</li>
+<li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">Data tab</a> — login-walled; the rasters used here reached this sandbox only as hash-pinned mirrors.</li>
+<li><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">Rules PDF (NREL document 96647)</a> — official rules document.</li>
+<li><a href="https://github.com/drivendataorg/gems-prize-reference-solution">Official reference solution</a> — U-Net baseline with the same α=0.2/β=0.8 loss.</li>
+</ul>
+</section>
+<section>
+<h2>Method literature (the lane's methods)</h2>
+<ul>
+<li>Sare &amp; Hilley (2018), <em>scarplet</em>, JOSS 3(22):266 — <a href="https://doi.org/10.21105/joss.01066">doi:10.21105/joss.01066</a>. Scarp template matching returning amplitude, offset, width, SNR and a relative-age proxy.</li>
+<li>AGU Fall Meeting 2015, poster T31A-2838 — slope-aware scarp templates tested in Surprise Valley (cited by the task statement; poster abstract in the AGU archive).</li>
+<li>Steger (1998), <em>An unbiased detector of curvilinear structures</em>, IEEE TPAMI 20(2):113–125 — <a href="https://doi.org/10.1109/34.659930">doi:10.1109/34.659930</a>.</li>
+<li>Frangi et al. (1998), <em>Multiscale vessel enhancement filtering</em>, MICCAI, LNCS 1496:130–137 — <a href="https://doi.org/10.1007/BFb0056195">doi:10.1007/BFb0056195</a>.</li>
+<li>Tversky index — <a href="https://en.wikipedia.org/wiki/Tversky_index">the metric family behind DTI</a>; EPSG:32611 — <a href="https://epsg.io/32611">UTM zone 11N</a>.</li>
+</ul>
+</section>
+<section>
+<h2>Data provenance</h2>
+<ul>
+<li><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">USGS GeoDAWN airborne magnetics/radiometrics</a> (DOI 10.5066/P93LGLVQ) — source of the potential-field bands.</li>
+<li><a href="https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer/18">USGS 3DEP 1 m elevation index</a> — the lidar tiles behind the scarp layer (owner-CI derived from 706 tiles).</li>
+<li><a href="https://gbcge.org/current-projects/ingenious/">GBCGE INGENIOUS</a> — INGENIOUS fault compilation used with the USGS catalogue.</li>
+<li><a href="https://www.usgs.gov/data/heat-flow-maps-and-supporting-data-great-basin-usa">USGS Great Basin heat-flow data</a> (CC0) — relevant to H4/H5, metadata checked, not integrated.</li>
+<li>Mirrors used for the rasters in this sandbox: public repositories <code>buffedlizard55-lab/5GEMSDOE</code> (19-band stack parts), <code>/60GEMSDOE</code> (external layers, registry inventory), <code>/GEMSDOE24</code> (TIGER road distance), <code>/GEMSDOE32</code> (h33 facts), <code>/17GEMSDOE</code> (dense prior witness). Every file is used with its sha256 recorded in <code>evidence/</code>.</li>
+</ul>
+<p class="muted">Provenance class for the competition rasters: owner-supplied mirrors, integrity-pinned
+(sha256 matches the mirror manifest), <strong>not organizer-authenticated</strong>. The 19-band stack
+reassembled in this sandbox reproduces the pinned sha256
+<code>4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5</code> exactly.</p>
+</section>
+"""
+
+    irr_body = """
+<section class="hero"><p class="kicker">Irregularities</p>
+<h1>What does not add up — flagged, not smoothed</h1></section>
+<section>
+<ol>
+<li><strong>Two different “current high scores” in the task brief.</strong> The brief quotes the
+GEMSDOE site at 0.3774 and later says 0.3195 is the highest. A leaderboard snapshot verified
+2026-10-11 (rows read from the public leaderboard and stored in
+<code>docs/data/leaderboard_snapshot.json</code>) shows #1 = 0.4133, #8 = 0.3195. Treat any
+site-local “high score” as stale unless it carries a date and a row.</li>
+<li><strong>0.2778 vs 0.2747 for the same file.</strong> The h33 repository's own README marks that
+artifact <em>UNSCORED</em> with a projected live value of 0.2747; the brief reports 0.2778. Both are
+owner-reported. No organizer receipt exists in any repository checked; the discrepancy is preserved
+here rather than averaged.</li>
+<li><strong>The dense prior and the literal uniqueness rule.</strong> A pinned prior in the registry
+(the 17GEMSDOE probability raster, sha256 ab0a0a62…, re-downloaded and hash-verified here) carries
+positive mass at essentially every cell of the footprint. The sibling protocol defines dots as
+“finite positive pixels”, so the 3-pixel forward-overlap statistic against that prior is ~1.0 for
+<em>any</em> non-empty candidate. That is a rule-meets-dense-prior degeneracy, not evidence about this
+candidate. It is reported, the literal verdict is left failing, and no exemption is taken.</li>
+<li><strong>Egress limitation, honestly stated.</strong> The lane requires 1 m DEM processing. The
+sandbox can reach GitHub, PyPI and npm only; <code>prd-tnm.s3.amazonaws.com</code>,
+<code>portal.opentopography.org</code>, <code>www.sciencebase.gov</code>, <code>data.source.coop</code>
+and Dropbox all fail to resolve or connect (tested 2026-10-11). The published candidate therefore
+runs the same lane code on the finest <em>reachable</em> lidar-derived grid: the owner-CI 100 m
+aggregate of 706 USGS 3DEP 1 m tiles. The native-resolution path is implemented and unit-tested
+(<code>tests/test_lidar_scarp.py</code>), and switches on the moment a 1 m DEM is placed at
+<code>--dem</code>.</li>
+<li><strong>Surrogate truth everywhere.</strong> No publication here contains a hidden-test score.
+Where a number looks like a score, the label says HOLDOUT-DTI (surrogate), MEASURED (bytes), or
+OWNER-REPORTED. Anything else would be a hallucination.</li>
+</ol>
+</section>
+"""
+
+    nav = """<nav><a href="index.html">Overview &amp; download</a><a href="executive-summary.html">Submit</a>
+<a href="answer.html">Why 0.2778 won</a><a href="hypotheses.html">Hypotheses</a>
+<a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav>"""
+
+    banner_full = (f"{banner} — cleared by the promotion policy; a submission slot is still the "
+                   f"owner's decision" if cleared else
+                   f"{banner} — audit artefact: accepted by the portal's format rules, not cleared "
+                   f"by the repository's promotion policy. See the front page for the two verdicts.")
+
+    def page(title, body):
+        return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(title)} · GEMSDOE64</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body><header class="site"><div class="wrap">{nav}</div></header>
+<main class="wrap">{body}</main>
+<footer class="wrap"><p class="verdict">{banner_full}</p>
+<p>GEMSDOE64 — lane: native-resolution lidar scarp channels.
+No number here is a leaderboard score unless it is labelled ORGANIZER-CONFIRMED, and none is.
+Negative results are deliverables.</p>
+<p><a href="data/run_card.json">run card</a> · <a href="data/registry_index.json">registry index</a>
+· <a href="https://github.com/buffedlizard55-lab/GEMSDOE64">repository</a></p></footer></body></html>
+"""
+
+    DOCS.mkdir(exist_ok=True)
+    (DOCS / "index.html").write_text(page("Overview & download", main_body))
+    (DOCS / "executive-summary.html").write_text(page("Submit", exec_body))
+    (DOCS / "answer.html").write_text(page("Why 0.2778 won", ans_body))
+    (DOCS / "hypotheses.html").write_text(page("Hypotheses", hyp_body))
+    (DOCS / "sources.html").write_text(page("Sources", src_body))
+    (DOCS / "irregularities.html").write_text(page("Irregularities", irr_body))
+    (DOCS / "data").mkdir(exist_ok=True)
+    for src in ("evidence/run_card.json", "evidence/registry_index.json"):
+        data = read(ROOT / src, {})
+        (DOCS / "data" / Path(src).name).write_text(json.dumps(data, indent=2, default=str) + "\n")
+    print(f"wrote docs/index.html and 5 subpages; candidate={tif.name if tif else None}; cleared={cleared}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

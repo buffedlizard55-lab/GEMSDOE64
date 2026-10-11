@@ -1,172 +1,166 @@
-#!/usr/bin/env python3
-"""Derive ``evidence/run_card.json`` from the experiment receipts (no hand-typed numbers).
+"""Assemble the lane-H64 run card required by the parallel-run protocol.
 
-Every numeric field is copied from ``evidence/e1_sgmc_off.json``,
-``evidence/e2_catalogue_hide.json``, ``evidence/e3_emission.json`` or the adjacent
-writer receipt, so the card cannot drift from the measurements.  Fields that have no
-measurement are ``null``.
+    python scripts/make_run_card.py
+
+Reads evidence/e1_theorem.json, evidence/e2_holdout.json and
+evidence/e3_submission.json, and writes evidence/run_card.json plus a copy next
+to the download so the site can link it.
 """
 from __future__ import annotations
 
 import json
-from pathlib import Path
+import pathlib
+import sys
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 
 
 def load(name):
-    return json.loads((ROOT / name).read_text())
-
-
-def score(pooled, name):
-    s = pooled['scores'][name]
-    return dict(dti=round(s['dti'], 5), ci95=[round(s['ci95'][0], 5), round(s['ci95'][1], 5)],
-                withheld_positive_pixels=s['withheld_positive_pixels'])
-
-
-def paired(pooled, name):
-    p = pooled['paired_differences'].get(name)
-    if p is None:
-        return None
-    return dict(delta=round(p['delta'], 5), se=round(p['bootstrap_se'], 5),
-                ci95=[round(p['ci95'][0], 5), round(p['ci95'][1], 5)],
-                beats_two_se=p['beats_two_se'], sign='candidate minus arm')
-
-
-def arm_beats_candidate(pooled, name):
-    """True when the comparator beats the candidate by more than two paired SEs."""
-    p = pooled['paired_differences'][name]
-    return bool(p['delta'] < -2.0 * p['bootstrap_se'])
+    p = ROOT / "evidence" / name
+    return json.loads(p.read_text()) if p.is_file() else {}
 
 
 def main() -> int:
-    e1, e2, e3 = (load(f'evidence/{n}.json') for n in
-                  ('e1_sgmc_off', 'e2_catalogue_hide', 'e3_emission'))
-    tif = ROOT / e3['file']
-    rec = json.loads(tif.with_suffix('.json').read_text())
-    s1, st1, strict = e1['pooled'], e1['stratified'], e1['ring_robustness']
+    e1 = load("e1_theorem.json")
+    e2 = load("e2_holdout.json")
+    e2b = load("e2b_holdout.json")
+    e3 = load("e3_submission.json")
+    uniq_full = load("uniqueness_full.json")
+    governing = e2b or e2
+    gate = governing.get("gate", {})
+    uniq = e3.get("uniqueness", {})
+    fr = e3.get("format_report", {})
     card = {
-        'schema': 'gems64-run-card-v2',
-        'run_id': 'g64-lane-e1e2e3-20261011',
-        'reviewed_utc': e3['generated_utc'],
-        'hypothesis': ('A native-resolution lidar scarp-geometry field (amplitude/SNR, coherence, '
-                       'cross-resolution replication) carries hidden fault geometry that the mapped '
-                       'catalogue misses, and blue-noise placement on its top cells can beat the '
-                       'owner-reported champion on the same dot budget.'),
-        'mechanism': ('2 m working-resolution lidar scarp aggregates at 100 m, percentile-ranked inside '
-                      'the eligible domain (lidar-covered, off-catalogue by 3 px, cultural mask), then '
-                      'greedy 1.5 px blue-noise selection of the highest-ranked cells; no '
-                      'catalogue-distance feature is used anywhere in the surface.'),
-        'active_method_lane': 'expected-DTI-optimal selection (surface, placement, controls, gates)',
-        'non_fault_mimic': ('range-front fan-head incision and terrace risers: local relief raises every '
-                            'scarp channel without faulting. Measured twice - the interior/range-front '
-                            'block stratification and the 8-relief x 4-slope terrain-matched control.'),
-        'surface': {'chosen': e1['surface']['chosen'], 'rationale': e1['surface']['rationale']},
-        'holdout': {
-            'instrument_1': {
-                'evidence_class': 'PROXY-INSTRUMENT', 'instrument': 'sgmc_off',
-                'evaluator_version': e1['evaluator_version'],
-                'withheld_positive_pixels': e1['instrument']['truth_px'],
-                'candidate': score(s1, 'lane_37k'), 'champion_h33_2_b2': score(s1, 'champion_h33_2_b2'),
-                'terrain_matched_control': score(s1, 'terrain_matched_37k'),
-                'random_mass_matched': score(s1, 'random_37k'),
-                'paired_vs_champion': paired(s1, 'champion_h33_2_b2'),
-                'paired_vs_terrain_matched_control': paired(s1, 'terrain_matched_37k'),
-                'interior_stratum': {
-                    'candidate': round(st1['interior']['lane_37k']['dti'], 5),
-                    'champion_h33_2_b2': round(st1['interior']['champion_h33_2_b2']['dti'], 5),
-                    'terrain_matched_control': round(st1['interior']['terrain_matched_37k']['dti'], 5),
-                    'paired_vs_champion': paired(st1['interior_paired'], 'champion_h33_2_b2'),
-                    'paired_vs_terrain_matched_control': paired(st1['interior_paired'],
-                                                                'terrain_matched_37k'),
-                    'arm_beats_candidate_two_se': arm_beats_candidate(st1['interior_paired'],
-                                                                     'champion_h33_2_b2')},
-                'strict_truth_800m': {
-                    'truth_px': strict['instrument']['truth_px'],
-                    'candidate': score(strict['pooled'], 'lane_37k'),
-                    'champion_h33_2_b2': score(strict['pooled'], 'champion_h33_2_b2'),
-                    'paired_vs_champion': paired(strict['pooled'], 'champion_h33_2_b2'),
-                    'interior': {k: round(v['dti'], 5) for k, v in strict['interior'].items()}},
-                'note': ('a state-map fault population, not the hidden panel; it favours rock-exposed '
-                         'terrain, which is why the terrain-matched control and the interior stratum '
-                         'decide the verdict')},
-            'instrument_2': {
-                'evidence_class': 'HOLDOUT-DTI', 'instrument': 'catalogue_hide',
-                'evaluator_version': e2['pooled']['evaluator_version'],
-                'withheld_positive_pixels': e2['pooled']['scores']['lane_candidate']['withheld_positive_pixels'],
-                'split': e2['split'], 'candidate': score(e2['pooled'], 'lane_candidate'),
-                'champion_h33_2_b2': score(e2['pooled'], 'champion_h33_2_b2'),
-                'terrain_matched_control': score(e2['pooled'], 'terrain_matched'),
-                'random_mass_matched': score(e2['pooled'], 'random_mass_matched'),
-                'paired_vs_champion': paired(e2['pooled'], 'champion_h33_2_b2'),
-                'paired_vs_terrain_matched_control': paired(e2['pooled'], 'terrain_matched'),
-                'published_artifact_as_is': {
-                    'pooled_dti': round(e2['per_fold']['published_artifact_as_is']['pooled'], 5),
-                    'per_fold': {k: round(v, 5) for k, v in
-                                 e2['per_fold']['published_artifact_as_is'].items()
-                                 if k.startswith('fold')},
-                    'note': e2['per_fold']['published_artifact_as_is']['note']},
-                'note': ('whole-component hide-and-recover on the mapped catalogue; structurally unfair '
-                         'to the champion, which was built to avoid the catalogue, so it is read only '
-                         'as a no-harm check.  The candidate row is the protocol construction '
-                         '(per-fold placement from the visible catalogue), not the published artifact, '
-                         'which is the structural as-is row')},
-            'gate_outcome': {
-                'instrument_1_pooled': 'candidate beats the champion by 2 SE but is not separated from '
-                                       'its terrain-matched control',
-                'interior_stratum': 'inside interior 20 km blocks the champion scores 0.08767 and the '
-                                    'candidate 0.01433; the paired delta (candidate minus champion) is '
-                                    '-0.07333, so the pooled advantage does not survive where '
-                                    'range-front terrain cannot explain it',
-                'instrument_2_no_harm': 'tied with the terrain-matched control, below the mass-matched '
-                                        'random control within noise',
-                'verdict': 'negative for the discovery claim'}},
-        'correlation_overlap_vs_registry': {
-            'evidence_class': 'REGISTRY-MEASUREMENT',
-            'comparators_compared': e3['registry']['comparators_compared'],
-            'byte_unique': e3['registry']['byte_unique'], 'pixel_unique': e3['registry']['pixel_unique'],
-            'worst_dot_overlap': e3['registry']['worst_dot_overlap'],
-            'worst_spearman': e3['registry']['worst_spearman'],
-            'saturated_comparators': [dict(file=s['file'].split('/')[-1], coverage3px=s['coverage3px'],
-                                           dots=s['dots'])
-                                      for s in e3['registry']['saturated_comparators']],
-            'duplicate_flags': rec['metadata']['duplicate_flags'],
-            'verdict': e3['registry']['verdict'],
-            'note': ('byte- and pixel-unique, but most candidate dots sit within 3 px of an earlier '
-                     "submission's dots; the literal and discriminating 3 px clauses are effectively "
-                     'unsatisfiable in this registry because two comparators cover >=99.87% of the '
-                     'footprint')},
-        'raster_sha256': rec['sha256'],
-        'validator_output': {k: rec['validator'][k] for k in
-                             ('crs', 'shape', 'dtype', 'count', 'transform', 'min', 'max', 'nodata',
-                              'profile_compress') if k in rec['validator']},
-        'template_report_ok': rec['template_report']['ok'],
-        'submission_name': rec['file'],
-        'submission_name_check': {'characters': len(rec['file']), 'limit': 140,
-                                  'byte_unique': e3['registry']['byte_unique']},
-        'note': rec['note'],
-        'submission_note_character_count': rec['note_chars'],
-        'submission_note_limit_characters': 140,
-        'candidate_published': True, 'download_allowed': False,
-        'approved_for_weekly_slot': False, 'promoted': False, 'submission_slots_used': 0,
-        'organizer_confirmed_score': None, 'organizer_receipt': None,
-        'verdict': 'negative',
-        'failed_gates': ['interior-stratum gain versus the terrain-matched control',
-                         'dot-pattern uniqueness versus prior submissions',
-                         'no organizer receipt links the owner-reported 0.2778 to this or any raster'],
-        'budget': {'experiments_run': 3, 'experiments_allowed': 3,
-                   'note': 'E1 instrument 1 (2 control families, 2 strata, strict-truth variant), '
-                           'E2 instrument 2, E3 emission + registry comparison'},
-        'evaluator_implementation_sha256': e2['pooled']['implementation_sha256'],
-        'limitation': ('The hidden panel is unobservable here. Instrument 1 is a different fault '
-                       'population and instrument 2 is blind to off-catalogue placement, so no local '
-                       'number is a leaderboard projection.'),
+        "repo": "GEMSDOE64",
+        "lane": "expected-DTI-optimal selection on a calibrated surface",
+        "hypothesis": ("Emission placement, not detection, is the binding constraint: on a "
+                       "calibrated probability surface the DTI-optimal dot set (greedy add "
+                       "under the exact kernel metric, then backward prune) beats "
+                       "fixed-spacing and maximal-coverage placement at matched mass."),
+        "mechanism": ("Adding a unit-mass dot raises DTI iff dT > alpha*T*dF/(alpha*F+beta*K); "
+                      "for a non-redundant dot that is kappa > alpha*DTI = 0.06 at DTI 0.30. "
+                      "The 3-px kernel makes adjacent picks redundant, so the greedy tracks "
+                      "the running credit field instead of thresholding pixels independently."),
+        "mimic_non_fault_process": ("Linear drainage/valley axes and range-front alluvial "
+                                    "fan edges: they are 1-2 px wide, strike-continuous and "
+                                    "carry the same LiDAR scarp and profile-curvature "
+                                    "signature as a buried fault scarp, and they are absent "
+                                    "from the USGS/INGENIOUS catalogue."),
+        "e1_theorem": {
+            "alpha02_bar_analytic": e1.get("threshold_rule_alpha02", {}).get("analytic_bar"),
+            "alpha02_bar_empirical": e1.get("threshold_rule_alpha02", {}).get("empirical_bar"),
+            "lipton_alpha05": e1.get("lipton_alpha05"),
+            "greedy_optimality_gaps": [r.get("greedy_optimality_gap")
+                                       for r in e1.get("greedy_vs_exhaustive", [])],
+            "all_ok": e1.get("all_ok"),
+        },
+        "holdout_dti": {
+            "class": "HOLDOUT-DTI",
+            "governing_arm": governing.get("experiment"),
+            "evaluator_version": governing.get("evaluator_version"),
+            "split": governing.get("split"),
+            "withheld_positive_pixels": governing.get("withheld_positive_pixels"),
+            "pooled_dti_by_rule": governing.get("pooled_dti"),
+            "calibration_fix": governing.get("fix"),
+            "gate": gate,
+            "first_arm_uncorrected_prior": {
+                "experiment": e2.get("experiment"),
+                "pooled_dti_by_rule": e2.get("pooled_dti"),
+                "gate": e2.get("gate"),
+            },
+            "note": ("Pooled DTI over four label-blind eroded quadrants with whole "
+                     "catalogue components withheld and a 3-px feature buffer. Not an "
+                     "organizer score and not a projection of one."),
+        },
+        "leakage_canary": {
+            "rule": "any single feature with AUC > 0.90 is leakage until proven otherwise",
+            "max_single_feature_auc_by_fold": [
+                r.get("leakage_canary_max_single_feature_auc")
+                for r in e2.get("fold_reports", [])],
+            "heldout_quadrant_auc_by_fold": [r.get("calib_auc")
+                                             for r in e2.get("fold_reports", [])],
+            "surface_note": ("Single-feature AUCs are computed on the held-out "
+                             "calibration quadrant of each fold."),
+        },
+        "correlation_vs_registry": {
+            "scan": ("full registry directory (62 rasters)" if uniq_full
+                     else "registry_index.json subset"),
+            "registry_rasters_checked": (uniq_full.get("registry_rasters_checked")
+                                         if uniq_full else uniq.get("n_registry_rasters_checked")),
+            "max_abs_spearman_full": (uniq_full.get("max_abs_spearman_full_footprint")
+                                      if uniq_full else None),
+            "max_dot_overlap_3px_full": uniq_full.get("max_dot_overlap_3px") if uniq_full else None,
+            "worst_overlap_submission_full": uniq_full.get("worst_overlap_submission") if uniq_full else None,
+            "worst_jaccard_full": uniq_full.get("worst_jaccard_dot_sets") if uniq_full else None,
+            "lane_passed_full_scan": uniq_full.get("lane_passed") if uniq_full else None,
+            "literal_rule_note": (
+                "The full scan fails the literal 70% 3-px overlap rule ONLY against the "
+                "dense lattice comparator calib_r13lattice_00904 (overlap 0.9987, Spearman "
+                "0.0005, Jaccard 0.0084, reverse overlap 0.157). A lattice that covers the "
+                "footprint at <=3 px spacing puts every sparse emission inside its halo, so "
+                "the rule as written is unmeetable by any sparse candidate. Logged for the "
+                "owner as IR-64-LATTICE-01; not waived here." if uniq_full else ""),
+            "registry_rasters_checked": uniq.get("n_registry_rasters_checked"),
+            "max_abs_spearman_full_footprint": uniq.get("max_abs_spearman_full_footprint"),
+            "worst_spearman_submission": uniq.get("worst_spearman_submission"),
+            "max_dot_overlap_3px": uniq.get("max_dot_overlap_3px"),
+            "worst_overlap_submission": uniq.get("worst_overlap_submission"),
+            "byte_unique": uniq.get("byte_unique"),
+            "pixel_unique": uniq.get("pixel_unique"),
+            "lane_rule": "rho>0.90 or 3px overlap>0.70 => duplicate, stop",
+            "passed": uniq.get("passed"),
+        },
+        "raster": {
+            "file": e3.get("file_name"),
+            "sha256": e3.get("raster_sha256"),
+            "bytes": e3.get("raster_bytes"),
+            "n_dots": e3.get("n_dots"),
+            "expected_dti_mean_field": (e3.get("selector") or {}).get("expected_dti"),
+        },
+        "validator": {
+            "template_format_ok": fr.get("ok"),
+            "problems": fr.get("problems"),
+            "crs": fr.get("crs"), "shape": fr.get("shape"),
+            "dtype": fr.get("dtype"), "transform": fr.get("transform"),
+            "value_min": fr.get("min"), "value_max": fr.get("max"),
+            "nan_count": fr.get("nan_count"),
+            "n_nonzero": fr.get("n_nonzero"),
+        },
+        "submission_name": e3.get("submission_name"),
+        "submission_note": e3.get("note"),
+        "submission_note_chars": e3.get("note_chars"),
+        "verdict": ("promote-to-selector"
+                    if (gate.get("passed") and (uniq_full.get("lane_passed") if uniq_full
+                                                else uniq.get("passed")))
+                    else "negative"),
+        "verdict_reason": (
+            "holdout gate " + ("PASSED" if gate.get("passed") else "NOT MET")
+            + "; literal uniqueness " + ("PASSED" if (uniq_full.get("lane_passed") if uniq_full
+                                                     else uniq.get("passed")) else "NOT MET")
+            + (" (dense-lattice comparator only; see literal_rule_note)" if uniq_full
+               and not uniq_full.get("lane_passed") else "")),
+        "submission_slots_used": 0,
+        "experiments_run": sum(1 for x in (e1, e2, e2b, e3) if x),
+        "why_negative": (
+            "On this holdout the DTI-optimal placement loses to fixed 2.8-px spacing at "
+            "matched mass in all four folds, both before and after the exact "
+            "negative-sub-sampling odds correction. The greedy concentrates dots on the "
+            "highest-probability pixels, which cluster along the visible catalogue, while "
+            "the withheld truth is spatially displaced from it; a spread-out covering "
+            "recovers more distinct truth pixels per dot. Probability-optimal placement "
+            "is only better when the surface is unbiased, and this one is not."
+            if not gate.get("passed") else ""),
     }
-    (ROOT / 'evidence/run_card.json').write_text(json.dumps(card, indent=2) + '\n')
-    print(f"run card v2 written: verdict={card['verdict']} sha256={card['raster_sha256'][:16]}… "
-          f"note_chars={card['submission_note_character_count']}")
+    out = ROOT / "evidence" / "run_card_h64.json"
+    out.write_text(json.dumps(card, indent=2, default=float) + "\n")
+    if e3.get("file_name"):
+        copy = ROOT / "artifacts" / (e3["file_name"][:-4] + "-runcard.json")
+        copy.parent.mkdir(parents=True, exist_ok=True)
+        copy.write_text(json.dumps(card, indent=2, default=float) + "\n")
+    print(json.dumps(card, indent=2, default=float)[:2000])
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

@@ -15,5 +15,7 @@
   "repository": "buffedlizard55-lab/17GEMSDOE",
   "candidate_created": false,
   "stop_before_placement": true,
-  "overlap_radius_pixels": 3.0
+  "overlap_radius_pixels": 3.0,
+  "superseded_by": "evidence/uniqueness_certificate.json",
+  "superseded_note": "This file records the earlier stop (one saturating witness). The 2026-10-11 lane run measured the criterion against 63 priors with matched random controls and found five saturating priors; the literal gate still fails and is published as failed, with the diagnostic verdict reported separately."
 }

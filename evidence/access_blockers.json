@@ -1,0 +1,25 @@
+{
+  "schema": "gems64-access-blockers-v1",
+  "observed_utc": "2026-10-11",
+  "method": "curl -s -o /dev/null -w '%{http_code}' --max-time 8 <url> from the agent sandbox; 000 means no connection (DNS or network refused)",
+  "reachable": [
+    {"url": "https://github.com", "code": 200},
+    {"url": "https://api.github.com", "code": 200},
+    {"url": "https://pypi.org", "code": 200}
+  ],
+  "blocked": [
+    {"url": "https://prd-tnm.s3.amazonaws.com", "code": "000", "would_provide": "USGS 3DEP 1 m DEM tile objects (the lane's native-resolution input)"},
+    {"url": "https://index.nationalmap.gov", "code": "000", "would_provide": "3DEP elevation index / tile query"},
+    {"url": "https://portal.opentopography.org", "code": "000", "would_provide": "OpenTopography-hosted lidar DEMs"},
+    {"url": "https://www.sciencebase.gov", "code": "000", "would_provide": "USGS GeoDAWN ScienceBase records and grid archives"},
+    {"url": "https://data.source.coop", "code": "000", "would_provide": "cloud-hosted copies of 3DEP/lidar mosaics"},
+    {"url": "https://raw.githubusercontent.com", "code": "000", "would_provide": "raw file bytes for GitHub-hosted mirrors"}
+  ],
+  "workarounds_used": [
+    "GitHub contents API (api.github.com) with the raw media type for small files",
+    "git clone --depth 1 --filter=blob:none --sparse plus codeload.github.com tarballs for repository-scale data",
+    "hash-pinned owner mirrors of the competition rasters instead of organizer downloads"
+  ],
+  "consequence": "The lane's 1 m processing path is implemented and unit-tested but cannot be executed here; the shipped candidate uses the finest reachable lidar-derived grid. This is a sandbox limitation, not a property of the data.",
+  "not_verified": "No claim is made that these hosts are globally unavailable, only that they were unreachable from this sandbox on the stated date with an 8 s timeout."
+}

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hypotheses · GEMSDOE64</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body><header class="site"><div class="wrap"><nav><a href="index.html">Overview &amp; download</a><a href="executive-summary.html">Submit</a>
+<a href="answer.html">Why 0.2778 won</a><a href="hypotheses.html">Hypotheses</a>
+<a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
+<main class="wrap">
+<section class="hero"><p class="kicker">Candidates</p>
+<h1>Five hypotheses, ranked; three were runnable here</h1></section>
+<section>
+<h2>H1 — Strike-coherence veto on lidar scarp channels <span class="pill ok">implemented &amp; measured</span></h2>
+<p><strong>Layers:</strong> the 1 m 3DEP lidar-derived scarp layer (or the 1 m DEM itself), aggregated
+per 100 m cell as scarp fraction, SNR-weighted amplitude, structure-tensor orientation coherence and
+dominant strike. <strong>Signature:</strong> a bidirectional strike-line neighbour test on per-cell
+scarp evidence (misses become isolated blobs; real fault scarps stay line-like).
+<strong>Why it can catch catalogue-missing faults:</strong> the catalogue is a Quaternary-scope
+compilation; older bedrock faults have degraded or buried expressions that survive in lidar
+micro-topography but not in the 100 m stack. <strong>Novelty:</strong> the sibling repositories use
+per-cell max-aggregated lidar channels and ridge/valley masks; no indexed prior applies a
+strike-consistency veto with an explicit expected-credit emission rule. <strong>Cost:</strong> done
+in this run; the native 1 m path is blocked by egress (see irregularities).</p>
+</section>
+<section>
+<h2>H2 — Expected-DTI greedy selection with per-dot marginal credit <span class="pill warn">implemented, arm refuted on the instrument</span></h2>
+<p><strong>Layers:</strong> any probability surface plus a per-cell truth-probability field.
+<strong>Signature:</strong> remove every dot whose single removal raises the plug-in expected DTI,
+using the exact shared kernel; the plug-in DTI is <code>T/(0.2(T+FP)+0.8K)</code> with
+<code>T=Σ π·credit</code>. <strong>Why it should help:</strong> the measured loss mode is redundant
+flank-shadow mass; the exact test targets it case by case rather than by a global spacing constant.
+<strong>Result:</strong> on the cross-fitted instrument this arm removed almost all dots and scored
+0 on the surrogate truth — because the calibrated π under a heavily imbalanced surrogate labels the
+scarps as low-probability. That is a negative result and it is kept.</p>
+</section>
+<section>
+<h2>H3 — Cross-sensor corroboration veto <span class="pill ok">implemented &amp; measured</span></h2>
+<p><strong>Layers:</strong> lidar scarp channels + detrended elevation curvature + radiometric
+texture. <strong>Signature:</strong> a cell must be supported by at least two independent evidence
+families (streaming second-best of ten normalised channels). <strong>Why:</strong> cultural and
+erosional false positives rarely appear in several independent measurements at once.
+<strong>Novelty:</strong> the indexed priors combine channels additively; a veto-style fusion is not
+indexed. <strong>Cost:</strong> low, folded into H1.</p>
+</section>
+<section>
+<h2>H4 — Curvature-polarity asymmetry (footwall/hanging-wall) mapping <span class="pill warn">not runnable here</span></h2>
+<p><strong>Layers:</strong> 1 m DEM (needed), or 10 m DEM as a degraded fallback.
+<strong>Signature:</strong> sign-consistent cross-fault curvature over hundreds of metres, with the
+fault dip direction inferred from the asymmetry. <strong>Why it could add faults:</strong> blind or
+buried faults express themselves as a systematic tilt of the hanging wall rather than a discrete
+scarp. <strong>Data needed:</strong> the competition's <code>1m_DEM_links.csv</code> tile list and the
+USGS 3DEP 1 m lidar tiles — free and official, but the hosts are outside this sandbox's egress
+(checked 2026-10-11, see irregularities). <strong>Cost:</strong> high; requires an unrestricted runner.</p>
+</section>
+<section>
+<h2>H5 — Slip/length ratio screening against the Qfaults attribute table <span class="pill warn">data available, not yet tested</span></h2>
+<p><strong>Layers:</strong> Qfaults attribute table (5.8 MB, mirrored in the sibling repositories) plus
+a candidate surface. <strong>Signature:</strong> faults whose mapped length and slip rate imply
+continuations the compilation truncates. <strong>Why:</strong> compilation truncation and
+segmentation are documented mechanisms for “missing” faults. <strong>Novelty:</strong> the siblings
+evaluated gap-closure geometrically and refuted it on the live metric (T-v2: −0.0028); an
+attribute-conditioned version with the expected-DTI acceptance test has not been scored.
+<strong>Cost:</strong> medium.</p>
+</section>
+</main>
+<footer class="wrap"><p class="verdict">NOT CLEARED FOR SUBMISSION — audit artifact only — audit artefact: accepted by the portal's format rules, not cleared by the repository's promotion policy. See the front page for the two verdicts.</p>
+<p>GEMSDOE64 — lane: native-resolution lidar scarp channels.
+No number here is a leaderboard score unless it is labelled ORGANIZER-CONFIRMED, and none is.
+Negative results are deliverables.</p>
+<p><a href="data/run_card.json">run card</a> · <a href="data/registry_index.json">registry index</a>
+· <a href="https://github.com/buffedlizard55-lab/GEMSDOE64">repository</a></p></footer></body></html>
