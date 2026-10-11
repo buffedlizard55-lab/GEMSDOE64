@@ -346,6 +346,20 @@ every dot is decided by numpy's tie order rather than by geology. A verified opt
 an uninformative surface yields an arbitrary dot set that looks excellent against truth sampled from
 itself. One arm failed (`surface usability`); the other three passed.
 
+**Why the no-private-fork rule mattered, corroborated by a sibling lane on the same day.** Commit
+`06e6991` ("Fix metric_terms `TP_w` (shifted_max over p*k)") records that lane 64's *own*
+certified-credit accumulator in `scripts/build_scarp_stage2.py` "maximised the triangular kernel
+alone when building `TP_w`, so a truth cell with no dot on it was credited 0 instead of the kernel
+weight of its nearest dot". The shared `src/gems64/metric.py` was not touched — the defect lived
+entirely in a private reimplementation, and the fix was cross-checked against
+`gems57.metric.dti_bruteforce`. This lane hit the *same family* of defect (its bug #1: `commit`
+assigned `best[]` instead of taking a max, so a farther cell overwrote credit a nearer cell had
+earned) but caught it before shipping, because it consumes the shared `gems64.metric` and verifies
+its vectorised `TP_w` against the shared brute-force oracle to 7.1e-15 (`VERIFIED` check C1) rather
+than re-deriving the kernel. Both lanes independently rediscovering the same trap in a
+coverage-credit accumulator is the strongest available argument for the protocol's "fix shared tools
+once in the template and report; never keep a private fork".
+
 **Its most transferable finding independently corroborates §1.** Inverting `T = D·(α·S + β·K)`
 through the verified closed form over the registry's one controlled pair (`h27-4-r1-solo-d2-8` at
 `0.2708` with 2,545 dots inside 2 px of the published catalogue, versus `h33-2-b2` at `0.2778` with
