@@ -141,3 +141,28 @@ bash scripts/download_competition_data.sh
   "verdict": "promote"
 }
 ```
+
+## Supplementary evidence set (run 64b, merged unmodified)
+
+A parallel session produced an independent, catalogue-independent lidar-scarp evidence set for the
+same lane. It does **not** change the published card, the promoted candidate, or the site's single
+published artifact; it is merged as supplementary evidence, and its artifact sits in `submissions/`
+beside the others as an audit file with its own measured negative verdict.
+
+* receipts — `evidence/e1_sgmc_off.json` (`PROXY-INSTRUMENT (sgmc_off)`),
+  `evidence/e2_catalogue_hide.json` (`HOLDOUT-DTI (catalogue_hide)`),
+  `evidence/e3_emission.json` (`REGISTRY-MEASUREMENT`, 62 comparators);
+* code — `src/gems64/lane.py`, `src/gems64/instrument.py`, `src/gems64/registry_policy.py`,
+  `src/gems64/ridge.py`, `scripts/run_lane.py`, `scripts/assemble_inputs.py`;
+* write-up — [`docs/research/lane64-ampsnr-findings.md`](docs/research/lane64-ampsnr-findings.md);
+* frozen gates — [`PREREGISTRATION.md`](PREREGISTRATION.md);
+* audit artifact — `submissions/gems64-lane-ampsnr-37654-20261011.tif` (sha256 `534eea95…`).
+
+Decision-relevant result of that set: on `PROXY-INSTRUMENT (sgmc_off)` the `amp_snr` field beats the
+owner-reported champion pooled (+0.04150, SE 0.01716) but **loses the interior stratum decisively**
+(champion 0.08767 vs candidate 0.01433, paired −0.07333, SE 0.01060), does not clear its
+terrain-matched control, is tied with the controls on `HOLDOUT-DTI (catalogue_hide)`, and its dot
+pattern is 88.8 % within 3 px of `gems32-bayesopt-dilation-scarp-d28-*` — the same
+interior-versus-range-front lesson this repository records elsewhere, from a second construction.
+No weekly slot was used by either set.
+
