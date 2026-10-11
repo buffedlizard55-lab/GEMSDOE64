@@ -1,0 +1,37 @@
+{
+  "checks": {
+    "single_band": true,
+    "float32": true,
+    "crs_epsg32611": true,
+    "shape_3730x3292": true,
+    "transform_matches": true,
+    "no_nan_anywhere": true,
+    "no_inf_anywhere": true,
+    "range_0_1": true,
+    "no_nodata_tag": true,
+    "zeros_outside_footprint": true,
+    "finite_inside_footprint": true,
+    "support_equals_dots": true,
+    "zero_dots_on_mapped_catalogue": true
+  },
+  "meta": {
+    "crs": "EPSG:32611",
+    "shape": [
+      3730,
+      3292
+    ],
+    "dtype": "float32",
+    "count": 1,
+    "nodata": null,
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ]
+  },
+  "sha256": "1551f1b545a08fdb8ac49059c83ca2b1843f026c3f3fdbbe92195c7d668ef1a7",
+  "filename": "gems64-scarpcover-60000-98d317b7-zeros.tif"
+}

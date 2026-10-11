@@ -83,6 +83,27 @@ def check() -> dict:
         if rasters:
             problems.append("negative site contains TIFF/ZIP files")
 
+    # Alternative artifacts are only publishable when their own card entry is promoted,
+    # their declared path stays inside the deployed site, and their bytes match the pin.
+    for alt in card.get("alternative_artifacts") or []:
+        if alt.get("verdict") != "promote" or alt.get("download_allowed") is not True:
+            problems.append(f"alternative artifact {alt.get('run_id')} is not promoted")
+            continue
+        for url_key, sha_key in (("download_url_tif", "raster_sha256"),
+                                 ("download_url_zip", "zip_sha256")):
+            rel = alt.get(url_key)
+            if not rel:
+                problems.append(f"alternative artifact {alt.get('run_id')} missing {url_key}")
+                continue
+            allowed_downloads.add(rel)
+            f_path = (DOCS / rel).resolve()
+            if not f_path.is_relative_to(DOCS.resolve()):
+                problems.append(f"alternative download escapes the site: {rel}")
+            elif not f_path.exists():
+                problems.append(f"missing alternative download file {f_path}")
+            elif sha256_file(f_path) != alt.get(sha_key):
+                problems.append(f"sha256 mismatch on alternative artifact {f_path}")
+
     pages = {}
     approved_tiff_links = 0
     for path in DOCS.glob("*.html"):

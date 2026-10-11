@@ -168,5 +168,81 @@
     "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
     "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
     "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
-  }
+  },
+  "alternative_artifacts": [
+    {
+      "run_id": "gems64-scarpcover-60000-98d317b7",
+      "label": "Independent second lane re-derivation: population-matched coverage selector (cross-check of session arena/6a4ab0cf-gemsdoe64)",
+      "submission_name": "GEMSDOE64-NATIVE-LIDAR-SCARP-COVER",
+      "file": "submissions/gems64-scarpcover-60000-98d317b7-zeros.tif",
+      "download_url_tif": "downloads/gems64-scarpcover-60000-98d317b7-zeros.tif",
+      "download_url_zip": "downloads/gems64-scarpcover-60000-98d317b7-zeros.zip",
+      "raster_sha256": "1551f1b545a08fdb8ac49059c83ca2b1843f026c3f3fdbbe92195c7d668ef1a7",
+      "zip_sha256": "4a648828a4cd11fe03d1094095ac7089b1223a614aac37c9a2d6d6a92c1f5ada",
+      "artifact_bytes": 822200,
+      "zip_bytes": 183909,
+      "dots": 60000,
+      "note": "Native 100 m lidar scarp channels, blocked-CV field, kernel-greedy coverage; dots off the mapped catalogue; unique vs 62 prior rasters",
+      "note_characters": 134,
+      "submission_slots_used": 0,
+      "organizer_confirmed_score": null,
+      "verdict": "promote",
+      "download_allowed": true,
+      "gate": {
+        "instrument": "population-matched blocked hide-and-recover vs USGS SGMC-minus-300 m-collar surrogate",
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems64-dti-exact-v1",
+        "withheld_positive_pixels": 61664,
+        "pooled_dti": 0.3408,
+        "area_matched_random_dti": 0.1016,
+        "delta_vs_random": 0.2217,
+        "se": 0.0549,
+        "ci95": [
+          0.1836,
+          0.2586
+        ],
+        "beats_two_se": true,
+        "n_blocks": 6
+      },
+      "proxy_comparison": {
+        "statement": "Same-mass block-bootstrap on two local proxy surfaces; not a competition score.",
+        "vs_mapped_catalogue": {
+          "dti": 0.0,
+          "delta_vs_random": -0.0593,
+          "ci95": [
+            -0.0706,
+            -0.0389
+          ]
+        },
+        "vs_off_catalogue_sgmc": {
+          "dti": 0.3409,
+          "delta_vs_random": 0.1952,
+          "ci95": [
+            0.1162,
+            0.2675
+          ]
+        },
+        "primary_artifact_same_instrument": {
+          "dti": 0.1008,
+          "delta_vs_random": 0.0309,
+          "ci95": [
+            0.0102,
+            0.0516
+          ]
+        },
+        "h33_2_b2_same_instrument": {
+          "dti": 0.094,
+          "delta_vs_random": 0.0221
+        }
+      },
+      "evidence": [
+        "evidence/lane64_run_card.json",
+        "evidence/lane64_uniqueness.json",
+        "evidence/lane64_surrogate_curve.json",
+        "evidence/lane64_validator.json",
+        "evidence/artifact_comparison.json",
+        "docs/research/findings-lane64-scarpcover.md"
+      ]
+    }
+  ]
 }

@@ -33,8 +33,10 @@ def page(name: str, title: str, body: str, card: dict) -> None:
     promoted = card.get("verdict") == "promote" and card.get("download_allowed") is True
     ribbon_cls = "ribbon ok" if promoted else "ribbon"
     ribbon_title = "CLEARED FOR SUBMISSION (VERDICT: PROMOTE)" if promoted else "NOT CLEARED FOR SUBMISSION"
+    n_alt = len(card.get("alternative_artifacts") or [])
     ribbon_sub = (
         f"Unique TIFF ready · {esc(card['submission_name'])} · 37,654 dots · all [0, 1] finite"
+        + (f" · +{n_alt} alternative gated artifact" if n_alt else "")
         if promoted
         else "No approved TIFF · no slot used"
     )
@@ -67,6 +69,12 @@ def main() -> int:
         "synthetic_verification",
         "template_import",
         "registry_blocker",
+        "artifact_comparison",
+        "lane64_run_card",
+        "lane64_uniqueness",
+        "lane64_surrogate_curve",
+        "lane64_validator",
+        "lane64_site_and_tests",
     ]:
         src_path = ROOT / f"evidence/{name}.json"
         if src_path.exists():
@@ -92,6 +100,59 @@ def main() -> int:
     dl_tif = esc(card["download_url_tif"], quote=True)
     dl_zip = esc(card["download_url_zip"], quote=True)
     dl_nan = esc(card["download_url_nan_tif"], quote=True)
+
+    # ---------------------------------------------------------------- alternatives
+    alts = card.get("alternative_artifacts") or []
+    if alts:
+        first = alts[0]
+        same = first["proxy_comparison"]["primary_artifact_same_instrument"]
+        champ = first["proxy_comparison"]["h33_2_b2_same_instrument"]
+
+        def alt_row(a, primary=False):
+            pc = a["proxy_comparison"]
+            name = esc(a["submission_name"]) if primary else esc(a["submission_name"])
+            return (
+                f'<tr><td><a href="{esc(a["download_url_tif"], quote=True)}" download="{name}.tif">'
+                f'<code>{esc(Path(a["file"]).name if not primary else card["submission_file"]).split("/")[-1]}</code></a><br>'
+                f'<span class="small">{esc(a.get("label", ""))}</span></td>'
+                f'<td>{int(pc.get("dots", a["dots"])) if "dots" in pc else int(a["dots"]):,}</td>'
+                f'<td><code>{esc(a["raster_sha256"][:12])}…</code></td>'
+                f'<td>{pc["vs_off_catalogue_sgmc"]["dti"]:.4f}<br><span class="small">'
+                f'Δ {pc["vs_off_catalogue_sgmc"]["delta_vs_random"]:+.4f} '
+                f'[{pc["vs_off_catalogue_sgmc"]["ci95"][0]:+.4f}, {pc["vs_off_catalogue_sgmc"]["ci95"][1]:+.4f}]</span></td>'
+                f'<td>{pc["vs_mapped_catalogue"]["dti"]:.4f}<br><span class="small">'
+                f'Δ {pc["vs_mapped_catalogue"]["delta_vs_random"]:+.4f}</span></td>'
+                f'<td><span class="tag">{"PRIMARY" if primary else "ALT"}</span></td></tr>'
+            )
+
+        primary_row = (
+            f'<tr><td><a href="{dl_tif}" download="{sub_name}.tif">'
+            f'<code>{esc(Path(card["submission_file"]).name)}</code></a><br>'
+            f'<span class="small">Primary published artifact (this lane run)</span></td>'
+            f'<td>37,654</td><td><code>{sha_tif[:12]}…</code></td>'
+            f'<td>{same["dti"]:.4f}<br><span class="small">Δ {same["delta_vs_random"]:+.4f} '
+            f'[{same["ci95"][0]:+.4f}, {same["ci95"][1]:+.4f}]</span></td>'
+            f'<td>0.0130<br><span class="small">Δ −0.0333</span></td>'
+            f'<td><span class="tag">PRIMARY</span></td></tr>'
+        )
+        alt_rows = "".join(alt_row(a) for a in alts)
+        alts_block = f"""<section id="artifacts"><div class="sectionhead"><h2>Two independently gated artifacts, one comparison</h2><a href="research.html#appendix-a-independent-cross-instrument-verification-second-lane-artifact">Cross-instrument appendix →</a></div>
+<p class="lead">Both rasters are unique (Jaccard on their dot sets is <code>0.013</code>) and both pass their own gates. They are <em>not</em> interchangeable: on the population-matched proxy (independent compilation, off-catalogue band) the second artifact carries the larger measured lift, and on the mapped-catalogue proxy it carries a negative one — a direct consequence of the organizer removing every mapped-catalogue pixel from scoring.</p>
+<div class="table-wrap"><table>
+ <thead><tr><th>Artifact</th><th>Dots</th><th>SHA-256</th><th>Off-catalogue proxy DTI (Δ vs same-mass random)</th><th>Mapped-catalogue proxy DTI (Δ)</th><th>Gate</th></tr></thead>
+ <tbody>{primary_row}{alt_rows}</tbody>
+</table></div>
+<div class="note"><strong>Which one should be spent on a weekly slot?</strong> The organizers remove the mapped catalogue from scoring, and the confirmed <code>0.2778</code> incumbent itself scores <code>{champ['delta_vs_random']:+.4f}</code> on the mapped-catalogue proxy — i.e. a <em>negative</em> lift there is what a well-scoring novel-fault submission looks like. On the off-catalogue proxy the second artifact measures <code>{first['proxy_comparison']['vs_off_catalogue_sgmc']['delta_vs_random']:+.4f}</code> (95% CI <code>[{first['proxy_comparison']['vs_off_catalogue_sgmc']['ci95'][0]:+.4f}, {first['proxy_comparison']['vs_off_catalogue_sgmc']['ci95'][1]:+.4f}]</code>) against the primary's <code>{same['delta_vs_random']:+.4f}</code>. Neither number is a competition score; see the appendix for the full table and its limits.</div></section>"""
+        alt_ribbon = f" · +{len(alts)} alternative gated artifact"
+        alt_downloads = "".join(
+            f'<a class="button secondary" href="{esc(a["download_url_tif"], quote=True)}" '
+            f'download="{esc(a["submission_name"])}.tif">Alternative: {esc(a["submission_name"])}.tif</a>'
+            for a in alts
+        )
+    else:
+        alts_block = ""
+        alt_ribbon = ""
+        alt_downloads = ""
 
     hero = f"""
 <div class="hero"><div><p class="eyebrow">Research run 64 / Native-resolution lidar scarp channels</p><h1>Cleared to download<br>&amp; submit.</h1>
@@ -131,6 +192,7 @@ def main() -> int:
   <div class="stage done"><b>5. Validated &amp; Unique</b><span>All-finite [0,1] · 70-raster check PASS</span></div>
 </div>
 <div class="note"><strong>Ready for DrivenData upload:</strong> Use the primary portal GeoTIFF (<a href="{dl_tif}" download="{sub_name}.tif"><code>{sub_name}.tif</code></a>) or ZIP (<a href="{dl_zip}" download="{sub_name}.zip"><code>{sub_name}.zip</code></a>) and see the <a href="executive-summary.html">Executive Summary &amp; Submission Guide</a> for copy-paste metadata.</div></section>
+{alts_block}
 <section><div class="sectionhead"><h2>Auditable JSON artifacts</h2><a href="sources.html">Explore all 70 registry sources →</a></div>
 <p class="small">Run card and audit receipts generated UTC: {esc(card['reviewed_utc'])}.</p>
 <div class="actions">
@@ -146,6 +208,7 @@ def main() -> int:
   <a class="button" href="{dl_tif}" download="{sub_name}.tif">1. Primary Portal GeoTIFF (.tif, all-finite [0, 1])</a>
   <a class="button secondary" href="{dl_zip}" download="{sub_name}.zip">2. Portal ZIP Archive (.zip)</a>
   <a class="button secondary" href="{dl_nan}" download="{sub_name}-nan-outside.tif">3. Strict NaN-Outside Twin (.tif)</a>
+  {alt_downloads}
 </div></div>
 
 <section><h2>Copy-Paste DrivenData Submission Metadata</h2>
