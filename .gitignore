@@ -1,6 +1,7 @@
 # Competition data, caches, and local-only model outputs are not committed.
 /data/*
 !/data/README.md
+!/data/bridge/
 
 # Local Python/test/build artifacts.
 .venv/
@@ -12,3 +13,8 @@ __pycache__/
 build/
 dist/
 work/
+
+# Lane-64 experiment scratch (large rasters, surfaces, logs)
+evidence/*.npz
+evidence/*.npy
+evidence/e2_run.log

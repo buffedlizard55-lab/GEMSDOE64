@@ -133,6 +133,12 @@ result, and the site shows both.
 * No number in this repository is a leaderboard score. The public leaderboard is
   referenced only as rows with a verified read date.
 
+## Site map
+
+Front page (download + two verdicts) · [executive summary](docs/executive-summary.html) ·
+[why 0.2778](docs/answer.html) · [hypotheses](docs/hypotheses.html) · [sources](docs/sources.html) ·
+[irregularities](docs/irregularities.html) · [previous lane report (H64)](docs/research.html).
+
 ## Reproduction
 
 ```bash
@@ -150,6 +156,26 @@ python -m venv .venv && .venv/bin/pip install -r requirements-lock.txt
 
 Large inputs live outside Git (`/data/*` is ignored, and the 419 MB stack stays in
 `/tmp`): the restore recipe is in [`docs/research/reproduce.md`](docs/research/reproduce.md).
+
+## Previous round in this repository (H64, merged PR #7)
+
+The expected-DTI selector lane ran first and is preserved here rather than overwritten. Its verdict
+was **negative**, zero slots used, and it deliberately did not publish its raster
+(`artifacts/gems64-h64-dtiopt-greedy-prune-calibrated-...-zeros.tif`, 52,665 dots) even though every
+format check passed. Its measured findings, kept because they agree with this lane's:
+
+* greedy probability-optimal placement **lost** to fixed 2.8 px spacing on its own instrument
+  (pooled HOLDOUT-DTI 0.0707 vs 0.1333; after an exact odds correction, 0.0636 vs 0.1139); the
+  greedy concentrates dots along the visible catalogue while the withheld truth is displaced from it;
+* its full 62-raster registry scan found max |Spearman| 0.0403, worst Jaccard 0.025, byte- and
+  pixel-unique, **and** a 3-pixel overlap of 0.9987 against `calib_r13lattice_00904` — the same
+  saturating-prior effect this round's certificate later quantified with matched random controls;
+* its report and submission walkthrough: [`docs/research/lane64.html`](docs/research/lane64.html),
+  [`evidence/run_card_h64.json`](evidence/run_card_h64.json).
+
+This round extends that result in one direction only: on the *same* instrument, 3.4 px spacing with a
+2 px catalogue-flank prune beats 2.8 px spacing (+0.00526, > 2 paired SE), so the family's spacing
+constant was under-tuned in the coarser direction as well as the direction H64 already measured.
 
 ## Next session
 
