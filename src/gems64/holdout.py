@@ -314,3 +314,49 @@ def buffered_component_draw(grid, seed=20, hide_frac=0.20, buffer_px=3,
                            'split_version': 'buffered-whole-components-loqo-v2',
                            'evaluation_region_label_blind': True}) for i in range(4)]
     return folds, quad
+
+
+def blocked_component_folds(catalogue, footprint, *, buffer_px=30):
+    """Strict four-fold whole-component holdout for calibration/training.
+
+    The legacy build_holdout above splits traces into <=12 px chunks and does
+    not buffer their visible context. It is NOT the current lane instrument.
+    This shared entry point withholds only whole 8-connected components wholly
+    within a quadrant. Cross-boundary components are excluded from training in
+    every fold they touch. No catalogue-derived feature may see hidden pixels.
+    A raster component is a conservative proxy for a physical fault segment;
+    touching geological faults can be merged, an explicit resolution limit.
+    """
+    cat, fp = np.asarray(catalogue, bool), np.asarray(footprint, bool)
+    if cat.ndim != 2 or cat.shape != fp.shape or not fp.any():
+        raise ValueError('matching nonempty 2D footprint/catalogue required')
+    if not isinstance(buffer_px, (int, np.integer)) or buffer_px < 3:
+        raise ValueError('buffer must be an integer at least the kernel radius (3 px)')
+    if np.any(cat & ~fp):
+        raise ValueError('catalogue outside footprint')
+    lab, count = ndi.label(cat, structure=np.ones((3, 3), bool))
+    if not count:
+        raise ValueError('empty catalogue')
+    q = quadrant_ids(fp)
+    output = []
+    for i, name in enumerate(FOLD_NAMES):
+        region = q == i
+        if not region.any():
+            raise ValueError('empty spatial quadrant')
+        touched = np.unique(lab[region & cat])
+        elsewhere = np.unique(lab[~region & cat])
+        hidden_ids = np.setdiff1d(touched, elsewhere)
+        hidden_ids = hidden_ids[hidden_ids != 0]
+        truth = np.isin(lab, hidden_ids) & fp
+        if not truth.any():
+            raise ValueError(f'{name}: no wholly contained fault components')
+        # Euclidean buffer, no toroidal np.roll or clipped partial component.
+        context_buffer = ndi.distance_transform_edt(~truth) <= buffer_px
+        visible = cat & ~context_buffer
+        train = fp & (ndi.distance_transform_edt(~region) > buffer_px)
+        train &= ~np.isin(lab, touched[touched != 0])
+        train &= ~context_buffer
+        output.append(dict(name=name, region=region, truth=truth, visible=visible,
+                           masked_known=visible, train=train, hidden_ids=hidden_ids,
+                           buffer_px=int(buffer_px), segment_definition='whole 8-connected component'))
+    return output

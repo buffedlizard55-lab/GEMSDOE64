@@ -112,14 +112,8 @@ def find_priors(roots, exclude=None, *, min_bytes=1000):
                 continue
             if exclude is not None and path.resolve() == Path(exclude).resolve():
                 continue
-            # ... and never a *copy* of the candidate either.  scripts/refresh_feed.py stages every
-            # built raster into docs/downloads/ so the site can serve it, and docs/downloads/ is one
-            # of the roots this function scans; without the basename check the file is compared
-            # against itself and reports "identical-to-a-prior, novel = 0", which is the one verdict
-            # that would stop a legitimate submission.  Caught by scripts/check_site.py on the H55
-            # build, not by reasoning about it.  IR-52-026; regression test in tests/test_gates.py.
-            if exclude is not None and path.name == Path(exclude).name:
-                continue
+            # Exclude only the exact candidate path above. A same-named file in
+            # another registry directory is still a prior and must be compared.
             if path.stat().st_size < min_bytes:
                 continue
             if path.resolve() not in seen:

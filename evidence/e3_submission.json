@@ -1,6 +1,6 @@
 {
   "experiment": "E3-submission-build",
-  "file": "docs/downloads/gems64-h64-dtiopt-greedy-prune-calibrated-20261011T212556Z-54be1965c2f8-zeros.tif",
+  "file": "artifacts/gems64-h64-dtiopt-greedy-prune-calibrated-20261011T212556Z-54be1965c2f8-zeros.tif",
   "file_name": "gems64-h64-dtiopt-greedy-prune-calibrated-20261011T212556Z-54be1965c2f8-zeros.tif",
   "submission_name": "h64-dtiopt-greedy-prune-calibrated",
   "note": "DTI-optimal greedy+prune on isotonic-calibrated multiphysics surface",
@@ -149,5 +149,7 @@
     "shared_verdict": "negative",
     "passed": true
   },
-  "elapsed_s": 197.0
+  "elapsed_s": 197.0,
+  "download_offered": false,
+  "artifact_status": "generated and locally validated; NOT offered for download because the lane gate failed (brief: \"offer the download only if the gate is met, else log the negative result\")"
 }

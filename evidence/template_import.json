@@ -1,0 +1,57 @@
+{
+  "repository": "buffedlizard55-lab/60GEMSDOE",
+  "commit": "6444fa6552335190f0bc89661acf725ed73e7fcb",
+  "files": [
+    {
+      "path": "src/gems57/evaluate_holdout.py",
+      "sha256": "ad86640b46f3c5fc6b1aceec4c4bfc82d03e35008b37ab2a8ad6076e6810ff3a",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/evaluate_holdout.py"
+    },
+    {
+      "path": "src/gems57/submission_writer.py",
+      "sha256": "41220185ac2823fe5358603d38f2a915ea3e5f1ab1f94f0b237295b38b4a2565",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/submission_writer.py"
+    },
+    {
+      "path": "src/gems57/metric.py",
+      "sha256": "4afe10cbaa229948520c75194b1ebc32676e72544f05582f0725092b097b4d7f",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/metric.py"
+    },
+    {
+      "path": "src/gems57/gates.py",
+      "sha256": "7c57f70dbba58bb1112df4193a3de56516af0f981970d4b943b394f99b573dae",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/gates.py"
+    },
+    {
+      "path": "src/gems57/holdout.py",
+      "sha256": "7a0a84176986190b527aa9c6a84216c2dab4b599f25b1143db5f420e85020ab1",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/holdout.py"
+    },
+    {
+      "path": "src/gems57/grid.py",
+      "sha256": "b96df7ec0f33658a61b0baa5db85fcd19be2cd8b1873f99699bd26bddae8cd8d",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/grid.py"
+    },
+    {
+      "path": "src/gems57/validate.py",
+      "sha256": "e7849554b47f6a2b66aeb2f7cfd5db06267412f049f52a73f1c41f934a2c34dd",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/validate.py"
+    },
+    {
+      "path": "src/gems57/spatial.py",
+      "sha256": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/spatial.py"
+    },
+    {
+      "path": "src/gems57/network.py",
+      "sha256": "d5e53d7df182e69bb22a6e39ac16f43d3f5b730e503d86538d5f8f7360020943",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/network.py"
+    },
+    {
+      "path": "src/gems57/uniqueness.py",
+      "sha256": "1c5094b814277ae801ccea6a47cf744429cffcdc10f9cc79f229d5fc44a8df95",
+      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57/uniqueness.py"
+    }
+  ],
+  "policy": "Single shared template implementation in src/gems57. All local corrections are documented; no private metric or writer."
+}

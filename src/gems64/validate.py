@@ -34,9 +34,10 @@ def validate(path: Path, footprint: np.ndarray | None = None,
     with rasterio.open(path) as ds:
         a = ds.read(1)
         meta = dict(crs=str(ds.crs), shape=[ds.height, ds.width], dtype=ds.dtypes[0],
-                    count=ds.count, nodata=None if ds.nodata is None else float(ds.nodata),
+                    count=ds.count, nodata=None if ds.nodata is None else (float(ds.nodata) if np.isfinite(ds.nodata) else str(ds.nodata)),
                     transform=list(tuple(ds.transform)[:6]),
                     profile_compress=ds.profile.get("compress"))
+        valid_mask = ds.dataset_mask() > 0
         desc = ds.descriptions
         h, w = ds.height, ds.width
 
@@ -57,6 +58,8 @@ def validate(path: Path, footprint: np.ndarray | None = None,
     in_range = bool(has_finite and lo >= 0.0 and hi <= 1.0)
     checks = {
         "single_band": meta["count"] == 1,
+        "nonempty_positive_support": bool(np.any(a > 0)),
+        "nodata_tag_absent": meta["nodata"] is None,
         "dtype_float32": meta["dtype"] == "float32",
         f"dimensions_{HEIGHT}x{WIDTH}": (h, w) == (HEIGHT, WIDTH),
         f"crs_epsg_{EPSG}": meta["crs"] == f"EPSG:{EPSG}",
@@ -70,6 +73,7 @@ def validate(path: Path, footprint: np.ndarray | None = None,
     }
     if footprint is not None:
         n_fp = int(footprint.sum())
+        checks["no_masked_pixels_inside_footprint"] = bool(valid_mask[footprint].all())
         checks["in_footprint_all_finite"] = bool(n_fp > 0 and finite[footprint].all())
         checks["in_footprint_range_0_1"] = bool(
             n_fp > 0 and np.isfinite(a[footprint]).all()

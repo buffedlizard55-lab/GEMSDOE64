@@ -1,4 +1,4 @@
-"""Assemble the single JSON run card required by the parallel-run protocol.
+"""Assemble the lane-H64 run card required by the parallel-run protocol.
 
     python scripts/make_run_card.py
 
@@ -152,10 +152,10 @@ def main() -> int:
             "is only better when the surface is unbiased, and this one is not."
             if not gate.get("passed") else ""),
     }
-    out = ROOT / "evidence" / "run_card.json"
+    out = ROOT / "evidence" / "run_card_h64.json"
     out.write_text(json.dumps(card, indent=2, default=float) + "\n")
     if e3.get("file_name"):
-        copy = ROOT / "docs" / "downloads" / (e3["file_name"][:-4] + "-runcard.json")
+        copy = ROOT / "artifacts" / (e3["file_name"][:-4] + "-runcard.json")
         copy.parent.mkdir(parents=True, exist_ok=True)
         copy.write_text(json.dumps(card, indent=2, default=float) + "\n")
     print(json.dumps(card, indent=2, default=float)[:2000])

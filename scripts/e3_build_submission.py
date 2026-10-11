@@ -152,7 +152,7 @@ def main() -> int:
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     sha = hashlib.sha256(np.ascontiguousarray(pred).tobytes()).hexdigest()[:12]
     fname = f"gems64-{name}-{stamp}-{sha}-zeros.tif"
-    out = ROOT / "docs" / "downloads" / fname
+    out = ROOT / "artifacts" / fname
     note = "DTI-optimal greedy+prune on isotonic-calibrated multiphysics surface"
     rcpt = None
     from gems64 import submission_writer

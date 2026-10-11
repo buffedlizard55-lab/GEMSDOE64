@@ -1,0 +1,96 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GEMSDOE64 &mdash; DTI-optimal emission</title><style>
+:root{--ink:#101820;--mut:#5b6b7b;--line:#dde5ec;--ok:#0b7a3b;--bad:#b3261e;--acc:#0b5cad}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#f7fafc}
+header{background:#0d2137;color:#fff;padding:26px 20px}header h1{margin:0 0 6px;font-size:24px}header p{margin:0;color:#c9d8e6}
+.wrap{max-width:1000px;margin:0 auto;padding:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0}
+.dl{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;font-size:18px}
+.btn.sec{background:#fff;color:var(--acc);border:2px solid var(--acc)}
+.verdict{font-weight:800;font-size:18px;padding:8px 14px;border-radius:8px}
+.v-ok{background:#e6f6ec;color:var(--ok);border:1px solid #a9dfbe}
+.v-no{background:#fdecea;color:var(--bad);border:1px solid #f2b8b5}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left}
+th{background:#f1f5f9}td.n{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+pre{background:#0d2137;color:#e8f0f7;padding:12px;border-radius:8px;overflow-x:auto}
+.mut{color:var(--mut);font-size:13px}ol li,ul li{margin:4px 0}
+h2{font-size:19px;margin:4px 0 10px}h3{font-size:16px;margin:14px 0 6px}
+nav a{color:#c9d8e6;text-decoration:none;margin-right:14px;font-size:14px}
+.tag{display:inline-block;background:#eef3f8;border:1px solid var(--line);border-radius:20px;padding:2px 10px;font-size:12px;margin:2px 4px 2px 0}
+</style></head><body>
+<header><div class="wrap" style="padding:0">
+<h1>GEMSDOE64 &mdash; expected-DTI-optimal emission for the DOE GEMS Prize</h1>
+<p>Lane: replace heuristic dot spacing with a decision rule on a calibrated
+probability surface. DrivenData competition 306.</p>
+<nav><a href="index.html">Site home</a><a href="lane64.html">Lane H64</a><a href="lane64-how-to-submit.html">How to submit</a>
+<a href="lane64-method.html">Method &amp; evidence</a><a href="https://github.com/buffedlizard55-lab/GEMSDOE64">Repository</a></nav>
+</div></header><div class="wrap">
+
+<div class="card">
+  <h2>Submission file &mdash; this session: <span class="verdict v-no">NOT CLEARED FOR SUBMISSION</span></h2>
+  <p><b>No download is offered.</b> The brief says to offer the download only if the gate is
+  met; the gate failed, so the artifact is kept in the repository at
+  <code>artifacts/gems64-h64-dtiopt-greedy-prune-calibrated-20261011T212556Z-54be1965c2f8-zeros.tif</code> as evidence and is not published on the site.</p>
+  <p style="margin-top:14px"><span class="verdict v-no">OK TO DOWNLOAD FOR RESEARCH &amp;mdash; DO NOT SUBMIT (holdout gate not met)</span></p>
+  <p><b>Submission name:</b> <code>h64-dtiopt-greedy-prune-calibrated</code><br>
+     <b>Note (&le;140 chars):</b> <code>DTI-optimal greedy+prune on isotonic-calibrated multiphysics surface</code> (68 chars)<br>
+     <b>raster sha256:</b> <code>a8c5fa733053c6f98bbe859ec95c429c5632f2b4ff30a955846de71196990a82</code><br>
+     <b>dots:</b> 52,665 &middot; <b>bytes:</b> 166,787</p>
+  <p class="mut">Format checks below are local. Local validity is not organizer
+  acceptance, and promotion to a weekly slot is a separate selector decision.</p>
+</div>
+
+<div class="card"><h2>Holdout gate (E2b, calibration prior corrected)</h2><p><b>This is the governing measurement.</b> The exact negative-sub-sampling odds correction <code>w = r&middot;p/(r&middot;p+1-p)</code>, r = 0.029375, is applied to the out-of-fold isotonic surface before selection.</p>
+<p>Evaluator <code>gems64-pooled-buffered-loqo-v1</code>, split <code>buffered-whole-components-loqo-v2 (shared template)</code>,
+<b>11,321</b> withheld positive pixels (whole catalogue
+components hidden inside four label-blind eroded quadrants, 3-px feature buffer).</p>
+<table><tr><th>emission rule on the same calibrated surface</th><th>pooled HOLDOUT-DTI</th></tr><tr><td>nms_2p8</td><td class='n'>0.1139</td></tr><tr><td>random</td><td class='n'>0.0820</td></tr><tr><td>mclp</td><td class='n'>0.0655</td></tr><tr><td>distance_only</td><td class='n'>0.0649</td></tr><tr><td>dtiopt</td><td class='n'>0.0636</td></tr></table>
+<p>Paired block bootstrap vs the best baseline (<code>nms_2p8</code>):
+&Delta; = <b>-0.05039</b>, SE = 0.00303, z = -16.64,
+95% CI [-0.05616, -0.04349]. Gate is &Delta; &gt; 2&times;SE:
+<b>FAIL</b>.</p>
+<p class="mut">HOLDOUT-DTI is a withheld-catalogue measurement on this machine.
+It is not an organizer score and not a projection of one.</p>
+</div>
+<div class="card"><h2>Holdout gate (E2, first arm &amp;mdash; uncorrected prior)</h2><p class='mut'>Superseded by E2b. Kept because it is the measurement that exposed the calibration flaw: the mean-field DTI (0.33) was four times the realised 0.05.</p>
+<p>Evaluator <code>gems64-pooled-buffered-loqo-v1</code>, split <code>buffered-whole-components-loqo-v2 (shared template)</code>,
+<b>11,321</b> withheld positive pixels (whole catalogue
+components hidden inside four label-blind eroded quadrants, 3-px feature buffer).</p>
+<table><tr><th>emission rule on the same calibrated surface</th><th>pooled HOLDOUT-DTI</th></tr><tr><td>nms_2p8</td><td class='n'>0.1139</td></tr><tr><td>random</td><td class='n'>0.0820</td></tr><tr><td>mclp</td><td class='n'>0.0655</td></tr><tr><td>distance_only</td><td class='n'>0.0649</td></tr><tr><td>dtiopt</td><td class='n'>0.0636</td></tr></table>
+<p>Paired block bootstrap vs the best baseline (<code>nms_2p8</code>):
+&Delta; = <b>-0.05039</b>, SE = 0.00303, z = -16.64,
+95% CI [-0.05616, -0.04349]. Gate is &Delta; &gt; 2&times;SE:
+<b>FAIL</b>.</p>
+<p class="mut">HOLDOUT-DTI is a withheld-catalogue measurement on this machine.
+It is not an organizer score and not a projection of one.</p>
+</div>
+
+<div class="card"><h2>Decision rule, verified before use (E1)</h2>
+<p>On synthetic rasters the marginal dot is accepted exactly when its calibrated
+kernel credit clears <code>alpha &times; DTI</code>. At alpha = 0.2 and DTI = 0.30 the
+bar is <b>0.06</b>; the measured switch is
+0.0610 (analytic 0.0600), monotone in kappa.</p>
+<p>Lipton/Elkan/Narayanaswamy generalisation: at alpha = 0.5 the optimal
+independent threshold is 0.0835
+vs the predicted F1*/2 = 0.0904
+(rel. error 8.2%); at alpha = 0.2,
+0.0560 vs
+0.0533.</p>
+<p>Greedy add + backward prune reached the <b>exhaustive optimum on all
+3 synthetic rasters</b> (gap 0.0 over
+8,192 enumerated subsets each),
+and the mean-field expected DTI agrees with a
+64-draw plausible-truth Monte Carlo
+within 1.6 SE.</p>
+</div>
+<div class="card"><h2>Format validation</h2><table><tr><th>format check</th><th>value</th></tr><tr><td>bytes</td><td>166787</td></tr><tr><td>sha256</td><td>a8c5fa733053c6f98bbe859ec95c429c5632f2b4ff30a955846de71196990a82</td></tr><tr><td>bands</td><td>1</td></tr><tr><td>dtype</td><td>float32</td></tr><tr><td>crs</td><td>EPSG:32611</td></tr><tr><td>width</td><td>3292</td></tr><tr><td>height</td><td>3730</td></tr><tr><td>bounds</td><td>[243350.0, 4135550.0, 572550.0, 4508550.0]</td></tr><tr><td>ref_bounds</td><td>[243350.0, 4135550.0, 572550.0, 4508550.0]</td></tr><tr><td>transform</td><td>[100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0]</td></tr><tr><td>nodata</td><td>None</td></tr><tr><td>blocksize</td><td>[256, 256]</td></tr><tr><td>fixture_grid</td><td>False</td></tr><tr><td>has_validity_mask</td><td>False</td></tr><tr><td>nan_pixels</td><td>0</td></tr><tr><td>infinity_pixels</td><td>0</td></tr><tr><td>n_nan</td><td>0</td></tr><tr><td>min</td><td>0.0</td></tr><tr><td>max</td><td>1.0</td></tr><tr><td>mean</td><td>0.004288974218070507</td></tr><tr><td>n_nonzero</td><td>52665</td></tr><tr><td>mass</td><td>52665.0</td></tr><tr><td>mass_outside_footprint</td><td>0</td></tr><tr><td>problems</td><td>[]</td></tr><tr><td>ok</td><td>True</td></tr><tr><td>validation_class</td><td>local on-disk template/range check; not organizer upload acceptance</td></tr></table></div>
+<div class="card"><h2>Uniqueness (parallel-run protocol)</h2><table><tr><th>uniqueness check vs 19 registry rasters</th><th>value</th></tr><tr><td>n_registry_rasters_checked</td><td class='n'>19</td></tr><tr><td>n_registry_rasters_expected</td><td class='n'>19</td></tr><tr><td>missing_or_invalid</td><td class='n'>0</td></tr><tr><td>max_abs_spearman_full_footprint</td><td class='n'>0.03439128089980186</td></tr><tr><td>worst_spearman_submission</td><td class='n'>h57r2-shipped8-all-flank0-20261009T180433Z (this repo, session-2 ship, HOLDOUT-DTI 0.3270)</td></tr><tr><td>max_dot_overlap_3px</td><td class='n'>0.3826640083546948</td></tr><tr><td>worst_overlap_submission</td><td class='n'>h19-4-multiline-corroborated</td></tr><tr><td>worst_jaccard_dot_sets</td><td class='n'>0.02174368473862371</td></tr><tr><td>byte_unique</td><td class='n'>True</td></tr><tr><td>pixel_unique</td><td class='n'>True</td></tr><tr><td>lane_rule</td><td class='n'>fail if rho&gt;0.90 or 3px dot overlap&gt;0.70</td></tr><tr><td>shared_verdict</td><td class='n'>negative</td></tr><tr><td>passed</td><td class='n'>True</td></tr></table>
+<p class="mut">Lane rule: stop if rank correlation with any registry raster
+exceeds 0.90 or more than 70% of dots fall within 3 px of one registry raster's dots.</p></div>
+<div class="card"><h2>Official sources for manual review</h2><ul><li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">Competition home</a></li><li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Problem / submission format (page 967)</a></li><li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/">About / resources (page 968)</a></li><li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">Data download (login required)</a></li><li><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Leaderboard</a></li><li><a href="https://github.com/drivendataorg/gems-prize-reference-solution">Official reference solution</a></li><li><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">USGS GeoDAWN airborne magnetics/radiometrics (NW Great Basin)</a></li><li><a href="https://gbcge.org/current-projects/ingenious/">INGENIOUS project (Great Basin Center for Geothermal Energy)</a></li><li><a href="https://epsg.io/32611">EPSG:32611 (WGS 84 / UTM zone 11N)</a></li><li><a href="https://en.wikipedia.org/wiki/Tversky_index">Tversky index</a></li><li><a href="https://gdr.openei.org/submissions/1391">Geothermal Data Repository submission 1391</a></li></ul></div>
+<p class="mut">Built by <code>scripts/build_site.py</code> from
+<code>evidence/*.json</code>. No number on this page is typed by hand.</p>
+</div></body></html>

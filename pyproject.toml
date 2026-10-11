@@ -3,13 +3,18 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gems64"
+name = "gemsdoe64"
 version = "0.1.0"
-description = "Expected-DTI-optimal emission for the DOE GEMS Prize (DrivenData 306)"
-requires-python = ">=3.10"
+description = "Fail-closed expected-DTI selection research"
+requires-python = ">=3.11"
+dependencies = ["numpy>=2.0", "scipy>=1.14", "scikit-learn>=1.5", "rasterio>=1.4"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
+pythonpath = ["src"]
 testpaths = ["tests"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "Markdown>=3.7"]
