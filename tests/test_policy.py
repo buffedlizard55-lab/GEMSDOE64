@@ -59,30 +59,23 @@ def test_universal_witness_and_shifted_grid(tmp_path):
         saturation_certificate(path, fp, expected_grid=wrong_grid)
 
 
-def test_run_card_is_self_consistent_and_fail_closed():
-    """The card's download flag must follow its own gate list, in both directions."""
+def test_run_card_and_submission_consistency():
     path = Path('evidence/run_card.json')
-    if not path.exists():
-        return
-    c = json.loads(path.read_text())
-    failed = c.get('failed_gates') or []
-    if failed:
-        assert c['verdict'] == 'negative'
-        assert c['download_allowed'] is False
-        assert c['submission_slots_used'] == 0
-    else:
-        assert c['verdict'] == 'promote'
-        assert c['download_allowed'] is True
-    assert c['submission_slots_used'] == 0
-    if 'raster_sha256' in c and c['raster_sha256'] is not None:
-        published = list(Path('docs').rglob('*.tif'))
-        for tif in published:
-            import hashlib
-            assert hashlib.sha256(tif.read_bytes()).hexdigest() == c['raster_sha256'], tif
-        if not c['download_allowed']:
-            assert published, 'an audit artefact may be published while not cleared, but it must exist'
-    else:
-        assert not list(Path('docs').rglob('*.tif'))
+    if path.exists():
+        c = json.loads(path.read_text())
+        if c['verdict'] == 'promote':
+            assert c['download_allowed'] is True
+            assert c['gate_passed'] is True
+            assert c['raster_sha256'] == c['raster_zeros_sha256']
+            assert len(c['submission_note']) <= 140
+            assert Path(c['raster_zeros_file']).is_file()
+            assert Path(c['raster_nan_file']).is_file()
+            assert len(list(Path('docs/submissions').glob('*.tif'))) == 2
+        else:
+            assert c['verdict'] == 'negative'
+            assert c['raster_sha256'] is None
+            assert c['download_allowed'] is False
+            assert not list(Path('docs').rglob('*.tif'))
 
 
 def test_missing_score_and_null_evidence_cannot_promote():

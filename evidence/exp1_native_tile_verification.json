@@ -1,0 +1,63 @@
+{
+  "experiment": "EXP-64-1",
+  "title": "Native 3 m DEM Scarplet + Slope-Aware + Steger/Frangi 100 m Aggregation Pilot",
+  "elapsed_s": 39.36,
+  "tiles": {
+    "x40y427_3m.tif": {
+      "sha256": "3a14850f2d33bb8b7ae077951c589ad9866f1978e0722691f2ef6ffcffeee718",
+      "native_shape": [
+        3337,
+        3337
+      ],
+      "dx_m": 3.000299670362601,
+      "grid_window": {
+        "r0": 2385,
+        "r1": 2486,
+        "c0": 1566,
+        "c1": 1667,
+        "cells_100m": 10201
+      },
+      "catalogue_fault_cells": 190,
+      "sgmc_fault_cells": 290,
+      "combined_fault_cells": 473,
+      "mean_scarp_pixel_fraction": 0.14260639250278473,
+      "mean_snr_weighted_amplitude": 9.676936149597168,
+      "mean_structure_tensor_coherence": 0.6059174537658691,
+      "mean_steger_frangi_score": 0.2423248291015625,
+      "mean_rel_age_kt_m2": 60.08945083618164,
+      "snr_amp_on_vs_off_fault_ratio": 1.0658572251727962,
+      "steger_frangi_on_vs_off_fault_ratio": 1.0766899605789002,
+      "spearman_with_full_2m_stack": 0.8838348035167007,
+      "spearman_with_full_3m_stack": -0.6730608464007714,
+      "elapsed_s": 19.58
+    },
+    "x42y425_3m.tif": {
+      "sha256": "927c36c88debcaa65e9de9fbd0f3adf02b338614fbaed86e3e321111084735de",
+      "native_shape": [
+        3337,
+        3337
+      ],
+      "dx_m": 3.000299670362601,
+      "grid_window": {
+        "r0": 2585,
+        "r1": 2686,
+        "c0": 1766,
+        "c1": 1867,
+        "cells_100m": 10201
+      },
+      "catalogue_fault_cells": 385,
+      "sgmc_fault_cells": 105,
+      "combined_fault_cells": 490,
+      "mean_scarp_pixel_fraction": 0.14015832543373108,
+      "mean_snr_weighted_amplitude": 4.88512659072876,
+      "mean_structure_tensor_coherence": 0.6668906211853027,
+      "mean_steger_frangi_score": 0.20977962017059326,
+      "mean_rel_age_kt_m2": 55.956966400146484,
+      "snr_amp_on_vs_off_fault_ratio": 1.1496268192304449,
+      "steger_frangi_on_vs_off_fault_ratio": 1.1685004124585394,
+      "spearman_with_full_2m_stack": 0.9091869476686862,
+      "spearman_with_full_3m_stack": -0.5092618233803834,
+      "elapsed_s": 19.73
+    }
+  }
+}
