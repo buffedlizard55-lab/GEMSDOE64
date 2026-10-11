@@ -5,7 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 import html
 import json
-from pathlib import Path
+import shutil
+import markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
