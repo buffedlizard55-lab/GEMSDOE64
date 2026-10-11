@@ -47,6 +47,12 @@
       "source_commit": "5988787",
       "conclusion": "success",
       "url": "https://github.com/buffedlizard55-lab/GEMSDOE64/actions/runs/38171530980"
+    },
+    "parallel_integration": {
+      "merged_upstream_pr": 1,
+      "upstream_commit": "bf878b6",
+      "preserved": "Root research/site artifacts labeled historical; original README archived; current docs site/run card authoritative",
+      "checks": "Preserved synthetic probe rerun; current tests and site guards rerun"
     }
   }
 }

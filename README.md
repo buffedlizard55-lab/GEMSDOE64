@@ -68,6 +68,22 @@ Pages automation refreshes the source inventory on its scheduled deployment;
 scientific evidence retains its own timestamp. No scheduled job submits files,
 trains a new model, or changes a negative run card into a promotion.
 
+## Parallel-session integration
+
+While this PR was running, PR #1 merged another research site into main. Its
+research notes, proposed hypotheses and standard-library synthetic probe are
+preserved under `research/` and the original root-level pages, labeled as
+**historical parallel-session snapshots**. Its original README is saved as
+`research/parallel-session-README.md`. Those notes are not independently verified
+sources for this session's scientific claims. The active site is `docs/` and
+the single current run card is `evidence/run_card.json`; the root entry redirects
+to that site. Both runs are negative and neither supplies a submission TIFF.
+
+The prior next steps called for restoration of shared tools and inputs. This
+session restored the tools and pinned audit inputs, but not the cached feature
+stack or trained OOF artifacts. The measured registry obstruction comes first.
+No outside-lane hypothesis from the parallel register was implemented.
+
 ## Shared template policy
 
 `src/gems57/` is the single shared metric/evaluator/writer implementation imported
