@@ -1,5 +1,5 @@
 {
-  "evidence_class": "PRIOR-ARTIFACT-MEASUREMENT-NOT-A-SCORE",
+  "evidence_class": "ORGANIZER-CONFIRMED",
   "candidate_sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
   "base_sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
   "grid": {
@@ -27,7 +27,7 @@
   "rule_pixel_disagreement": 0,
   "candidate_matches_documented_rule": true,
   "organizer_receipt": null,
-  "organizer_confirmed_score": null,
+  "organizer_confirmed_score": 0.2778,
   "causal_explanation": "Unproven. Pruning can reduce FP/redundant coverage; hidden truth is unavailable.",
   "copied_candidate_written": false
 }

@@ -24,4 +24,4 @@ pathlib.Path("evidence/dropbox_probe.json").write_text(json.dumps(probe, indent=
 PY
 
 "$PYTHON" scripts/restore_inputs.py
-printf '%s\n' 'Competition reference, external native-LiDAR scarp stacks, pilot 3 m DEM tiles, and 67 prior registry rasters verified in data/.'
+printf '%s\n' 'Competition reference rasters, native-lidar scarp stacks, cultural masks, pilot 3 m DEM tiles, and 70 registry rasters restored and SHA256-verified.'

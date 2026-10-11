@@ -1,37 +1,51 @@
 {
   "review_date": "2026-10-11",
-  "branch": "arena/e58adee5-gemsdoe64",
-  "review_status": "THREE_PASSES_COMPLETE_PROMOTED_SUBMISSION_READY",
+  "branch": "arena/4931ba1e-gemsdoe64",
+  "assigned_lane": "Native-resolution lidar scarp channels",
+  "review_status": "THREE_PASSES_COMPLETE_AND_VERIFIED",
   "pass_1": {
-    "title": "Pass 1 — Implement & Verify Assigned Native-Resolution LiDAR Scarp Lane (H64-L1)",
+    "title": "Implementation & Verification of Native-Resolution Lidar Scarp Channels Lane",
     "checks": [
-      "Restored and SHA-256-verified all 17 core/external/pilot rasters and 67 prior registry rasters via scripts/download_competition_data.sh and scripts/prepare_data.py.",
-      "Implemented Sare & Hilley (JOSS 2018, doi:10.21105/joss.01066) Scarplet template matching, AGU 2015 T31A-2838 slope-aware scarp templates, Steger (IEEE TPAMI 1998) sub-pixel curvilinear lines, Frangi et al. (MICCAI 1998) multiscale Hessian line measures (2-20 m), 100 m cell aggregation, cultural-feature masking, and 4-quadrant Leave-One-Quadrant-Out spatial CV in src/gems64/lidar_scarp.py.",
-      "Executed EXP-64-1 (3 m DEM pilot tiles x40y427_3m.tif and x42y425_3m.tif), EXP-64-2 (cultural-feature mask audit + 12 single-feature leakage canaries, max AUC 0.5949 <= 0.90), and EXP-64-3 (4-quadrant spatial CV and whole-segment holdout evaluation via gems57-pooled-hide-v3-se).",
-      "Generated primary portal-safe GeoTIFF submissions/h64-lidar-scarp-cv-20261011-zeros.tif (SHA-256 919dfc5f9e429a8bae0784244191a23cc0d50fa265b8f5085a01f9644ab9e97c) and companion NaN-outside-footprint GeoTIFF submissions/h64-lidar-scarp-cv-20261011-nan.tif (SHA-256 62e330bb8df511c33ac0a3c977f8067b7d72d84324fe2c5d7d901b88c253869b)."
+      "Downloaded and verified competition inputs (sample_submission.tif, existing_faults.tif, training_features.tif), external lidar/cultural rasters (lidar_scarp_features_u8.tif, h52_scarp3m_100m.tif, topo_10m_derived_100m_u8.tif, derived_sgmc_faults_100m_u8.tif, tiger_road_distance_m.tif, blm_closed_claim_distance_m.tif), native 3 m pilot DEM tiles (x40y427_3m.tif, x42y425_3m.tif), and 70 registry comparator rasters.",
+      "Implemented src/gems64/lidar_scarp.py: Sare & Hilley (JOSS 2018) Scarplet template matching + AGU 2015 T31A-2838 slope-aware alluvial-fan detrending + Steger (1998) sub-pixel ridge lines + Frangi (1998) 2-20 m multiscale Hessian vesselness + 100 m cell aggregation + cultural mask.",
+      "Executed E1 (4-fold label-blind spatial CV, 8 km buffer, 48,441 withheld positives), E2 (4-fold buffered whole-component spatial CV, 300 m collar, 9,274 withheld positives), and E3 (native 3 m pilot tile AUC = 0.6617, off-catalogue SGMC fault recovery, and full-footprint emission).",
+      "Generated unique submission gems64-h64-lidar-scarp-cv-20261011T220000Z.tif (sha256: 346d57f0eca0ff36f7648f8b5a3ba8764054ab9e42e1677873791b83f460f45e) and strict NaN-outside twin gems64-h64-lidar-scarp-cv-20261011T220000Z-nan-outside.tif (sha256: ead50e13592a2facea8b01b9eceb292693a5b21c76319ab8cd9ae37a0e133f3b)."
     ],
     "result": "PASS"
   },
   "pass_2": {
-    "title": "Pass 2 — Review Code & Outputs, Fix Edge Cases, and Verify Arithmetic & Memory Safety",
-    "checks": [
-      "Fixed 2-D cumulative-sum indexing in aggregate_tile_to_100m (src/gems64/lidar_scarp.py).",
-      "Optimized peak memory in compute_native_scarplet_steger_frangi_tile and scripts/run_lidar_scarp_lane.py so all 3 experiments + 67-raster registry audit execute in 205.81 s well within the 3.8 GiB sandbox RAM limit.",
-      "Synchronized research/run_card.json, docs/data/run_card.json, and evidence/run_card.json; updated scripts/run_preflight.py so it cannot overwrite the promoted run card.",
-      "Corrected non-footprint cell count (12,279,160 - 5,167,373 = 7,111,787) across tests and documentation.",
-      "Set mode 0644 on all generated deliverables in submissions/ and docs/submissions/."
+    "title": "Bug Hunt, Edge-Case Audit, and Physical/Statistical Corrections",
+    "bugs_found_and_fixed": [
+      {
+        "issue": "Steger (1998) applied directly to elevation z_det yielded zero line rate at the step midpoint u=0 because the second derivative of erf(u/s) vanishes at u=0.",
+        "fix": "Applied Steger (1998) and Frangi (1998) Hessian analysis to the scale-space step-gradient surface |grad_sigma z_det|, increasing synthetic scarp line rate from 0.0 to 0.859 and Frangi vesselness to 0.990."
+      },
+      {
+        "issue": "Band 7 (strike) of lidar_scarp_features_u8.tif was stored relative to the image axis (circular mean 96.17 deg) rather than geological strike clockwise from North (12.01 deg).",
+        "fix": "Applied exact 90-degree reference-frame rotation (strike + 90.0) % 180.0, aligning lidar scarp strike with Great Basin NNE fault strike."
+      },
+      {
+        "issue": "Including road distance or mining-claim distance as linear classifier features introduced mapping-access bias and reduced holdout TPw (385.95 -> 364.30).",
+        "fix": "Used the cultural-feature mask strictly to zero out non-tectonic lidar scarp channels and veto false-positive peaks in road/claim/canal corridors."
+      },
+      {
+        "issue": "3.9 GB sandbox RAM limit with zero swap caused OOM when stacking dense full-footprint feature matrices simultaneously.",
+        "fix": "Implemented row-subset feature stacking (stack_subset) and explicit glibc heap trimming (malloc_trim) between pipeline stages."
+      }
     ],
     "result": "PASS"
   },
   "pass_3": {
-    "title": "Pass 3 — Re-check Against Original Request, Validate Submission, Build Site & Run Test Suite",
+    "title": "Final Alignment Check Against Original Prompt & Pre-Merge Gate",
     "checks": [
-      "scripts/validate_submission.py submissions/h64-lidar-scarp-cv-20261011-zeros.tif -> format_pass: true, all_checks_passed: true, min: 0.0, max: 1.0, n_nan: 0, emitted_positive_pixels: 45000, on_catalogue_positive_pixels: 0.",
-      "scripts/build_site.py && scripts/check_site.py -> ok: true, checked_pages: 4, problems: [], approved_tiff_links: 11, production_tiffs: 2.",
-      "pytest -q -> 44 passed in 3.53s.",
-      "All numbers labeled as HOLDOUT-DTI (with evaluator version gems57-pooled-hide-v3-se, withheld_positive_pixels, and 95% block-bootstrap CI) or ORGANIZER-CONFIRMED.",
-      "README.md updated with Core Values ('Maximize P(Win)', 'Own the Outcome'), Parallel-Run Protocol, h33-2-b2 (0.2778) forensic analysis, 5 ranked untried geological hypotheses (H64-U1..H64-U5), holdout tables, and JSON RUN CARD."
+      "Prompt preserved verbatim in README.md.",
+      "Assigned lane (Native-resolution lidar scarp channels) implemented and verified with HOLDOUT-DTI gains on both range-front (+0.0189 E2 / +0.0304 E1) and off-range-front blocks (+0.0155 E2 / +0.0256 E1).",
+      "All 14 single-feature leakage canaries <= 0.90 (max 0.7616).",
+      "Both pre-placement probability surface (Spearman 0.3948 < 0.90) and final placed dots (Spearman 0.0661 < 0.90, discrete detector 3-px overlap 0.6301 < 0.70, vs H33-2-B2 0.2666 < 0.70) verified across all 70 registry rasters.",
+      "PhD-level analysis of H33-2-B2 (0.2778 ORGANIZER-CONFIRMED) and 5 ranked geological hypotheses documented in README.md and docs/research/findings.md.",
+      "GitHub Pages site (docs/) built and verified by scripts/check_site.py (0 broken links, prominent CLEARED FOR SUBMISSION banner, executive summary addressing [0,1] range error, unique submission name, and 116/140 char note).",
+      "All 40 pytest unit and integration tests pass."
     ],
-    "result": "PASS"
+    "result": "PASS — READY FOR PR AND MERGE TO MAIN"
   }
 }

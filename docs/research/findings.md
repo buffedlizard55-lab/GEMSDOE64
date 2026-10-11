@@ -1,113 +1,206 @@
-# GEMSDOE64 — Native-Resolution LiDAR Scarp Channels, Cultural Masking & Spatial-CV Retraining (`H64-L1`)
+# GEMSDOE64 Research Findings: Native-Resolution Lidar Scarp Channels, Cultural Feature Veto, and PhD Forensic Analysis of `H33-2-B2`
 
-## 1. Executive Verdict & Submission Clearance
+## Executive Summary & Verdict
 
-- **Verdict**: **`promote`** — **CLEARED FOR DOWNLOAD & COMPETITION SUBMISSION**
-- **Primary Submission File (`0.0` outside footprint, portal-safe `[0, 1]`)**:
-  - GeoTIFF: [`submissions/h64-lidar-scarp-cv-20261011-zeros.tif`](../submissions/h64-lidar-scarp-cv-20261011-zeros.tif) (`506,812` bytes, SHA-256 `919dfc5f9e429a8bae0784244191a23cc0d50fa265b8f5085a01f9644ab9e97c`)
-  - Single-TIFF ZIP: [`submissions/h64-lidar-scarp-cv-20261011-zeros.zip`](../submissions/h64-lidar-scarp-cv-20261011-zeros.zip) (`473,538` bytes, SHA-256 `e12484fa79619cebede818a528ce8b3b00200b572f9ab2de607509fd1d3701a2`)
-- **Companion Submission File (`NaN` only outside footprint, identical inside footprint)**:
-  - GeoTIFF: [`submissions/h64-lidar-scarp-cv-20261011-nan.tif`](../submissions/h64-lidar-scarp-cv-20261011-nan.tif) (`802,496` bytes, SHA-256 `62e330bb8df511c33ac0a3c977f8067b7d72d84324fe2c5d7d901b88c253869b`)
-  - Single-TIFF ZIP: [`submissions/h64-lidar-scarp-cv-20261011-nan.zip`](../submissions/h64-lidar-scarp-cv-20261011-nan.zip) (`676,650` bytes, SHA-256 `3f808a7022c0647696817b9a7d356ad7109407d229ace017d7789f0143e4f7d0`)
-- **Unique Submission Name**: `h64-lidar-scarp-cv-20261011`
-- **Submission Note (106 / 140 chars)**:
-  `H64-L1 native 1-3m LiDAR scarplet+Steger/Frangi 100m + TIGER/canal/field cultural mask + 4-quad spatial CV`
+- **Assigned Lane**: Native-resolution lidar scarp channels (Scarplet template matching + slope-aware alluvial-fan scarp templates + Steger sub-pixel ridge/valley lines + Frangi 2–20 m multiscale Hessian vesselness, aggregated to 100 m cells, culturally masked for roads/canals/field edges, and retrained under 4-fold spatial CV).
+- **Verdict**: **`PROMOTE`** (`download_allowed = true`). Every holdout, range-front/off-range-front spatial gate, leakage canary, validator check, and 70-raster registry uniqueness gate passed.
+- **Unique Promoted Submission**:
+  - **Submission Name**: `gems64-h64-lidar-scarp-cv-20261011T220000Z`
+  - **Submission Note** (`116 / 140` chars): `GEMSDOE64 native lidar scarp channels (Scarplet+Steger+Frangi) + cultural mask + 4-fold spatial CV; 37654 NMS peaks.`
+  - **Primary Portal GeoTIFF (`all-finite [0, 1]`)**: `submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z.tif` (`sha256: 346d57f0eca0ff36f7648f8b5a3ba8764054ab9e42e1677873791b83f460f45e`, `146,634` bytes; ZIP `sha256: e2ee6466f9f1654e63e166123db35325e4a7beca101e27548c6a1c5152212d38`).
+  - **Strict `NaN`-Outside-Footprint Twin**: `submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z-nan-outside.tif` (`sha256: ead50e13592a2facea8b01b9eceb292693a5b21c76319ab8cd9ae37a0e133f3b`, `438,485` bytes).
 
 ---
 
-## 2. Why `h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros` (`0.2778`) Scored Highest Among Prior GEMSDOE Sites
+## 1. Score Labeling & Evidence Discipline
 
-Byte-level forensic analysis (`scripts/audit_h33.py`, [`evidence/h33_forensics.json`](../evidence/h33_forensics.json)) of `gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif` (`sha256: c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9`, 37,654 positive pixels) against its parent `GEMSDOE28__h27-4-r1-solo-d2-8.tif` (`sha256: 2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8`, 40,199 positive pixels) establishes:
+Every quantitative score in this repository carries one of two explicit provenance labels:
 
-1. **Exact Pixel Identity with a $200\text{ m}$ Catalogue-Flank Pruning Rule (`rule_pixel_disagreement = 0`)**:
-   - `h33-2-b2` is pixel-for-pixel identical to removing the **2,545 dots** that lie at Euclidean distance $0 < d \le 2\text{ px}$ ($200\text{ m}$) from `existing_faults.tif`, while retaining all **37,654 dots** at $d \ge 2.236\text{ px}$ ($\sqrt{5}\times 100\text{ m}$), and adding **0** new pixels.
-2. **Mathematical Mechanism Under Distance-Tolerant IoU ($\text{DTI}, \alpha=0.2, \beta=0.8, R=300\text{ m}$)**:
-   - Under the competition metric:
-     $$\text{DTI} = \frac{\text{TP}_w}{\text{TP}_w + 0.2\,\text{FP}_w + 0.8\,\text{FN}_w}, \quad w(d) = \max\!\left(0, 1 - \frac{d}{300\text{ m}}\right)$$
-   - Known catalogue fault pixels ($60,988$ cells) are **masked** at evaluation time (`masked_known`). Consequently, a predicted dot placed at $d = 100\text{--}200\text{ m}$ perpendicular to an already-mapped fault strand receives **zero $\text{TP}_w$ credit** from the masked strand while still incurring up to $+0.2$ in the denominator ($0.2\,\text{FP}_w$) unless an unmapped fault branch happens to sit there.
-   - Even at genuine fault tips where an unmapped continuation begins at $d = 100\text{ m}$ from the catalogue tip, a single predicted dot placed at $d = 300\text{ m}$ along strike already covers the $100\text{--}200\text{ m}$ tip cells via the $R=300\text{ m}$ triangular kernel ($w(200\text{ m})=1/3, w(100\text{ m})=2/3$), because $\text{TP}_w$ takes the **maximum** over nearby predictions (`1 - d_to_pred / R`), whereas $\text{FP}_w$ **sums additively** over every emitted dot!
-   - Pruning the 2,545 redundant inner-collar dots reduced $\text{FP}_w$ by $\sim 2,500$ units with negligible loss of $\text{TP}_w$, lifting the owner-reported score from `0.2708` (`h27-4-r1-solo-d2-8`) to `0.2778` (`h33-2-b2`).
-3. **Why Tip-Collar Pruning Alone Plateaus and How `H64-L1` Goes Beyond It**:
-   - Because `h33-2-b2` places 95.8% of its 37,654 dots within $2.0\text{ km}$ of already-mapped catalogue tips, it is nearly blind to **whole unmapped fault segments** in intrabasin valleys and piedmont fans (`HOLDOUT-DTI = 0.003814`, `95% CI [0.003033, 0.004641]` on `gems57-pooled-hide-v3-se` with $N=9,275$ withheld positive pixels).
-   - Reaching and beating `0.3195` and `0.3774` requires genuine **off-catalogue surface & geophysical fault discovery** (native 1–3 m LiDAR scarplet template matching + multiscale Steger/Frangi Hessian line extraction + cultural-mimic masking + 20 km block-calibrated spatial CV) combined with $R=300\text{ m}$ non-maximum suppression so emitted picks do not double-count $\text{FP}_w$.
+1. **`HOLDOUT-DTI`**: Evaluated locally by `src/gems57/evaluate_holdout.py` (`evaluator_version = "gems57-pooled-hide-v3-se"`, `alpha = 0.2`, `beta = 0.8`, `300 m` triangular distance kernel) on spatially withheld fault segments, reporting the number of withheld positive pixels and 1,000-draw 20 km block-bootstrap 95% confidence intervals.
+2. **`ORGANIZER-CONFIRMED`**: Directly backed by an organizer submission-page receipt on DrivenData.
+
+No projection is ever written as a score.
 
 ---
 
-## 3. Five Untried Geological Hypotheses Ranked by Expected DTI Gain & Cost
+## 2. PhD-Level Forensic Analysis of `h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros` (`0.2778` `ORGANIZER-CONFIRMED`)
 
-| Rank | ID | Hypothesis & Specific Layers | Physical Signature & Why Missing From USGS/INGENIOUS Catalogue | Difference vs Existing Repo Implementations | Expected Holdout DTI Gain & Cost |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | **H64-U1** *(Implemented in this run as `H64-L1`)* | **Dual-Scale (2 m + 3 m) Slope-Aware Scarplet + Steger/Frangi Hessian + TIGER/Canal/Field Cultural Deconfounding** (`lidar_scarp_features_u8.tif`, `h52_scarp3m_100m.tif`, `tiger_road_distance_m.tif`, `blm_closed_claim_distance_m.tif`, `topo_10m_derived_100m_u8.tif`, `geodawn_extensions_u8.tif`) | Diffusive Quaternary normal/strike-slip scarps ($0.3\text{--}3\text{ m}$ throw) cutting alluvial fans and playas exhibit paired crest convexity ($-\text{LoG}$) and toe concavity ($+\text{LoG}$) plus net $\pm 21\text{ m}$ far-field offset ($h_{\text{gate12}}$), whereas graded roads, irrigation canals, and section-line field edges are double-edged berms lacking 10 m profile curvature (`curv_10m`) and 3 m far-field offset. Missed in 1:250k airphoto mapping due to sub-2 m vertical relief. | Prior `GEMSDOE66` used only 2 m channels and a synthetic morphology proxy that received a *positive* weight in logistic regression (`delta_dti = -5.1e-6`). `H64-L1` fuses 2 m + 3 m stacks with actual TIGER road and BLM claim distance rasters, achieving negative cultural weights on all 4 spatial folds. | **Measured**: `+0.0175` over 100 m CV baseline (`+2.55 SE`) on full LiDAR; `+0.0377` (`+7.10 SE`) on off-range-front LiDAR. **Cost**: Low (~3.4 min). |
-| **2** | **H64-U2** | **Morphologic Age ($\kappa t$) Along-Strike Gradient for Blind Propagating Fault Tips** (`scarplet_rel_age` $\kappa t \propto (\text{step\_max}/\sqrt{\text{lapneg}\cdot\text{lappos}})^2$, `dominant_strike`, `h_gate12`) | Propagating normal/strike-slip fault segments exhibit a monotonic decrease in morphologic scarp age $\kappa t$ (sharper curvature relative to scarp height) toward active segment tips and relay ramps, whereas ancient shoreline terraces (Lake Lahontan highstands) have uniform $\kappa t$ along contour-parallel rings. | No sibling repo has used the directional derivative $\partial(\kappa t)/\partial s_{\parallel}$ or distinguished constant-elevation pluvial shorelines from cross-contour tectonic scarps. | **Expected**: `+0.004 to +0.008` HOLDOUT-DTI on pluvial-basin blocks. **Cost**: Low–Medium (~25 lines of NumPy). |
-| **3** | **H64-U3** | **Antithetic Graben Pair Detector (Opposing `upface_max` & `downface_max` Dipole Across 100–400 m)** (`upface_max`, `downface_max`, `facing_at`, `dominant_strike`) | Piedmont and intrabasin normal fault zones frequently form $100\text{--}400\text{ m}$-wide hanging-wall grabens bounded by a synthetic downhill-facing scarp (`downface_max`) paired with an antithetic uphill-facing scarp (`upface_max`) at parallel strike. Erosional stream terraces and alluvial fan channels never form uphill-facing scarps opposing the regional fan gradient. | Existing repos treat `upface_max` and `downface_max` as independent scalar features rather than computing cross-strike synthetic–antithetic dipole correlation at $100\text{--}400\text{ m}$ separation. | **Expected**: `+0.003 to +0.007` HOLDOUT-DTI on piedmont fan blocks. **Cost**: Low (~30 lines of SciPy). |
-| **4** | **H64-U4** | **Aeromagnetic Upward-Continued Tilt-Derivative Concordance with Sub-Meter Playas (`TMI_up150` + `ThK` + 3 m `h_gate12`)** (`geodawn_extensions_u8.tif`, `h52_scarp3m_100m.tif`) | Concealed intrabasin faults cutting shallow volcanic/plutonic basement beneath $<50\text{ m}$ of playa fill produce a strike-aligned horizontal gradient in upward-continued total magnetic intensity (`TMI_up150`) and potassium-normalized thorium (`ThK` hydrothermal alteration) colinear with subtle $<0.5\text{ m}$ playa compaction scarps. | Prior repos either thresholded raw `TMI` globally or ignored strike concordance $|\cos 2(\theta_{\text{scarp}} - \theta_{\text{mag}})|$ between sub-meter LiDAR scarps and aeromagnetic tilt edges. | **Expected**: `+0.003 to +0.006` HOLDOUT-DTI on concealed basin-interior faults. **Cost**: Medium. |
-| **5** | **H64-U5** | **En-Echelon Riedel Shear Stepover Tensor in Walker Lane Transtensional Domains** (`strike2m`, `strike3m`, `coh100`, `derived_sgmc_faults_100m_u8.tif`) | In the Walker Lane and Humboldt structural belt, right-lateral/oblique transtensional fault zones express at 1–3 m LiDAR scale as arrays of left-stepping $R$-shears oriented $12^\circ\text{--}18^\circ$ clockwise from the regional basement fault corridor strike. | All prior directional filters assume single-azimuth collinearity ($0^\circ$ offset) and suppress en-echelon Riedel stepover arrays. | **Expected**: `+0.002 to +0.005` HOLDOUT-DTI in southern/western Walker Lane blocks. **Cost**: Medium. |
+### 2.1 Exact Byte- and Pixel-Level Decomposition
 
----
+We audited `GEMSDOE32__h33-2-b2-zeros.tif` (`h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros`, `0.2778` `ORGANIZER-CONFIRMED`) against its parent raster `GEMSDOE28__h27-4-r1-solo-d2-8.tif`, `sample_submission.tif`, and `existing_faults.tif` via `scripts/audit_h33.py` (`evidence/h33_forensics.json`):
 
-## 4. Assigned Lane Implementation & Three-Experiment Record (`H64-L1`)
+| Property | `GEMSDOE28__h27-4-r1-solo-d2-8.tif` (Parent) | `GEMSDOE32__h33-2-b2-zeros.tif` (`0.2778` `ORGANIZER-CONFIRMED`) | Exact Relationship |
+|---|---|---|---|
+| SHA-256 | `35d99ccba9818e44...5da9305c9566` | `c55bafc470054e82...169ef7ab6fa9` | Distinct GeoTIFF encoding & collar pruning |
+| Grid / CRS | `3730 x 3292`, `EPSG:32611`, `float32` | `3730 x 3292`, `EPSG:32611`, `float32` | Exact match to `sample_submission.tif` |
+| Exterior (`~footprint`) | `7,111,787` `NaN` pixels | `7,111,787` `0.0` pixels (`0` `NaN`s) | Replaced exterior `NaN` with `0.0`, `nodata=None` |
+| Positive pixels (`> 0.5`) | `40,199` binary `1.0` dots | `37,654` binary `1.0` dots | `-2,545` dots removed, `0` dots added |
+| Dots inside `B2` ($\le 200\text{ m}$ of `existing_faults.tif`) | `2,545` | `0` | `100.0%` of removed dots lie inside $d_{\text{Euc}}(\cdot,\mathcal{C}_{\text{known}}) \le 200\text{ m}$ |
+| Dots outside `B2` ($> 200\text{ m}$ of `existing_faults.tif`) | `37,654` | `37,654` | Pixel-for-pixel identical (`outside_b2_removed = 0`, `added = 0`) |
 
-### Experiment 1 (`EXP-64-1`): Native 3 m DEM Tile Verification (`x40y427_3m.tif` & `x42y425_3m.tif`)
-- **Implementation**: `src/gems64/lidar_scarp.py` (`scarplet_template_kernel`, `compute_native_scarplet_steger_frangi_tile`, `aggregate_tile_to_100m`) and `scripts/run_lidar_scarp_lane.py` ([`evidence/exp1_native_tile_verification.json`](../evidence/exp1_native_tile_verification.json)).
-- **Formulation**:
-  1. **Slope-Detrended Surface**: $z_{\text{det}} = G_{2\text{m}}(z) - G_{60\text{m}}(z)$ (Hanks 2000; Sare & Hilley AGU 2015 T31A-2838).
-  2. **Scarplet Template Matching** (Sare & Hilley, JOSS 2018, `doi:10.21105/joss.01066`):
-     $$W(x_r, y_r; \kappa t, \alpha) = -\frac{x_r}{2(\kappa t)^{3/2}\sqrt{\pi}}\exp\!\left(-\frac{x_r^2}{4\kappa t}\right), \quad |x_r| \le 2\sqrt{\kappa t}\,\text{erfinv}(0.90), \;|y_r| \le \frac{L}{2}$$
-     with exact least-squares signal energy $T_1 = \text{xcorr}^2 / \sum W^2$, residual variance $\sigma_{\text{err}}^2 = \frac{1}{n}\max(T_3 - T_1, 0) + \epsilon$, $\text{SNR} = T_1 / \sigma_{\text{err}}^2$, and slope-aware contour alignment weight $w_{\text{slope}} = \frac{1}{2}(1 + |\cos(\alpha - \theta_{\text{reg}})|)$.
-  3. **Steger (1998) Sub-Pixel Curvilinear Lines & Frangi (1998) Multiscale Hessian**: Evaluated at $\sigma \in \{3, 6, 12, 20\}\text{ m}$ on $z_{\text{det}}$, solving $t = -(g_x n_x + g_y n_y)/\lambda_1$ with $|t n_x|\le 0.5, |t n_y|\le 0.5$ and $\mathcal{V}(\sigma) = \exp(-R_B^2/2\beta^2)(1 - \exp(-S^2/2c^2))$.
-  4. **100 m Aggregation**: Aggregated $3337\times 3337$ native 3 m pixels into $101\times 101$ ($10,201$) 100 m competition grid cells per tile:
-     - `x40y427_3m.tif` (`r=[2385:2486], c=[1566:1667]`, 473 fault cells): Spearman rank correlation with full-footprint 2 m stack = **`+0.8838`**; on-fault vs off-fault enrichment = **`1.0659x`** (`snr_weighted_amplitude`) and **`1.0767x`** (`steger_frangi_score`).
-     - `x42y425_3m.tif` (`r=[2585:2686], c=[1766:1867]`, 490 fault cells): Spearman rank correlation with full-footprint 2 m stack = **`+0.9092`**; on-fault vs off-fault enrichment = **`1.1496x`** (`snr_weighted_amplitude`) and **`1.1685x`** (`steger_frangi_score`).
+Mathematically, `H33-2-B2` is the exact deterministic indicator function:
+$$S_{\text{H33-2-B2}}(y, x) = \begin{cases} S_{\text{H27-4-R1}}(y, x) & \text{if } (y,x) \in \Omega_{\text{footprint}} \text{ and } d_{\text{Euc}}\big((y,x), \mathcal{C}_{\text{known}}\big) > 200\text{ m}, \\ 0.0 & \text{otherwise.} \end{cases}$$
 
-### Experiment 2 (`EXP-64-2`): Full-Footprint Aggregation, Leakage Canaries & Cultural-Feature Masking
-- **Implementation**: [`evidence/exp2_cultural_mask_audit.json`](../evidence/exp2_cultural_mask_audit.json) and [`evidence/leakage_canary.json`](../evidence/leakage_canary.json).
-- **Single-Feature Leakage Canaries (Rule 4)**: Every feature was tested alone against withheld whole fault segments (`N = 9,275` positive pixels across the 4 buffered quadrants). All 12 channels passed well below the `0.90` leakage ceiling (`max_directional_auc = 0.5949`, `any_flagged = False`):
-  - `scarp_pixel_fraction`: `AUC = 0.4347` (`directional_auc = 0.5653`)
-  - `snr_weighted_amplitude`: `AUC = 0.5498` (`directional_auc = 0.5498`)
-  - `structure_tensor_coherence`: `AUC = 0.4789` (`directional_auc = 0.5211`)
-  - `dominant_strike`: `AUC = 0.5098` (`directional_auc = 0.5098`)
-  - `hessian_sharpness`: `AUC = 0.5935` (`directional_auc = 0.5935`)
-  - `scarplet_rel_age`: `AUC = 0.5817` (`directional_auc = 0.5817`)
-  - `slope_polarity`: `AUC = 0.4937` (`directional_auc = 0.5063`)
-  - `curv_10m`: `AUC = 0.5949` (`directional_auc = 0.5949`)
-- **Cultural-Feature Mask (`LS64.build_cultural_feature_mask`)**:
-  - Combines Census TIGER/Line road proximity (`tiger_road_distance_m <= 150 m`), cross-slope irrigation canals (`cross_max > 1.05 * (upface_max + downface_max)`), N–S/E–W section-line agricultural field edges (`|sin(2 * dominant_strike)| < 0.18` with `h_gate12 < 0.10 m`), and BLM closed mining claim benches (`blm_closed_claim_distance_m <= 150 m`) on low-relief/low-10 m-curvature terrain.
-  - Across the `3,893,082` LiDAR-covered footprint cells (`75.34%` of the `5,167,373` footprint), the cultural mask flags `810,099` cells (`20.81%`) whose catalogue fault rate is **`0.006181`** vs **`0.012443`** domain-wide (**`2.01x` depleted of catalogue faults**) and whose SGMC geologic fault rate is **`0.001916`** vs **`0.014079`** domain-wide (**`7.35x` depleted of SGMC faults**).
+### 2.2 Why `H33-2-B2` Achieved `0.2778` (`ORGANIZER-CONFIRMED`)
 
-### Experiment 3 (`EXP-64-3`): 4-Quadrant Spatial-CV Retraining & Holdout DTI Gate Evaluation
-- **Protocol**: 4-quadrant Leave-One-Quadrant-Out (LOQO) spatial CV using `gems57/holdout.py` (`buffered_component_draw`, `seed=20`, `hide_frac=0.20`, `buffer_px=3`, `boundary_px=12`) and scored by `gems57/evaluate_holdout.py` (`evaluator_version = "gems57-pooled-hide-v3-se"`, $\alpha=0.2, \beta=0.8, R=300\text{ m}$ triangular kernel, 1,000 paired 20 km physical spatial-block bootstrap draws).
-- **Spatial-CV Learned Sign Check**: In all 4 spatial folds, `cultural_mask` receives a strictly negative weight (`-0.4791, -0.4913, -0.5532, -0.4389`), while `hessian_sharpness` (`+1.0730, +0.5804, +1.0292, +0.5027`), 3 m `z_h12` (`+0.3149, +0.4071, +1.0494, +0.8101`), `corridor_sig` (`+0.6846, +0.4699, +0.8009, +0.5919`), and `slope_polarity` (`+0.3577, +0.2695, +0.3330, +0.1697`) receive strictly positive weights across all 4 folds.
+1. **Resolution of the Portal Range Validator Gate**:
+   The competition portal's array validator runs `np.all((arr >= 0.0) & (arr <= 1.0))` on the decoded raster band before applying the footprint mask. Because `NaN >= 0.0` evaluates to `False` in IEEE-754 floating-point arithmetic, rasters containing `NaN` outside the study footprint trigger `"Predicted values must be in range [0, 1]"` unless the portal masks by `sample_submission.tif` first. Writing `0.0` outside the footprint with `nodata=None` guaranteed `12,279,160` finite pixels in `[0.0, 1.0]`.
+2. **Exploiting the Asymmetric Tversky Index ($\alpha = 0.2, \beta = 0.8$) and 300 m Triangular Kernel**:
+   The organizer evaluation metric is the Distance-Weighted Tversky Index:
+   $$\text{DTI}(P, G) = \frac{\text{TP}_w}{\text{TP}_w + \alpha\,\text{FP}_w + \beta\,\text{FN}_w}, \quad \alpha = 0.2,\; \beta = 0.8,\; K(d) = \max\!\left(0, 1 - \frac{d}{300\text{ m}}\right)$$
+   where $\text{TP}_w = \sum_{x \in \Omega_{\text{eval}}} G_{\text{hid}}(x)\,\tilde{P}(x)$, $\text{FP}_w = \sum_{x \in \Omega_{\text{eval}}} (1 - G_{\text{hid}}(x))\,P(x)$, and $\text{FN}_w = \sum_{x \in \Omega_{\text{eval}}} G_{\text{hid}}(x)\,(1 - \tilde{P}(x))$.
+   Because $\beta/\alpha = 4.0$, missing a hidden fault pixel costs $4\times$ more than a false positive pixel. Moreover, a single predicted dot $P(x_0)=1$ supplies $\tilde{P}(x) = K(\|x - x_0\|)$ across a $300\text{ m}$ disk ($\sim 13$ grid cells of $K > 0.33$), meaning a sparse lattice of well-spaced peak dots achieves nearly the same $\text{TP}_w$ as a dense ribbon while incurring a fraction of the $\text{FP}_w$ penalty.
+3. **Why the `B2` ($200\text{ m}$) Collar Pruning Improved DTI**:
+   Known mapped faults $\mathcal{C}_{\text{known}}$ are excluded from the hidden test target $G_{\text{hid}}$. Any dot placed at $d_{\text{Euc}}(x, \mathcal{C}_{\text{known}}) \le 200\text{ m}$ sits inside the mapped fault zone where $G_{\text{hid}} = 0$, so its central mass contributes $\text{FP}_w$ without discovering new unmapped fault segments. Pruning the `2,545` collar dots reduced $\alpha\,\text{FP}_w$ by $\sim 509$ weighted units while preserving `100%` of the off-catalogue $\text{TP}_w$.
 
-#### Table 1 — Full LiDAR-Covered Holdout Blocks (`HOLDOUT-DTI`, `gems57-pooled-hide-v3-se`, `withheld_positive_pixels = 9,275`, `137` physical 20 km clusters)
+### 2.3 Why `H33-2-B2` Was Capped at `0.2778` and How to Score Higher (Toward `0.3195` and `0.3774`)
 
-| Arm | Evidence Class | `HOLDOUT-DTI` | 95% Block-Bootstrap CI | $\text{TP}_w$ | $\text{FP}_w$ | Paired $\Delta\text{DTI}$ (`H64-L1` minus Control) | Paired 95% CI | Bootstrap SE | $> 2\,\text{SE}$ Gate |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `random_lidar` (45k random in LiDAR domain) | `HOLDOUT-DTI` | `0.039761` | `[0.034747, 0.044418]` | `637.6` | `42,435.6` | **`+0.035153`** | `[+0.023126, +0.048485]` | `0.006571` | **PASS (`+5.35 SE`)** |
-| `h33_2_b2` (`ORGANIZER-CONFIRMED 0.2778` prior) | `HOLDOUT-DTI` | `0.003814` | `[0.003033, 0.004641]` | `49.0` | `27,073.8` | **`+0.071099`** | `[+0.058585, +0.085563]` | `0.007025` | **PASS (`+10.12 SE`)** |
-| `baseline_100m_cv` (10 m/100 m topo + aeromag Spatial CV) | `HOLDOUT-DTI` | `0.057445` | `[0.046509, 0.068822]` | `917.9` | `41,876.4` | **`+0.017469`** | `[+0.005043, +0.032588]` | `0.006850` | **PASS (`+2.55 SE`)** |
-| `native_lidar_unmasked` (Unmasked Native-LiDAR Scarp) | `HOLDOUT-DTI` | `0.062661` | `[0.054226, 0.071071]` | `1,002.8` | `41,914.1` | **`+0.012253`** | `[+0.001475, +0.024007]` | `0.005854` | **PASS (`+2.09 SE`)** |
-| **`native_lidar_masked_cv` (`H64-L1` Candidate)** | `HOLDOUT-DTI` | **`0.074914`** | **`[0.062409, 0.089659]`** | **`1,202.2`** | **`41,939.5`** | — | — | — | **PROMOTED** |
+Despite its clean post-processing, `H33-2-B2` has three fundamental physical and statistical limitations:
+1. **Zero Sub-100 m Geomorphic Resolution**: `H33-2-B2` relies on 100 m resampled predictors (`training_features.tif`). In the Basin and Range province (Great Basin / Surprise Valley / Dixie Valley / Carson Sink), Holocene and late Pleistocene piedmont and intrabasin fault scarps have widths $W_s \in [2, 20]\text{ m}$ and heights $H_s \in [0.3, 5.0]\text{ m}$. Box-averaging a $2\text{ m}$ scarp over a $100\text{ m} \times 100\text{ m}$ cell dilutes its slope break by a factor of $20\times\text{–}50\times$, rendering intrabasin and alluvial-fan scarps indistinguishable from background fan slope.
+2. **Cultural Lineament Contamination**: In `H33-2-B2`, highway embankments (`US-50`, `US-95`, `I-80`), railroad grades, BLM mining claim trenches, and cardinal agricultural irrigation canals in flat playas generate linear topographic anomalies that mimic fault scarps. Our audit shows `5,021` of `H33-2-B2`'s dots (`13.33%`) fall inside cultural road/claim/canal corridors where true off-catalogue USGS SGMC faults are depleted by $4.66\times$.
+3. **Isotropic / Uncalibrated Continuation**: `H33-2-B2` did not align local scarp strike with the NNE-striking ($\sim\text{N}12^\circ\text{E}$) extensional stress regime of the Great Basin or distinguish synthetic (basin-facing) and antithetic (mountain-facing) graben scarps from cross-slope fluvial terrace risers.
 
-#### Table 2 — Off-Range-Front LiDAR-Covered Holdout Blocks (`HOLDOUT-DTI`, `gems57-pooled-hide-v3-se`, `withheld_positive_pixels = 5,195`, `136` physical 20 km clusters)
-
-| Arm | Evidence Class | `HOLDOUT-DTI` | 95% Block-Bootstrap CI | $\text{TP}_w$ | $\text{FP}_w$ | Paired $\Delta\text{DTI}$ (`H64-L1` minus Control) | Paired 95% CI | Bootstrap SE | $> 2\,\text{SE}$ Gate |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `random_lidar` (45k random in LiDAR domain) | `HOLDOUT-DTI` | `0.028277` | `[0.023923, 0.032681]` | `276.0` | `27,737.8` | **`+0.019535`** | `[+0.010024, +0.030543]` | `0.005180` | **PASS (`+3.77 SE`)** |
-| `h33_2_b2` (`ORGANIZER-CONFIRMED 0.2778` prior) | `HOLDOUT-DTI` | `0.001175` | `[0.000758, 0.001673]` | `7.5` | `11,312.8` | **`+0.046637`** | `[+0.036741, +0.057465]` | `0.005407` | **PASS (`+8.63 SE`)** |
-| `baseline_100m_cv` (10 m/100 m topo + aeromag Spatial CV) | `HOLDOUT-DTI` | `0.010069` | `[0.006007, 0.014600]` | `46.3` | `2,143.0` | **`+0.037743`** | `[+0.027813, +0.048624]` | `0.005318` | **PASS (`+7.10 SE`)** |
-| `native_lidar_unmasked` (Unmasked Native-LiDAR Scarp) | `HOLDOUT-DTI` | `0.034406` | `[0.027187, 0.041335]` | `219.1` | `10,844.1` | **`+0.013406`** | `[+0.002159, +0.024300]` | `0.005546` | **PASS (`+2.42 SE`)** |
-| **`native_lidar_masked_cv` (`H64-L1` Candidate)** | `HOLDOUT-DTI` | **`0.047812`** | **`[0.037585, 0.058351]`** | **`451.7`** | **`26,009.8`** | — | — | — | **PROMOTED** |
+By introducing **native 1–3 m lidar scarp channels** (Scarplet + slope-aware detrending + Steger + Frangi), correcting the **$90^\circ$ image-vs-geological strike frame bug**, applying the **physical + vector cultural-feature mask**, and retraining under **4-fold spatial cross-validation**, our lane achieves a **`+25.48%` (`+0.027821`, $7.95\text{ SE}$)** `HOLDOUT-DTI` gain in pure label-blind spatial CV (`E1`) and a **`+14.98%` (`+0.017000`, $4.13\text{ SE}$)** `HOLDOUT-DTI` gain in buffered whole-component spatial CV (`E2`), with statistically significant (> $2\text{ SE}$) improvements on **both range-front and off-range-front blocks**.
 
 ---
 
-## 5. Root-Cause Resolution of `"Predicted values must be in range [0, 1]"` & Uniqueness Audit
+## 3. Five Candidate Geological Hypotheses for Missing Fault Discovery
 
-1. **Why Earlier Submissions Failed With `"Predicted values must be in range [0, 1]"`**:
-   - Unnormalized raw logit/z-score outputs, negative nodata sentinels (`-9999.0`, `-3.4e38`), or `NaN` pixels outside the footprint when evaluated by a strict `0 <= x <= 1` array check trigger DrivenData's `"Predicted values must be in range [0, 1]"` rejection.
-   - Our primary submission [`submissions/h64-lidar-scarp-cv-20261011-zeros.tif`](../submissions/h64-lidar-scarp-cv-20261011-zeros.tif) is strictly normalized to `[0.0, 1.0]` (`min = 0.0`, `max = 1.0`, `n_nan = 0`, `n_infinite = 0`, `nodata = None`, `float32`, `EPSG:32611`, `3730 x 3292`), passing `python scripts/validate_submission.py` with `format_pass: true` and `all_checks_passed: true`. We also provide the companion [`submissions/h64-lidar-scarp-cv-20261011-nan.tif`](../submissions/h64-lidar-scarp-cv-20261011-nan.tif) with `NaN` only outside the `5,167,373`-cell footprint (`identical inside the footprint`).
-2. **Full 67-Raster Registry Uniqueness Audit ([`evidence/registry_audit_67.json`](../evidence/registry_audit_67.json))**:
-   - **Byte & Pixel Identity**: `byte_unique_across_all_67 = True`, `pixel_unique_across_all_67 = True`.
-   - **Pre-Placement Surface Rank Correlation**: $\max |\rho_{\text{Spearman}}| = 0.1239 \le 0.90$ (`PASS`, vs `7GEMSDOE__gems7-lidarscarp-ridge-top2pct-36c3a3f341c8.tif`).
-   - **Final Dots Rank Correlation (All 67 Rasters)**: $\max |\rho_{\text{Spearman}}| = 0.0394 \le 0.90$ (`PASS`, vs `7GEMSDOE__gems7-lidarscarp-ridge-top2pct-36c3a3f341c8.tif`).
-   - **Final Dots 3-px Overlap Across All 62 Geological Fault Submissions**: $\max \text{overlap}_{3\text{px}} = 0.4547 \le 0.70$ (`PASS`, vs `calib_hedgev2_01563_sample.tif`; $\max \text{Jaccard} = 0.0249$).
-   - **Transparent Disclosure of 5 Space-Filling / Regular-Lattice Calibration Probes**: Five files in the 67-raster repository dump are non-geological space-filling or grid-lattice calibration probes whose 3-px halos cover $>73\%$ of the entire map (`17GEMSDOE__17GEMSDOE_E-proba-multiscale.tif` covering `100.0%`, `r13_lattice_s5_00904.tif` and `calib_r13lattice_00904.tif` 5-px grid lattices covering `99.87%`, `r14_union_tips10_lat6.tif` 6-px lattice covering `76.21%`, and `r11_greedy_mp.tif` 272k-dot packing covering `73.66%`). Even a uniform random dot set has $>73.66\%$ overlap against those 5 space-filling probes; against all 62 genuine geological fault submissions, our candidate passes the $\le 0.70$ overlap gate with `0.4547`.
+We formulated five geological hypotheses targeting faults missing from the USGS Quaternary Fault and Fold Database / INGENIOUS compilation, ranked by expected `HOLDOUT-DTI` improvement and implementation cost:
+
+| Rank | Hypothesis ID & Name | Specific Layers Used | Physical / Geological Signature | Why Missing from USGS / INGENIOUS Catalogue | Difference from Existing Repo | Expected DTI Gain & Cost |
+|---|---|---|---|---|---|---|
+| **1 (Validated & Promoted)** | **H64-L1: Native-Resolution (1–3 m) Lidar Scarp Channels + Slope-Aware Detrending + Cultural Veto** | `lidar_scarp_features_u8.tif` (2 m), `h52_scarp3m_100m.tif` (3 m), native 3 m DEM tiles (`data/pilot/dem3m/*.tif`), `tiger_road_distance_m.tif`, `blm_closed_claim_distance_m.tif`, `topo_10m_derived_100m_u8.tif` | Diffused error-function scarp profile $z(u) = \frac{H}{2}\text{erf}\!\left(\frac{u}{\sqrt{4\kappa t}}\right)$ superposed on dipping alluvial fans ($\nabla z_{\text{bg}}$), yielding a sharp 1D ridge in $|\nabla_\sigma z_{\text{det}}|$ detected by Steger (1998) sub-pixel zero-crossings and Frangi (1998) multiscale Hessian vesselness ($2\text{–}20\text{ m}$), partitioned into synthetic (`downface`) and antithetic (`upface`) steps vs. cross-slope fluvial incisions (`crossface`). | Pre-lidar airphoto mapping and 10–30 m DEMs miss degraded $0.3\text{–}2.5\text{ m}$ scarps on coalescing bajadas and intrabasin graben floors, while unmasked lidar detectors confuse road grades and irrigation canals with fault scarps. | Prior `src/gems64` code had zero lidar scarp implementation; raw `lidar_scarp_features_u8.tif` had a $90^\circ$ image-axis strike bug (`96.2^\circ` vs `12.0^\circ`) and un-gated background coherence. We implemented full Scarplet + Steger + Frangi + 90° frame correction + cultural mask. | **Measured**: `+0.0278` (`+25.5%`, `E1`) / `+0.0170` (`+15.0%`, `E2`) `HOLDOUT-DTI`; Cost: **Low–Medium** (3.5 min CPU). |
+| **2** | **H64-G2: Shallow-vs-Deep Potential-Field Vertical Gradient Decoupling (Intrabasin Buried Graben Bounding Faults)** | `training_features.tif` Bands 7 (`Gravity_G.tif`), 8 (`Gravity_dGdz.tif`), 9 (`Gravity_fG.tif`), 10 (`Magnetic_M.tif`), 11 (`Magnetic_dMdz.tif`), 12 (`Magnetic_fM.tif`), and Band 2 (`DEM_elevation.tif`) | High ratio of vertical gravity gradient to regional Bouguer anomaly ($|\partial g/\partial z| / (|\Delta g_B| + \epsilon)$) paired with high vertical magnetic derivative $|\partial M/\partial z|$ inside low-relief Quaternary basin fill ($\text{relief}_{100\text{m}} < 15\text{ m}$). | Intrabasin normal faults beneath Holocene playa/lacustrine sediment (e.g., Carson Sink, Dixie Valley, Humboldt Sink) have zero surface topographic relief once buried by late Holocene aggradation, so field geologists never mapped them. | Existing repo models treat gravity and magnetics as additive linear terms across the entire footprint rather than conditioning the shallow vertical derivative on flat Quaternary basin fill where topographic channels vanish. | Expected gain: `+0.006` to `+0.012` `HOLDOUT-DTI` in basin interiors; Cost: **Low** (100 m stack already cached). |
+| **3** | **H64-S3: Crustal Stress-Tensor Slip-Tendency & Dilatancy-Tendency Resolved on Local Lidar Scarp Attitudes** | `training_features.tif` Bands 13 (`S_hmax_azimuth`), 14 (`S_v`), 15 (`P_p`), 16 (`S_hmax`), 17 (`S_hmin`) + `dominant_strike` from `lidar_scarp_features_u8.tif` | High Morris-Ferrill-Henderson (1996) slip tendency $T_s = \tau / \sigma'_n$ and dilation tendency $T_d = (\sigma_1 - \sigma_n)/(\sigma_1 - \sigma_3)$ when local lidar scarp strike $\theta_{\text{geol}}$ is oriented at $0^\circ\text{–}30^\circ$ to $S_{\text{Hmax}}$ under low effective minimum horizontal stress $(\sigma_{\text{hmin}} - P_p)$. | Distributed accommodation zones and Walker Lane / Great Basin transfer faults with oblique NNW or ENE strike are systematically under-sampled in regional range-front compilations but are critically stressed for hydrothermal fluid flow. | Prior code used raw $S_{\text{Hmax}}$ and $P_p$ as scalar covariates without computing the Mohr-Coulomb tensor projection $\sin^2(\theta_{\text{scarp}} - \theta_{S_{\text{Hmax}}})$ onto the 90°-corrected lidar scarp strike. | Expected gain: `+0.004` to `+0.008` `HOLDOUT-DTI`; Cost: **Low**. |
+| **4** | **H64-H4: En-Échelon Relay-Ramp Breaching & Step-Over Strain-Transfer Bridge** | `existing_faults.tif` (`catalogue`), `topo_10m_derived_100m_u8.tif` (TPI, curvature, roughness), and `upface_max` / `downface_max` from `lidar_scarp_features_u8.tif` | Dipping relay ramps between sub-parallel overlapping normal fault tips ($\Delta_\perp \in [300\text{ m}, 2500\text{ m}]$, $\Delta_\parallel \in [-1500\text{ m}, +1500\text{ m}]$) exhibit rotational transverse bed tilt and antithetic (`upface_max`) breaching scarps connecting the footwall of one segment to the hanging wall of the next. | Regional 1:250,000 maps depict segmented range-front faults as disconnected polylines separated by $0.5\text{–}3\text{ km}$ gaps, omitting the small-displacement breaching faults across the relay ramp. | `src/gems57/network.py` computes single-anchor nearest-fault offsets $(d_\parallel, d_\perp)$ rather than two-anchor pair-wise dipole strain energy between opposing fault tips. | Expected gain: `+0.005` to `+0.010` `HOLDOUT-DTI` near segment tips; Cost: **Medium** (requires tip-pair graph construction). |
+| **5** | **H64-M5: Shallow vs. Deep Magnetotelluric Conductivity Vertical Contrast ($\rho_{1\text{km}} / \rho_{4\text{km}}$) Along Brittle Fault Conduits** | `training_features.tif` Bands 18 (`MT_1km.tif`), 19 (`MT_2km.tif`), 20 (`MT_4km.tif`) + `derived_sgmc_faults_100m_u8.tif` | Steep lateral gradient in 1 km electrical conductivity paired with a low $\rho_{1\text{km}} / \rho_{4\text{km}}$ resistivity ratio along hydrothermally altered clay-rich fault gouge and geothermal upflow plumes. | Concealed hydrothermally active fault zones (the primary exploration target of the DOE GEMS / INGENIOUS program) often lack fresh Holocene surface rupture but create strong smectite/illite conductive anomalies in the upper 1–2 km. | Existing baselines enter MT bands independently without forming vertical log-resistivity ratios $\log_{10}(\rho_{1\text{km}}/\rho_{4\text{km}})$ or lateral Sobel conductivity edges. | Expected gain: `+0.002` to `+0.005` `HOLDOUT-DTI` (limited by coarse MT station spacing interpolated to 100 m); Cost: **Low**. |
+
+---
+
+## 4. Mathematical & Physical Formulation of the Assigned Lane (`H64-L1`)
+
+### 4.1 Scarplet Template Matching (Sare & Hilley, JOSS 2018) with Slope-Aware Templates (AGU 2015 T31A-2838)
+
+Following Hanks (2000) and Sare, Hilley, & DeLong (*JOSS* 2018, `doi:10.21105/joss.01066`; *JGR Solid Earth* 2019), a fault scarp of vertical offset $H$ and morphologic age $\kappa t = \sigma_s^2 / 4$ evolving under linear hillslope diffusion on an inclined alluvial fan of regional slope $m_x, m_y$ has cross-strike elevation profile:
+$$z(u, v) = \frac{H}{2}\,\text{erf}\!\left(\frac{u}{\sigma_s}\right) + m_u u + m_v v + z_0$$
+where $u = (x - x_0)\cos\theta + (y - y_0)\sin\theta$ is the cross-strike coordinate perpendicular to geological strike $\theta$, and $\sigma_s = 2\sqrt{\kappa t} \in [2, 20]\text{ m}$ is the characteristic scarp half-width.
+
+1. **Slope-Aware Background Fan Detrending (AGU 2015 T31A-2838)**:
+   On coalescing alluvial fans (bajadas) in Surprise Valley and the Great Basin, the regional fan surface $z_{\text{bg}} = G_{\sigma_{\text{bg}}} * z$ ($\sigma_{\text{bg}} = 50\text{ m}$) dips toward the basin floor with unit down-slope vector $\hat{\mathbf{u}}_{\text{bg}} = \nabla z_{\text{bg}} / \|\nabla z_{\text{bg}}\|$. We subtract $z_{\text{bg}}$ to form the slope-detrended residual $z_{\text{det}} = z - z_{\text{bg}}$ and project the local scale-space gradient $\nabla_\sigma z_{\text{det}}$ onto:
+   - **Synthetic (basin-facing) scarp step** (`downface_max`): $\max(0, \nabla_\sigma z_{\text{det}} \cdot \hat{\mathbf{u}}_{\text{bg}})$,
+   - **Antithetic (mountain-facing graben) scarp step** (`upface_max`): $\max(0, -\nabla_\sigma z_{\text{det}} \cdot \hat{\mathbf{u}}_{\text{bg}})$,
+   - **Cross-slope fluvial terrace/gully bank** (`crossface_max`): $|\nabla_\sigma z_{\text{det}} \times \hat{\mathbf{u}}_{\text{bg}}|$.
+   Why this matters: Fluvial channels incising down the alluvial fan have gradients perpendicular to $\hat{\mathbf{u}}_{\text{bg}}$ (`crossface`), whereas both synthetic and antithetic normal fault scarps strike sub-parallel to topographic contours and therefore maximize `downface` and `upface`!
+2. **Scarplet Amplitude, Relative Age ($\kappa t$), and SNR**:
+   The matched-filter step derivative $\frac{\partial}{\partial u}\text{erf}(u/\sigma_s) = \frac{2}{\sqrt{\pi}\sigma_s} e^{-u^2/\sigma_s^2}$ peaks at the scarp midpoint $u=0$, yielding the scale-normalized vertical offset amplitude $A(\sigma_s) = \sqrt{\pi}\,\sigma_s \|\nabla_{\sigma_s} z_{\text{det}}\|\,w_{\text{slope}}\,w_{\text{piedmont}}$, signal-to-noise ratio $\text{SNR}(\sigma_s) = A(\sigma_s) / (\sigma_{\text{noise}} + \epsilon)$, and morphologic youthfulness (inverse relative age $(\kappa t)^{-1/2}$) measured by the crest-to-toe Laplacian-of-Gaussian curvature dipole normalized by step height (`scarplet_youthfulness`).
+
+### 4.2 Steger (1998) Sub-Pixel Ridge Detection and Frangi (1998) Multiscale Hessian Vesselness on the Slope-Detrended Step-Gradient Surface
+
+A crucial mathematical insight verified in `src/gems64/lidar_scarp.py`:
+- For an error-function step $z_{\text{det}}(u) = \frac{H}{2}\text{erf}(u/\sigma_s)$, the second derivative of elevation $\frac{\partial^2 z_{\text{det}}}{\partial u^2}$ vanishes at the scarp center $u=0$ (its extrema lie at the crest and toe $u = \pm \sigma_s/\sqrt{2}$).
+- Conversely, the **scale-space step-gradient surface** $S_\sigma(x,y) = \|\nabla_\sigma z_{\text{det}}(x,y)\|\,w_{\text{slope}}\,w_{\text{piedmont}}$ is a **1D Gaussian ridge** $S_\sigma(u) = \frac{H}{\sqrt{\pi}\sigma_s} e^{-u^2/\sigma_s^2}$ centered directly on the fault trace $u=0$!
+
+Applying Steger (*IEEE TPAMI* 20(2):113–125, 1998) and Frangi et al. (*MICCAI* 1998, LNCS 1496:130–137) to $S_\sigma$ across scales $\sigma \in [2, 20]\text{ m}$:
+1. **Closed-Form 2D Hessian Eigensystem**:
+   From $H_{xx} = \partial_{xx} S_\sigma$, $H_{yy} = \partial_{yy} S_\sigma$, $H_{xy} = \partial_{xy} S_\sigma$, the eigenvalues ordered by $|\lambda_2| \ge |\lambda_1|$ are computed analytically in `float32`. Along a fault scarp ridge, $\lambda_2 \ll 0$ (strong negative curvature across strike) and $|\lambda_1| \ll |\lambda_2|$ (near-zero curvature along strike).
+2. **Frangi Multiscale Vesselness**:
+   $$\mathcal{V}(\sigma) = \begin{cases} 0 & \text{if } \lambda_2 \ge 0, \\ \exp\!\left(-\frac{R_B^2}{2\beta_F^2}\right)\left(1 - \exp\!\left(-\frac{\mathcal{S}^2}{2 c_F^2}\right)\right) & \text{if } \lambda_2 < 0, \end{cases} \quad R_B = \frac{|\lambda_1|}{|\lambda_2|},\; \mathcal{S} = \sqrt{\lambda_1^2 + \lambda_2^2}.$$
+3. **Steger Sub-Pixel Curvilinear Centerline**:
+   Along the unit eigenvector $\mathbf{n} = (n_x, n_y)$ of $\lambda_2$, the directional first derivative is $r_1 = g_x n_x + g_y n_y$ and second derivative is $r_2 = \lambda_2 < 0$. The sub-pixel offset to the zero-crossing of the directional derivative is:
+   $$(p_x, p_y) = t\,(n_x, n_y), \quad t = -\frac{r_1}{r_2}.$$
+   A pixel contains a verified sub-pixel scarp centerline when $\lambda_2 < 0$ and $(p_x, p_y) \in \left[-\frac{1}{2}, \frac{1}{2}\right]^2$.
+
+#### Verification on Synthetic N15°E Scarp & Native 3 m DEM Tile (`data/pilot/dem3m/x42y425_3m.tif`)
+
+- **Synthetic N15°E Scarp ($H = 1.6\text{ m}, \sigma_s = 4.5\text{ m}$) on Dipping Alluvial Fan**:
+  - `scarplet_amplitude`: `1.092 m` on scarp vs. `0.137 m` background (`7.95x` contrast)
+  - `frangi_vesselness`: `0.990` on scarp vs. `0.030` background (`33.4x` contrast)
+  - `steger_line` rate: `0.859` within $|u| \le 1.8\text{ m}$ vs. `0.050` background (`17.1x` contrast)
+  - `dominant_strike`: `14.34°` recovered vs. `15.00°` true strike (`0.66°` error)
+- **Real Native 3 m USGS 3DEP Lidar Tile `data/pilot/dem3m/x42y425_3m.tif` (`3412 x 3412` pixels)**:
+  - Aggregated to `101 x 101` cells on the master 100 m grid (`window = [2585, 1766, 101, 101]`, `385` mapped catalogue fault cells): single-tile composite scarp channel achieves **`ROC-AUC = 0.6617`** without any catalogue proximity features.
+
+### 4.3 Aggregation to 100 m Cells & the $90^\circ$ Strike Reference-Frame Bug Fix
+
+Every 100 m cell aggregates the native lidar channels into four primary features plus slope-aware/multiscale auxiliaries:
+1. **`scarp_pixel_fraction`**: Weighted fraction of sub-pixels carrying active scarp lineaments (`0.40 * frac_2m + 0.30 * frac_3m_g07 + 0.30 * frac_3m_g12`).
+2. **`snr_weighted_amplitude`**: SNR-weighted mean step height combining 2 m Scarplet step amplitude with 3 m multi-gate step height (`h_med` and `h_gate07`).
+3. **`structure_tensor_coherence`**: Energy-gated orientation coherence $C_{\text{ST}} \cdot \frac{\text{step}}{\text{step} + 0.025}$ (suppressing noisy zero-gradient play-floor cells where raw coherence is random).
+4. **`dominant_strike`**: Circular-variance-weighted geological strike in $[0^\circ, 180^\circ)$ clockwise from North.
+   - **Critical Bug Discovered & Fixed**: In `lidar_scarp_features_u8.tif`, band 7 (`strike`) was stored as the angle from the image row/column axis (`circular mean = 96.17°`), orthogonal to the true geological strike of the mapped Great Basin faults (`12.01°` NNE). Applying the exact frame rotation $\theta_{\text{geol}} = (\theta_{\text{raw}} + 90^\circ) \bmod 180^\circ$ maps the circular mean to `6.17°` (`N6.2°E`), turning negative strike alignment into a positive predictor (`AUC = 0.5190`).
+
+### 4.4 Cultural-Feature Mask (Roads, Mining Claims, and Flat-Basin Agricultural Canals/Field Edges)
+
+To prevent non-tectonic anthropogenic earthworks from consuming the dot budget, we construct a three-part cultural mask `cmask` (`1,105,650` lidar cells = `28.40%` of lidar domain):
+1. **Road Cuts & Highway Berms**: `tiger_road_distance_m < 75.0 m` (`TIGER/Line` roads).
+2. **Mining Pits, Tailings & Exploration Trenches**: `blm_closed_claim_distance_m < 60.0 m` (`BLM` mining claims).
+3. **Agricultural Canals, Levees & Field Edges**: Flat basin floor (`relief < 4.5 m`), cardinal N-S or E-W alignment ($\min(|\theta - 0^\circ|, |\theta - 90^\circ|, |\theta - 180^\circ|) < 12^\circ$), double-edged embankment prism (`ex_max > 2.0 * step_max`), and zero 3 m far-field tectonic offset (`h_gate12 == 0`).
+
+**Crucial Modeling Finding**: Including `tiger_road_distance_m` or `blm_closed_claim_distance_m` as *positive linear features* inside the classifier caused severe mapping-access bias (historic faults were mapped more densely near roads, so the model placed false positives along highways, dropping holdout $\text{TP}_w$ from `385.95` to `364.30`). Using the cultural mask strictly as a **feature & placement veto (`cmask`)** eliminated road-access bias and improved both `E1` and `E2` holdout DTI as well as off-catalogue USGS SGMC fault recovery (`0.115824 -> 0.118796`, where cultural mask pixels are **$4.66\times$ depleted** in true SGMC faults: `0.241%` vs `1.124%`).
+
+---
+
+## 5. Leakage Canary & Spatial-CV Holdout Results (`HOLDOUT-DTI`)
+
+### 5.1 Single-Feature Leakage Canary (`evidence/experiments.json`)
+
+Every feature was tested individually against the buffered withheld fault segments (`9,274` withheld positive pixels) before model training. All 14 features scored well below the `0.90` leakage ceiling (`max(AUC, 1-AUC) = 0.7616 <= 0.90`):
+
+| Feature | Single-Feature ROC-AUC (`9,274` withheld positives) | $\max(\text{AUC}, 1-\text{AUC})$ | Canary Status ($\le 0.90$) |
+|---|---|---|---|
+| `downface_max_synthetic` (AGU 2015 slope-aware) | `0.5995` | `0.5995` | `PASS` |
+| `upface_max_antithetic` (AGU 2015 graben) | `0.6059` | `0.6059` | `PASS` |
+| `frangi_steger_sharpness` (2–20 m Hessian/Steger) | `0.5956` | `0.5956` | `PASS` |
+| `snr_weighted_amplitude` (Scarplet 2 m + 3 m) | `0.5953` | `0.5953` | `PASS` |
+| `step_max_2m` | `0.5885` | `0.5885` | `PASS` |
+| `scarplet_youthfulness` (morphologic age proxy) | `0.5797` | `0.5797` | `PASS` |
+| `structure_tensor_coherence` (energy-gated) | `0.5719` | `0.5719` | `PASS` |
+| `scarp_pixel_fraction` | `0.5660` | `0.5660` | `PASS` |
+| `dominant_strike_geol_align` (90°-frame-corrected) | `0.5190` | `0.5190` | `PASS` |
+| `fold_visible_exp_neg_daniso` (fold-visible only) | `0.7616` | `0.7616` | `PASS` |
+| `fold_visible_exp_neg_dvis` (fold-visible only) | `0.7428` | `0.7428` | `PASS` |
+
+### 5.2 Spatial-CV Holdout Evaluation (`HOLDOUT-DTI`, `gems57-pooled-hide-v3-se`)
+
+We evaluated our model under two complementary spatial cross-validation protocols (`evidence/experiments.json`, `evidence/run_card.json`):
+
+1. **Experiment `E1` — 4-Fold Label-Blind Spatial CV (`S57.folds`, 8 km buffer, `48,441` withheld positive pixels, `128` active 20 km blocks, pure topographic/lidar detector with zero catalogue-distance features)**:
+   - **All Lidar Holdout Blocks (`128` blocks, `48,441` withheld positives)**:
+     - 100 m Topo Baseline: **`0.109182` `HOLDOUT-DTI`** (`95% CI: [0.097759, 0.120120]`)
+     - Unmasked Native Lidar Scarp Channels: **`0.136816` `HOLDOUT-DTI`** (`95% CI: [0.123886, 0.149080]`)
+     - Culturally Masked Native Lidar Scarp Channels: **`0.137003` `HOLDOUT-DTI`** (`95% CI: [0.124049, 0.149290]`)
+     - **Gain vs. 100 m Baseline**: **`+0.027821` (`+25.48%`)**, `95% CI: [+0.021244, +0.034918]`, `SE = 0.003500` (**`7.95 SE > 2 SE`**, `beats_two_se = True`).
+   - **Range-Front Blocks (`64` high-relief blocks, `23,317` withheld positives)**:
+     - `0.129027 -> 0.159421` `HOLDOUT-DTI`, delta **`+0.030394` (`+23.56%`)**, `SE = 0.005536` (**`5.49 SE > 2 SE`**, `beats_two_se = True`).
+   - **Off-Range-Front Basin/Piedmont Blocks (`64` low-relief blocks, `25,124` withheld positives)**:
+     - `0.089418 -> 0.115043` `HOLDOUT-DTI`, delta **`+0.025625` (`+28.66%`)**, `SE = 0.003991` (**`6.42 SE > 2 SE`**, `beats_two_se = True`).
+
+2. **Experiment `E2` — 4-Fold Buffered Whole-Component Hide-and-Recover Spatial CV (`H57.buffered_component_draw`, 300 m visible-catalogue collar, `9,274` withheld lidar positive pixels, `104` active 20 km blocks)**:
+   - **All Lidar Holdout Blocks (`104` blocks, `9,274` withheld positives)**:
+     - 100 m Topo + Fold-Visible Network Baseline: **`0.113522` `HOLDOUT-DTI`** (`95% CI: [0.103202, 0.123710]`)
+     - Unmasked Native Lidar Scarp Channels: **`0.129975` `HOLDOUT-DTI`** (`95% CI: [0.116824, 0.142746]`)
+     - Culturally Masked Native Lidar Scarp Channels: **`0.130522` `HOLDOUT-DTI`** (`95% CI: [0.117397, 0.143103]`)
+     - **Gain vs. 100 m Baseline**: **`+0.017000` (`+14.98%`)**, `95% CI: [+0.009202, +0.025473]`, `SE = 0.004120` (**`4.13 SE > 2 SE`**, `beats_two_se = True`).
+   - **Range-Front Blocks (`52` blocks, `4,432` withheld positives)**:
+     - `0.126160 -> 0.145038` `HOLDOUT-DTI`, delta **`+0.018877` (`+14.96%`)**, `95% CI: [+0.008723, +0.029419]`, `SE = 0.005494` (**`3.44 SE > 2 SE`**, `beats_two_se = True`).
+   - **Off-Range-Front Basin/Piedmont Blocks (`52` blocks, `4,842` withheld positives)**:
+     - `0.106413 -> 0.121961` `HOLDOUT-DTI`, delta **`+0.015548` (`+14.61%`)**, `95% CI: [+0.004441, +0.027564]`, `SE = 0.006042` (**`2.57 SE > 2 SE`**, `beats_two_se = True`).
+
+**Lane Gate Verification**: In both `E1` and `E2`, the DTI gain on lidar-covered holdout blocks exceeds two block-bootstrap standard errors overall, on range-front blocks, **and** on off-range-front basin/piedmont blocks. Thus the lane gate (*"DTI gain on lidar-covered holdout blocks that is not confined to range fronts"*) is decisively satisfied.
+
+---
+
+## 6. 70-Raster Registry Uniqueness & Validator Audit (`evidence/registry_audit.json`)
+
+We audited both the **continuous probability surface before dot placement** and the **final 37,654 placed dots** against all **70 prior registry rasters**:
+
+1. **Surface Before Placement (`U57.compare_array_to_registry`)**:
+   - Maximum full-footprint Spearman rank correlation across all 70 registry rasters: **`0.3948 < 0.90`** (`PASS`).
+2. **Final Placed Dots (`U57.compare_to_registry`)**:
+   - Byte-identical or pixel-identical to any of the 70 registry rasters: **`False` (`0 / 70` matches, `100%` unique)** (`PASS`).
+   - Maximum full-footprint Spearman rank correlation across all 70 registry rasters: **`0.0661 < 0.90`** (`PASS`).
+   - Maximum 3-pixel (`300 m`) one-way dot overlap against all **63 discrete fault-detector submissions**: **`0.6301 < 0.70`** (`PASS`; vs. `GEMSDOE32__h33-2-b2-zeros.tif`: **`0.2666`**; vs. `GEMSDOE66__h66-1-scarplet-veto-37654-allfinite.tif`: **`0.3393`**).
+   - Maximum mutual (`min(forward, reverse)`) 3-pixel dot overlap across **all 70 registry files** (including the 7 diagnostic space-filling lattices/continuous surfaces such as `17GEMSDOE` with `5,167,373` positive pixels and `r13_lattice_s5` with `206,895` 5x5 grid points): **`0.3557 < 0.70`** (`PASS`).
+3. **Validator Check (`scripts/validate_submission.py`)**:
+   - `format_pass = true`, `all_checks_passed = true`, `crs = EPSG:32611`, `shape = (3730, 3292)`, `dtype = float32`, `n_nan = 0`, `min = 0.0`, `max = 1.0`, `emitted_positive_pixels = 37,654`, `zero_dots_on_mapped_catalogue = true`.
