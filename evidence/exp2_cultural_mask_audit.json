@@ -1,0 +1,42 @@
+{
+  "experiment": "EXP-64-2",
+  "title": "Full-Footprint Native-LiDAR Scarp Aggregation & Cultural-Feature Masking Audit",
+  "lidar_domain_cells": 3893082,
+  "lidar_domain_fraction_of_footprint": 0.7533967453094639,
+  "domain_catalogue_fault_rate": 0.012443354648065466,
+  "domain_sgmc_fault_rate": 0.014079333546018296,
+  "cultural_mask_total_cells": 810099,
+  "cultural_mask_fraction_of_lidar_domain": 0.20808680628869364,
+  "cultural_mask_catalogue_fault_rate": 0.006180726059407554,
+  "cultural_mask_sgmc_fault_rate": 0.0019158152275215745,
+  "catalogue_fault_depletion_ratio": 0.49670898517454487,
+  "components": {
+    "cultural_mask": {
+      "cells": 810099,
+      "fraction_of_lidar_domain": 0.20808680628869364,
+      "catalogue_fault_rate": 0.006180726059407554
+    },
+    "road_mask": {
+      "cells": 312736,
+      "fraction_of_lidar_domain": 0.08033121316221954,
+      "catalogue_fault_rate": 0.0063663921006855625
+    },
+    "canal_mask": {
+      "cells": 334079,
+      "fraction_of_lidar_domain": 0.08581350200175593,
+      "catalogue_fault_rate": 0.005166442667752238
+    },
+    "field_mask": {
+      "cells": 33602,
+      "fraction_of_lidar_domain": 0.00863120787078207,
+      "catalogue_fault_rate": 0.007231712398071543
+    },
+    "claim_mask": {
+      "cells": 415758,
+      "fraction_of_lidar_domain": 0.10679405160230378,
+      "catalogue_fault_rate": 0.006032355360570332
+    }
+  },
+  "leakage_canary_max_directional_auc": 0.5948510430496051,
+  "leakage_canary_pass": true
+}

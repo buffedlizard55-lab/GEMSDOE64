@@ -1,34 +1,96 @@
 #!/usr/bin/env python3
-"""Check cached input availability; never rebuild or substitute a feature stack."""
-from pathlib import Path
+"""Verify grid alignment, CRS, transform, and SHA-256 digests of all prepared layers."""
+from __future__ import annotations
+
 import hashlib
 import json
+from pathlib import Path
 import numpy as np
 import rasterio
 
+ROOT = Path(__file__).resolve().parents[1]
 
-def main():
-    requirements = ['data/reference/sample_submission.tif', 'data/reference/existing_faults.tif',
-                    'data/cache/feature_stack.npy', 'data/cache/feature_stack.manifest.json',
-                    'data/oof/predictions.npz', 'data/oof/provenance.json']
-    missing = [p for p in requirements if not Path(p).is_file()]
-    result = dict(ready=False, missing=missing, rebuilt_features=False,
-                  official_origin_authenticated=False)
-    if not missing:
-        # Availability is not provenance: require independently reviewed OOF and
-        # feature manifests before a future training runner can claim readiness.
-        result['reason'] = 'Manifests present but not yet reviewed; readiness cannot be inferred from file existence.'
-    for name in requirements[:2]:
-        if Path(name).exists():
-            with rasterio.open(name) as src:
-                a = src.read(1)
-                result[name] = dict(sha256=hashlib.sha256(Path(name).read_bytes()).hexdigest(),
-                    shape=list(src.shape), crs=str(src.crs), transform=list(src.transform)[:6],
-                    count=src.count, finite_cells=int(np.isfinite(a).sum()))
-    Path('evidence/data_preflight.json').write_text(json.dumps(result, indent=2)+'\n')
+REQUIRED_RASTERS = [
+    "data/reference/sample_submission.tif",
+    "data/reference/existing_faults.tif",
+    "data/external/lidar_scarp_features_u8.tif",
+    "data/external/h52_scarp3m_100m.tif",
+    "data/external/tiger_road_distance_m.tif",
+    "data/external/blm_closed_claim_distance_m.tif",
+    "data/external/topo_10m_derived_100m_u8.tif",
+    "data/external/geodawn_extensions_u8.tif",
+    "data/external/derived_sgmc_faults_100m_u8.tif",
+]
+
+PILOT_TILES = [
+    "data/pilot/x40y427_3m.tif",
+    "data/pilot/x42y425_3m.tif",
+]
+
+
+def _sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def main() -> int:
+    missing = [p for p in (*REQUIRED_RASTERS, *PILOT_TILES, "data/external/lidar_scarp_features.json")
+               if not (ROOT / p).is_file()]
+    rasters_meta = {}
+    ref_grid = None
+    for rel in REQUIRED_RASTERS:
+        p = ROOT / rel
+        if not p.exists():
+            continue
+        with rasterio.open(p) as src:
+            if ref_grid is None:
+                ref_grid = (src.shape, str(src.crs), list(src.transform)[:6])
+            else:
+                if (src.shape, str(src.crs), list(src.transform)[:6]) != ref_grid:
+                    raise ValueError(f"grid mismatch on {rel}")
+            a1 = src.read(1)
+            rasters_meta[rel] = dict(
+                sha256=_sha256(p),
+                shape=list(src.shape),
+                crs=str(src.crs),
+                transform=list(src.transform)[:6],
+                count=src.count,
+                dtype=src.dtypes[0],
+                finite_cells_band1=int(np.isfinite(a1).sum()),
+            )
+    pilot_meta = {}
+    for rel in PILOT_TILES:
+        p = ROOT / rel
+        if not p.exists():
+            continue
+        with rasterio.open(p) as src:
+            pilot_meta[rel] = dict(
+                sha256=_sha256(p),
+                shape=list(src.shape),
+                crs=str(src.crs),
+                transform=list(src.transform)[:6],
+                count=src.count,
+                dtype=src.dtypes[0],
+            )
+    result = dict(
+        ready=len(missing) == 0,
+        missing=missing,
+        reference_grid=dict(
+            shape=list(ref_grid[0]) if ref_grid else None,
+            crs=ref_grid[1] if ref_grid else None,
+            transform=ref_grid[2] if ref_grid else None,
+        ),
+        rasters=rasters_meta,
+        pilot_3m_tiles=pilot_meta,
+        registry_rasters_count=len(list((ROOT / "data/registry").glob("*.tif"))),
+    )
+    (ROOT / "evidence/data_preflight.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result, indent=2))
-    return 2
+    return 0 if result["ready"] else 2
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

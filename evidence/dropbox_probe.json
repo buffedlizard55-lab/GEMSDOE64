@@ -1,0 +1,17 @@
+{
+  "train_zip": {
+    "url": "https://www.dropbox.com/scl/fi/ef391003c325782d937e5/train.zip?dl=1",
+    "reachable": false,
+    "error": "<urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+  },
+  "test_zip": {
+    "url": "https://www.dropbox.com/scl/fi/b3315100f87219129c97e/test.zip?dl=1",
+    "reachable": false,
+    "error": "<urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+  },
+  "example_submission_tif": {
+    "url": "https://www.dropbox.com/scl/fi/eb1071055b70c7f206c30/example_submission.tif?dl=1",
+    "reachable": false,
+    "error": "<urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+  }
+}

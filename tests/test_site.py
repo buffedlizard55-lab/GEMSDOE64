@@ -7,7 +7,8 @@ def test_no_broken_links_or_unsafe_downloads():
     mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
     result = mod.check()
     assert result['ok'], result['problems']
-    assert result['approved_tiff_links'] == 0
+    assert result['approved_tiff_links'] >= 4
+    assert result['production_tiffs'] == 2
 
 
 def test_site_data_are_not_gitignored():
