@@ -1,3 +1,5 @@
+> **Historical parallel-session snapshot from PR #1.** Preserved, not independently re-verified by this session. Some availability statements are superseded. See the [current README](../README.md) and [current run card](../evidence/run_card.json).
+
 # Score and artifact provenance review
 
 **Review date: 2026-10-11.** This is a provenance audit, not leaderboard monitoring. No current leaderboard value is mirrored here; DrivenData's [Terms of Use](https://www.drivendata.org/termsofuse/) restrict monitoring/copying absent prior written consent. Use the official challenge directly for current information, subject to those terms.

@@ -1,3 +1,5 @@
+> **Historical parallel-session snapshot from PR #1.** Preserved, not independently re-verified by this session. Some availability statements are superseded. See the [current README](../README.md) and [current run card](../evidence/run_card.json).
+
 # Limitations, blockers, and next steps
 
 **Status: NOT CLEARED.** This is the evidence boundary for the current checkout, reviewed 2026-10-11. A missing value below is not zero and is not an implied pass.

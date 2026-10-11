@@ -135,5 +135,8 @@
     "classification": "Neither HOLDOUT-DTI nor ORGANIZER-CONFIRMED in this project.",
     "leaderboard_feed": "NOT_BUILT; automated/manual mirroring excluded absent prior written permission."
   },
-  "next_action": "Restore or mount the shared template, authorized inputs and complete registry. Then run the synthetic probe, feature-alone leakage canaries, and preregistered buffered spatial holdout; keep the site NOT CLEARED unless every gate passes."
+  "next_action": "Restore or mount the shared template, authorized inputs and complete registry. Then run the synthetic probe, feature-alone leakage canaries, and preregistered buffered spatial holdout; keep the site NOT CLEARED unless every gate passes.",
+  "historical_parallel_session": true,
+  "superseded_by": "evidence/run_card.json",
+  "integration_note": "Preserved from PR #1. Availability/access statements are historical, not the current checkout state."
 }

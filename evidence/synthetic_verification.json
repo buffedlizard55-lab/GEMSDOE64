@@ -1,0 +1,129 @@
+{
+  "evidence_class": "SYNTHETIC-UNIT-TEST-NOT-HOLDOUT",
+  "seed": 64011,
+  "plugin_rule": {
+    "probability_vectors": 200,
+    "exhaustive_subsets_per_vector": 256,
+    "addition_comparisons": 204800,
+    "errors": 0,
+    "optimum_threshold_errors": 0
+  },
+  "finite_expectation_counterexample": {
+    "probabilities": [
+      0.05456757328649702,
+      0.025670452829388908,
+      0.16930981399301093,
+      0.1893426949429906
+    ],
+    "selected": [
+      false,
+      false,
+      true,
+      true
+    ],
+    "added_pixel": 0,
+    "exact_expected_before": 0.26897703870434053,
+    "exact_expected_gain": -0.002312592055829954,
+    "probability_bar": 0.053795407740868106,
+    "candidate_probability": 0.05456757328649702,
+    "conclusion": "Probability > alpha * expected score is NOT an exact finite-raster expectation rule."
+  },
+  "kernel_selector": {
+    "truth_draws": 32,
+    "candidates": 12,
+    "selected": 12,
+    "exact_mean_synthetic_dti": 0.6646433053397716,
+    "synthetic_spacing_control_mean": 0.38937282736023815,
+    "oracle_absolute_error": 0.0,
+    "max_remaining_add_gain": 0.0,
+    "max_remaining_remove_gain": -0.0027492348478707074,
+    "additions": [
+      {
+        "pixel": [
+          5,
+          6
+        ],
+        "gain": 0.30474644463595757
+      },
+      {
+        "pixel": [
+          7,
+          6
+        ],
+        "gain": 0.1477935592961584
+      },
+      {
+        "pixel": [
+          3,
+          6
+        ],
+        "gain": 0.05124717688591868
+      },
+      {
+        "pixel": [
+          9,
+          6
+        ],
+        "gain": 0.048863202778942405
+      },
+      {
+        "pixel": [
+          5,
+          4
+        ],
+        "gain": 0.034799623856680895
+      },
+      {
+        "pixel": [
+          5,
+          8
+        ],
+        "gain": 0.025840665968064558
+      },
+      {
+        "pixel": [
+          7,
+          4
+        ],
+        "gain": 0.019149435896923195
+      },
+      {
+        "pixel": [
+          7,
+          8
+        ],
+        "gain": 0.013143117717856367
+      },
+      {
+        "pixel": [
+          3,
+          4
+        ],
+        "gain": 0.006872569103300363
+      },
+      {
+        "pixel": [
+          9,
+          4
+        ],
+        "gain": 0.006720619473396416
+      },
+      {
+        "pixel": [
+          3,
+          8
+        ],
+        "gain": 0.002717654878702014
+      },
+      {
+        "pixel": [
+          9,
+          8
+        ],
+        "gain": 0.0027492348478707074
+      }
+    ],
+    "removals": []
+  },
+  "competition_inference": "None. No holdout, no calibration claim, no promotion evidence."
+}

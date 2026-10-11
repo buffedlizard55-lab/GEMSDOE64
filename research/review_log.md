@@ -1,3 +1,5 @@
+> **Historical parallel-session snapshot from PR #1.** Preserved, not independently re-verified by this session. Some availability statements are superseded. See the [current README](../README.md) and [current run card](../evidence/run_card.json).
+
 # Review log
 
 Reviewed in three passes on 2026-10-11 while building the site incrementally. This log records both successes and unresolved shortfalls; it is not a claim of competition validation.
