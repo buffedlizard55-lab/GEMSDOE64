@@ -35,7 +35,8 @@
       "Four site pages pass local file/fragment checks",
       "No production TIFF or ZIP in docs",
       "Python compilation and git whitespace checks pass",
-      "Narrowed root data ignore rule so deployed JSON evidence is tracked; regression test added"
+      "Narrowed root data ignore rule so deployed JSON evidence is tracked; regression test added",
+      "Documented receipt-only feature/sample footprint discrepancy without attributing the prior upload error"
     ],
     "unmet_requirements": [
       "No eligible unique production TIFF: mandatory stop gate makes that impossible under the current literal protocol",
@@ -53,6 +54,7 @@
       "upstream_commit": "bf878b6",
       "preserved": "Root research/site artifacts labeled historical; original README archived; current docs site/run card authoritative",
       "checks": "Preserved synthetic probe rerun; current tests and site guards rerun"
-    }
+    },
+    "deployment_verified": "https://github.com/buffedlizard55-lab/GEMSDOE64/actions/runs/38171932984"
   }
 }
