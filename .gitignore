@@ -1,25 +1,20 @@
-# ---- derived caches: large, reproducible, never committed -------------------------------
-# field_cache.npz is ~56 MB and Xs.f32 is ~980 MB; both are rebuilt by scripts/build_field.py
-# and scripts/emit_and_ship.py from the hash-pinned official rasters.
-data/processed/
-data/raw/
-data/external/
+# Competition data, caches, and local-only model outputs are not committed.
+/data/*
+!/data/README.md
+!/data/bridge/
 
-# ---- python ----------------------------------------------------------------------------
+# Local Python/test/build artifacts.
+.venv/
 __pycache__/
+.pytest_cache/
+.cache/
 *.py[cod]
 *.egg-info/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.venv/
-venv/
+build/
+dist/
+work/
 
-# ---- editors / os ----------------------------------------------------------------------
-.DS_Store
-.idea/
-.vscode/
-*.swp
-
-# ---- logs ------------------------------------------------------------------------------
-*.log
+# Lane-64 experiment scratch (large rasters, surfaces, logs)
+evidence/*.npz
+evidence/*.npy
+evidence/e2_run.log

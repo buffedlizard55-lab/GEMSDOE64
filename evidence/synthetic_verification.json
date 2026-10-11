@@ -1,0 +1,94 @@
+{
+  "evidence_class": "SYNTHETIC-UNIT-TEST-NOT-HOLDOUT",
+  "seed": 64011,
+  "plugin_rule": {
+    "probability_vectors": 200,
+    "exhaustive_subsets_per_vector": 256,
+    "addition_comparisons": 204800,
+    "errors": 0,
+    "optimum_threshold_errors": 0
+  },
+  "finite_expectation_counterexample": {
+    "probabilities": [
+      0.05456757328649702,
+      0.025670452829388908,
+      0.16930981399301093,
+      0.1893426949429906
+    ],
+    "selected": [
+      false,
+      false,
+      true,
+      true
+    ],
+    "added_pixel": 0,
+    "exact_expected_before": 0.26897703870434053,
+    "exact_expected_gain": -0.002312592055829954,
+    "probability_bar": 0.053795407740868106,
+    "candidate_probability": 0.05456757328649702,
+    "conclusion": "Probability > alpha * expected score is NOT an exact finite-raster expectation rule."
+  },
+  "kernel_selector": {
+    "truth_draws": 32,
+    "candidates": 12,
+    "selected": 7,
+    "exact_mean_synthetic_dti": 0.6827484854433166,
+    "synthetic_spacing_control_mean": 0.45938920354158536,
+    "oracle_absolute_error": 0.0,
+    "max_remaining_add_gain": -0.002627966582657626,
+    "max_remaining_remove_gain": -0.0027845798297851942,
+    "additions": [
+      {
+        "pixel": [
+          5,
+          6
+        ],
+        "gain": 0.3554809179990002
+      },
+      {
+        "pixel": [
+          9,
+          6
+        ],
+        "gain": 0.17190392313919517
+      },
+      {
+        "pixel": [
+          3,
+          6
+        ],
+        "gain": 0.06302409421936073
+      },
+      {
+        "pixel": [
+          7,
+          6
+        ],
+        "gain": 0.046825783186884684
+      },
+      {
+        "pixel": [
+          7,
+          8
+        ],
+        "gain": 0.026178110578679137
+      },
+      {
+        "pixel": [
+          5,
+          4
+        ],
+        "gain": 0.01655107649041143
+      },
+      {
+        "pixel": [
+          5,
+          8
+        ],
+        "gain": 0.0027845798297851942
+      }
+    ],
+    "removals": []
+  },
+  "competition_inference": "None. No holdout, no calibration claim, no promotion evidence."
+}

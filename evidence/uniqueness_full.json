@@ -1,0 +1,519 @@
+{
+  "candidate": "docs/downloads/gems64-h64-dtiopt-greedy-prune-calibrated-20261011T212556Z-54be1965c2f8-zeros.tif",
+  "candidate_sha256": "a8c5fa733053c6f98bbe859ec95c429c5632f2b4ff30a955846de71196990a82",
+  "registry_dir": "/home/user/prior/60GEMSDOE-main/registry",
+  "indexed_records": 19,
+  "directory_derived_records": 43,
+  "scanned": 62,
+  "registry_rasters_checked": 62,
+  "missing_or_invalid": 0,
+  "max_abs_spearman_full_footprint": 0.040309644794807246,
+  "worst_spearman_submission": "calib_h25ctx_01280",
+  "max_dot_overlap_3px": 0.9986898319567075,
+  "worst_overlap_submission": "calib_r13lattice_00904",
+  "worst_jaccard_dot_sets": 0.025083015202511917,
+  "byte_unique": true,
+  "pixel_unique": true,
+  "duplicate_count": 4,
+  "shared_verdict": "negative",
+  "lane_rule": "rho>0.90 or 3px dot overlap>0.70 => duplicate, stop",
+  "lane_passed": false,
+  "rows": [
+    {
+      "submission": "calib_r13lattice_00904",
+      "spearman_full_footprint": 0.00047528622003590443,
+      "my_dots_within_3px_of_theirs": 0.9986898319567075,
+      "their_dots_within_3px_of_mine": 0.15730201309843156,
+      "jaccard_dot_sets": 0.008379855712637382,
+      "error": null
+    },
+    {
+      "submission": "r13_lattice_s5_00904",
+      "spearman_full_footprint": 0.00047528622003590443,
+      "my_dots_within_3px_of_theirs": 0.9986898319567075,
+      "their_dots_within_3px_of_mine": 0.15730201309843156,
+      "jaccard_dot_sets": 0.008379855712637382,
+      "error": null
+    },
+    {
+      "submission": "r11_greedy_mp",
+      "spearman_full_footprint": -0.005469720635404364,
+      "my_dots_within_3px_of_theirs": 0.8281781069021171,
+      "their_dots_within_3px_of_mine": 0.1726204219854647,
+      "jaccard_dot_sets": 0.0066363197803149315,
+      "error": null
+    },
+    {
+      "submission": "r14_union_tips10_lat6",
+      "spearman_full_footprint": 0.01731572482850816,
+      "my_dots_within_3px_of_theirs": 0.8158359441754486,
+      "their_dots_within_3px_of_mine": 0.2853702056380084,
+      "jaccard_dot_sets": 0.015171864895786698,
+      "error": null
+    },
+    {
+      "submission": "calib_h25ctx_01280",
+      "spearman_full_footprint": 0.040309644794807246,
+      "my_dots_within_3px_of_theirs": 0.6644640653185228,
+      "their_dots_within_3px_of_mine": 0.38816635290876533,
+      "jaccard_dot_sets": 0.025083015202511917,
+      "error": null
+    },
+    {
+      "submission": "calib_h28ridge_01839",
+      "spearman_full_footprint": 0.021709949375403118,
+      "my_dots_within_3px_of_theirs": 0.6411848476217602,
+      "their_dots_within_3px_of_mine": 0.35383438460761246,
+      "jaccard_dot_sets": 0.01669112252384446,
+      "error": null
+    },
+    {
+      "submission": "calib_hedgev2_01563_sample",
+      "spearman_full_footprint": 0.014137174632899128,
+      "my_dots_within_3px_of_theirs": 0.5169847147061616,
+      "their_dots_within_3px_of_mine": 0.26272598205769493,
+      "jaccard_dot_sets": 0.013837625023521068,
+      "error": null
+    },
+    {
+      "submission": "hedge_v2_01563",
+      "spearman_full_footprint": 0.014137174632899128,
+      "my_dots_within_3px_of_theirs": 0.5169847147061616,
+      "their_dots_within_3px_of_mine": 0.26272598205769493,
+      "jaccard_dot_sets": 0.013837625023521068,
+      "error": null
+    },
+    {
+      "submission": "calib_h161_01855",
+      "spearman_full_footprint": 0.03049830035068211,
+      "my_dots_within_3px_of_theirs": 0.3863096933447261,
+      "their_dots_within_3px_of_mine": 0.30762713915716605,
+      "jaccard_dot_sets": 0.02131055580936739,
+      "error": null
+    },
+    {
+      "submission": "h19-4-multiline-corroborated",
+      "spearman_full_footprint": 0.0296938031326124,
+      "my_dots_within_3px_of_theirs": 0.3826640083546948,
+      "their_dots_within_3px_of_mine": 0.30774202409132406,
+      "jaccard_dot_sets": 0.020934350155647877,
+      "error": null
+    },
+    {
+      "submission": "calib_h194_01894",
+      "spearman_full_footprint": 0.0296938031326124,
+      "my_dots_within_3px_of_theirs": 0.3826640083546948,
+      "their_dots_within_3px_of_mine": 0.30774202409132406,
+      "jaccard_dot_sets": 0.020934350155647877,
+      "error": null
+    },
+    {
+      "submission": "h19-5-powerlaw-budget-multiline",
+      "spearman_full_footprint": 0.029715684626832498,
+      "my_dots_within_3px_of_theirs": 0.3730181334852369,
+      "their_dots_within_3px_of_mine": 0.31027565198008766,
+      "jaccard_dot_sets": 0.020960124068895834,
+      "error": null
+    },
+    {
+      "submission": "calib_h195_01922",
+      "spearman_full_footprint": 0.029715684626832498,
+      "my_dots_within_3px_of_theirs": 0.3730181334852369,
+      "their_dots_within_3px_of_mine": 0.31027565198008766,
+      "jaccard_dot_sets": 0.020960124068895834,
+      "error": null
+    },
+    {
+      "submission": "topo-gap-closure-t-v2-on-d1-5",
+      "spearman_full_footprint": 0.02010425053019438,
+      "my_dots_within_3px_of_theirs": 0.36996107471755435,
+      "their_dots_within_3px_of_mine": 0.30889642577615445,
+      "jaccard_dot_sets": 0.015636415474260056,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32a-dip-projected-step-46090-20261004T183200Z-838fcd84-nan",
+      "spearman_full_footprint": 0.0162357545889092,
+      "my_dots_within_3px_of_theirs": 0.3508212285198899,
+      "their_dots_within_3px_of_mine": 0.29772184855717077,
+      "jaccard_dot_sets": 0.012944519093678521,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32a-dip-projected-step-46090-20261004T183200Z-838fcd84-zeros",
+      "spearman_full_footprint": 0.0162357545889092,
+      "my_dots_within_3px_of_theirs": 0.3508212285198899,
+      "their_dots_within_3px_of_mine": 0.29772184855717077,
+      "jaccard_dot_sets": 0.012944519093678521,
+      "error": null
+    },
+    {
+      "submission": "h25-1-dotted-h19-5-d1-5",
+      "spearman_full_footprint": 0.019661197834977592,
+      "my_dots_within_3px_of_theirs": 0.34937814487800245,
+      "their_dots_within_3px_of_mine": 0.30060430504919344,
+      "jaccard_dot_sets": 0.015365493389055013,
+      "error": null
+    },
+    {
+      "submission": "calib_d15_02477",
+      "spearman_full_footprint": 0.019661197834977592,
+      "my_dots_within_3px_of_theirs": 0.34937814487800245,
+      "their_dots_within_3px_of_mine": 0.30060430504919344,
+      "jaccard_dot_sets": 0.015365493389055013,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32d-submodular-multipysics-46090-20261004T183200Z-4de30601-nan",
+      "spearman_full_footprint": 0.016174275579966504,
+      "my_dots_within_3px_of_theirs": 0.3453716889774993,
+      "their_dots_within_3px_of_mine": 0.2942069863310913,
+      "jaccard_dot_sets": 0.012913350291294002,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32d-submodular-multipysics-46090-20261004T183200Z-4de30601-zeros",
+      "spearman_full_footprint": 0.016174275579966504,
+      "my_dots_within_3px_of_theirs": 0.3453716889774993,
+      "their_dots_within_3px_of_mine": 0.2942069863310913,
+      "jaccard_dot_sets": 0.012913350291294002,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32c-mt-claycap-breach-45890-20261004T183200Z-a5963d0a-nan",
+      "spearman_full_footprint": 0.016004582348775075,
+      "my_dots_within_3px_of_theirs": 0.3415361245609038,
+      "their_dots_within_3px_of_mine": 0.2939638265417302,
+      "jaccard_dot_sets": 0.01281497924117236,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32c-mt-claycap-breach-45890-20261004T183200Z-a5963d0a-zeros",
+      "spearman_full_footprint": 0.016004582348775075,
+      "my_dots_within_3px_of_theirs": 0.3415361245609038,
+      "their_dots_within_3px_of_mine": 0.2939638265417302,
+      "jaccard_dot_sets": 0.01281497924117236,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32b-transtensional-swarm-45890-20261004T183200Z-27b7c9e6-nan",
+      "spearman_full_footprint": 0.01604565676919863,
+      "my_dots_within_3px_of_theirs": 0.34007405297636,
+      "their_dots_within_3px_of_mine": 0.29180649378949663,
+      "jaccard_dot_sets": 0.012835796353770579,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32b-transtensional-swarm-45890-20261004T183200Z-27b7c9e6-zeros",
+      "spearman_full_footprint": 0.01604565676919863,
+      "my_dots_within_3px_of_theirs": 0.34007405297636,
+      "their_dots_within_3px_of_mine": 0.29180649378949663,
+      "jaccard_dot_sets": 0.012835796353770579,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32d-equalbudget-44090-20261004T183200Z-350cdc3f-nan",
+      "spearman_full_footprint": 0.01612289188327614,
+      "my_dots_within_3px_of_theirs": 0.3347384410899079,
+      "their_dots_within_3px_of_mine": 0.29464731231571784,
+      "jaccard_dot_sets": 0.012759588008708758,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h32d-equalbudget-44090-20261004T183200Z-350cdc3f-zeros",
+      "spearman_full_footprint": 0.01612289188327614,
+      "my_dots_within_3px_of_theirs": 0.3347384410899079,
+      "their_dots_within_3px_of_mine": 0.29464731231571784,
+      "jaccard_dot_sets": 0.012759588008708758,
+      "error": null
+    },
+    {
+      "submission": "gems32-probe-S3-NULLADD-2000px",
+      "spearman_full_footprint": 0.015600471496501329,
+      "my_dots_within_3px_of_theirs": 0.33435868223677967,
+      "their_dots_within_3px_of_mine": 0.28502929051855064,
+      "jaccard_dot_sets": 0.012622533940363398,
+      "error": null
+    },
+    {
+      "submission": "d28-poisson300m-offcat-44090",
+      "spearman_full_footprint": 0.016374274572905204,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "dotted-h19-5-d2-8",
+      "spearman_full_footprint": 0.016374274572905204,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "dotted_d2_8_02600",
+      "spearman_full_footprint": 0.016374274572905204,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "gems25-dotted-h19-5-d2-8-20261002-e56ea318af89-nan",
+      "spearman_full_footprint": 0.016374274572905204,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "gems25-dotted-h19-5-d2-8-20261002-e56ea318af89-zeros",
+      "spearman_full_footprint": 0.016374274572905204,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "gems32-probe-S1-ANCHOR-identical-to-live-02600",
+      "spearman_full_footprint": 0.016374274572905204,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "gems32-probe-S2-SCALE-lambda-0.5",
+      "spearman_full_footprint": 0.016374274572905367,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-d28-ref02600-repro-44090-20261004T183200Z-426073b6-nan",
+      "spearman_full_footprint": 0.016374274572905204,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-d28-ref02600-repro-44090-20261004T183200Z-426073b6-zeros",
+      "spearman_full_footprint": 0.016374274572905204,
+      "my_dots_within_3px_of_theirs": 0.33433969429412325,
+      "their_dots_within_3px_of_mine": 0.2979360399183488,
+      "jaccard_dot_sets": 0.012886813785017378,
+      "error": null
+    },
+    {
+      "submission": "wormrank-d28",
+      "spearman_full_footprint": 0.013208504847970582,
+      "my_dots_within_3px_of_theirs": 0.3321750688312921,
+      "their_dots_within_3px_of_mine": 0.29732933378489523,
+      "jaccard_dot_sets": 0.011100235557324327,
+      "error": null
+    },
+    {
+      "submission": "faultzone-anatomy-60000px-20261009T054251Z (this repo, superseded)",
+      "spearman_full_footprint": 0.02750873299561166,
+      "my_dots_within_3px_of_theirs": 0.3295547327447071,
+      "their_dots_within_3px_of_mine": 0.4975,
+      "jaccard_dot_sets": 0.01937135825703015,
+      "error": null
+    },
+    {
+      "submission": "h32-1-prethin-tip-euler-d2-8",
+      "spearman_full_footprint": 0.01584512295564034,
+      "my_dots_within_3px_of_theirs": 0.3249596506218551,
+      "their_dots_within_3px_of_mine": 0.3043457700855913,
+      "jaccard_dot_sets": 0.01249640142023948,
+      "error": null
+    },
+    {
+      "submission": "h33d-analog-tip-stepover-r30",
+      "spearman_full_footprint": 0.016019409119239426,
+      "my_dots_within_3px_of_theirs": 0.32456090382607045,
+      "their_dots_within_3px_of_mine": 0.3057446554401051,
+      "jaccard_dot_sets": 0.01255382506051972,
+      "error": null
+    },
+    {
+      "submission": "tip_stepover_r30_02632",
+      "spearman_full_footprint": 0.016019409119239426,
+      "my_dots_within_3px_of_theirs": 0.32456090382607045,
+      "their_dots_within_3px_of_mine": 0.3057446554401051,
+      "jaccard_dot_sets": 0.01255382506051972,
+      "error": null
+    },
+    {
+      "submission": "gems32-lazygreedy-maxcov-44090-supconfined-zeros",
+      "spearman_full_footprint": 0.016709451492410626,
+      "my_dots_within_3px_of_theirs": 0.32382037406247033,
+      "their_dots_within_3px_of_mine": 0.3020866409616693,
+      "jaccard_dot_sets": 0.013056497884993927,
+      "error": null
+    },
+    {
+      "submission": "h27-4-r1-solo-d2-8",
+      "spearman_full_footprint": 0.015182563247636902,
+      "my_dots_within_3px_of_theirs": 0.3118389822462736,
+      "their_dots_within_3px_of_mine": 0.3055797407895719,
+      "jaccard_dot_sets": 0.012009328480198775,
+      "error": null
+    },
+    {
+      "submission": "dotted_d2_8_02708",
+      "spearman_full_footprint": 0.015182563247636902,
+      "my_dots_within_3px_of_theirs": 0.3118389822462736,
+      "their_dots_within_3px_of_mine": 0.3055797407895719,
+      "jaccard_dot_sets": 0.012009328480198775,
+      "error": null
+    },
+    {
+      "submission": "h38-1-hf-euler-r30-r1",
+      "spearman_full_footprint": 0.015140273268761458,
+      "my_dots_within_3px_of_theirs": 0.3087439475932783,
+      "their_dots_within_3px_of_mine": 0.3049920760697306,
+      "jaccard_dot_sets": 0.011802970861415686,
+      "error": null
+    },
+    {
+      "submission": "h36-1-rung30-blind-r1",
+      "spearman_full_footprint": 0.015045082123446959,
+      "my_dots_within_3px_of_theirs": 0.30555397322700084,
+      "their_dots_within_3px_of_mine": 0.3039830058417419,
+      "jaccard_dot_sets": 0.011738745701580474,
+      "error": null
+    },
+    {
+      "submission": "anderson-geothermal-pinn-38854",
+      "spearman_full_footprint": 0.014363979308145893,
+      "my_dots_within_3px_of_theirs": 0.2960600018987943,
+      "their_dots_within_3px_of_mine": 0.3014618829464148,
+      "jaccard_dot_sets": 0.011494379911360647,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h33-h33-2b2-plus-h33-1-20261004T220000Z-31588dc7-nan",
+      "spearman_full_footprint": 0.013995212167152021,
+      "my_dots_within_3px_of_theirs": 0.28990790847811637,
+      "their_dots_within_3px_of_mine": 0.29483322093686776,
+      "jaccard_dot_sets": 0.011285905921220385,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h33-h33-2b2-plus-h33-1-20261004T220000Z-31588dc7-zeros",
+      "spearman_full_footprint": 0.013995212167152021,
+      "my_dots_within_3px_of_theirs": 0.28990790847811637,
+      "their_dots_within_3px_of_mine": 0.29483322093686776,
+      "jaccard_dot_sets": 0.011285905921220385,
+      "error": null
+    },
+    {
+      "submission": "h33-h33-2-b2 (best known, 0.2778)",
+      "spearman_full_footprint": 0.014345381496546503,
+      "my_dots_within_3px_of_theirs": 0.2892243425424855,
+      "their_dots_within_3px_of_mine": 0.30089764699633503,
+      "jaccard_dot_sets": 0.011388322769926766,
+      "error": null
+    },
+    {
+      "submission": "dotted_b2_prune_02778",
+      "spearman_full_footprint": 0.014345381496546503,
+      "my_dots_within_3px_of_theirs": 0.2892243425424855,
+      "their_dots_within_3px_of_mine": 0.30089764699633503,
+      "jaccard_dot_sets": 0.011388322769926766,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-nan",
+      "spearman_full_footprint": 0.014345381496546503,
+      "my_dots_within_3px_of_theirs": 0.2892243425424855,
+      "their_dots_within_3px_of_mine": 0.30089764699633503,
+      "jaccard_dot_sets": 0.011388322769926766,
+      "error": null
+    },
+    {
+      "submission": "gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros",
+      "spearman_full_footprint": 0.014345381496546503,
+      "my_dots_within_3px_of_theirs": 0.2892243425424855,
+      "their_dots_within_3px_of_mine": 0.30089764699633503,
+      "jaccard_dot_sets": 0.011388322769926766,
+      "error": null
+    },
+    {
+      "submission": "h52_coincidence8_80k",
+      "spearman_full_footprint": 0.0005720326823608934,
+      "my_dots_within_3px_of_theirs": 0.2651096553688408,
+      "their_dots_within_3px_of_mine": 0.172775,
+      "jaccard_dot_sets": 0.006463702366230948,
+      "error": null
+    },
+    {
+      "submission": "h57r2-shipped8-all-flank0-20261009T180433Z (this repo, session-2 ship, HOLDOUT-DTI 0.3270)",
+      "spearman_full_footprint": 0.03439128089980186,
+      "my_dots_within_3px_of_theirs": 0.23567834425140036,
+      "their_dots_within_3px_of_mine": 0.670725,
+      "jaccard_dot_sets": 0.02174368473862371,
+      "error": null
+    },
+    {
+      "submission": "gate_ortho_w0.25-40k",
+      "spearman_full_footprint": 0.006470689424097342,
+      "my_dots_within_3px_of_theirs": 0.2286717934111839,
+      "their_dots_within_3px_of_mine": 0.2471,
+      "jaccard_dot_sets": 0.007633504779095941,
+      "error": null
+    },
+    {
+      "submission": "gems32-bayesopt-dilation-scarp-d28-20261004-nan",
+      "spearman_full_footprint": -0.0017135910286380758,
+      "my_dots_within_3px_of_theirs": 0.1925187505933732,
+      "their_dots_within_3px_of_mine": 0.16491111111111112,
+      "jaccard_dot_sets": 0.0038647740237848062,
+      "error": null
+    },
+    {
+      "submission": "gems32-bayesopt-dilation-scarp-d28-20261004-zeros",
+      "spearman_full_footprint": -0.0017135910286380758,
+      "my_dots_within_3px_of_theirs": 0.1925187505933732,
+      "their_dots_within_3px_of_mine": 0.16491111111111112,
+      "jaccard_dot_sets": 0.0038647740237848062,
+      "error": null
+    },
+    {
+      "submission": "h60_officialstack_50k",
+      "spearman_full_footprint": -0.00197993816324656,
+      "my_dots_within_3px_of_theirs": 0.17529668660400646,
+      "their_dots_within_3px_of_mine": 0.1495,
+      "jaccard_dot_sets": 0.003999765294946018,
+      "error": null
+    },
+    {
+      "submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+      "spearman_full_footprint": 0.02620272270814729,
+      "my_dots_within_3px_of_theirs": 0.1605430551599734,
+      "their_dots_within_3px_of_mine": 0.6630825386944342,
+      "jaccard_dot_sets": 0.017116440335163248,
+      "error": null
+    },
+    {
+      "submission": "h60_union_d2_75308",
+      "spearman_full_footprint": -0.006954142094428248,
+      "my_dots_within_3px_of_theirs": 0.15368840786100826,
+      "their_dots_within_3px_of_mine": 0.07984543474796835,
+      "jaccard_dot_sets": 0.002624610225794826,
+      "error": null
+    },
+    {
+      "submission": "faultzone-anatomy-12000dots (parallel session, merged PR #1)",
+      "spearman_full_footprint": 0.004311072783205606,
+      "my_dots_within_3px_of_theirs": 0.02908952814962499,
+      "their_dots_within_3px_of_mine": 0.16616666666666666,
+      "jaccard_dot_sets": 0.003569488631954683,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,294 @@
+{
+ "run_id": "gems64-expecteddti-flank0.158-14k-20261011",
+ "hypothesis_id": "G64-EDTI-1",
+ "lane": "Expected-DTI-optimal selection: replace heuristic spacing with a decision rule on a calibrated surface (greedy add under the repo's exact kernel metric, then backward prune), gated against spacing by >2 block-bootstrap SEs",
+ "hypothesis": "Emission placement, not detection, is the binding constraint. For a Tversky-family score with alpha + beta = 1, adding a unit of mass at x raises the expected score when its kernel-weighted marginal gain exceeds alpha * DTI_optimal; for DTI (alpha = 0.2) that bar is ~0.06 at DTI 0.30. Because the 3-px kernel makes adjacent picks redundant, pixels must NOT be thresholded independently: greedily add the ridge-candidate pixel with the largest mean DTI gain under the exact kernel metric over an ensemble of >=32 plausible truth rasters, then prune backward until the marginal gain is <= 0. This beats fixed-spacing placement on the same surface by more than 2 block-bootstrap SEs.",
+ "mechanism": "DTI = TP_w / (alpha*(TP_w + S - M) + beta*K + eps) with alpha = 0.2, beta = 0.8, k(d) = max(1 - d/R, 0), R = 300 m = 3 px, TP_w = sum_g max_{x:d<=R} p(x)k(d), S = sum_x p(x), M = sum_x p(x)*kmax(x), K = |G|. dT is submodular (it is a max over covered truth cells), so lazy greedy (CELF) is exact; the marginal rule then says a non-redundant unit of mass is worth adding iff kappa > alpha*DTI. The ensemble is the raw-score-ranked field jittered by 1-2 px to give 32 plausible truth rasters, so the greedy optimises expected credit rather than credit against one guess. A live-calibrated catalogue-flank discount rho is applied inside 2 px of the published catalogue, replacing the family's hard buffer B in {1, 2} with a measured continuous one: cells in the flank band are still emittable if they clear the bar, but they must earn 1/rho times the credit.",
+ "named_non_fault_mimic": "Alluvial-fan toe and piedmont slope breaks, plus playa margins and stream-channel levees. These produce the same 100 m-scale gradient/curvature fabric as a blind fault scarp in GeoDAWN conductivity and DEM-derived layers, are not faults, and are not labelled. The leakage canary is the guard: any single feature reaching blocked AUC > 0.90 against the catalogue is treated as leakage until proven otherwise. All four catalogue-proximity features were flagged at 0.971-0.996 and quarantined; the 48 physical-only layers max at 0.7252 with 0 flagged, so the shipped surface cannot be reading the catalogue back.",
+ "evidence_class": "HOLDOUT-AUC (spatially blocked, buffered, out-of-fold) for the field; SELF-CONSISTENT OBJECTIVE for the gate (held-out truth draws, seed SEED+1 \u2014 a rule comparison, explicitly NOT a score estimate); ORGANIZER-CONFIRMED only for the 11 registry receipts used in the inversion, of which 0.2778 and 0.0512 are the two this lane treats as submission-page receipts; VERIFIED for the decision-rule checks. There is NO ORGANIZER-CONFIRMED number anywhere for this lane's own artifact, and no projection is written as a score.",
+ "evaluator_version": "gems64.metric (shared, from main) + gems64.lane_expecteddti.metricext adapters; kernel k(d)=max(1-d/R,0), R=300m=3px, ALPHA=0.2, BETA=0.8, EPS per metric.py; brute-force oracle dti_bruteforce agrees with the vectorised form to 7.1e-15",
+ "holdout_dti": {
+  "value": null,
+  "ci95": null,
+  "n_withheld_positives": 60988,
+  "why_null": "No non-degenerate HOLDOUT-DTI exists for this lane, and inventing one would violate the labelling protocol. The catalogue-truth arm is structurally null: with truth = the published catalogue and emission confined to the scored domain, TP_w ~ 0 for ANY placement, so DTI = 0 and z is meaningless. Scoring 0 there is the INTENDED behaviour, because the inversion measured a 6.3x credit depletion within 200 m of the catalogue. The honest holdout number this lane produced is an AUC, not a DTI, and it is reported as such below. Building a non-degenerate DTI arm requires per-group retraining with every catalogue-derived feature rebuilt from the visible remainder; that is remaining work item 2.",
+  "holdout_auc_pooled_blocked": 0.730077138133062,
+  "holdout_ap_pooled_blocked": 0.21894629914212932,
+  "holdout_prevalence": 0.12905164351038753,
+  "holdout_fold_auc_spread": 0.23163786746002202,
+  "holdout_per_fold_auc": [
+   0.7095360606845994,
+   0.6954920940958005,
+   0.8829313549485293,
+   0.6600281905428347,
+   0.8916660580028567
+  ],
+  "holdout_isotonic_brier_raw": 0.12320613116025925,
+  "holdout_isotonic_brier_calibrated": 0.10363051295280457,
+  "rule_gate_self_consistent_objective": {
+   "mean_dti_greedy": 0.9188330741247195,
+   "mean_dti_spacing": 0.5139412902250843,
+   "mean_point_diff": 0.4048917838996353,
+   "se": 0.025655590793861566,
+   "z": 15.965478683619786,
+   "ci95": [
+    0.3687474500221034,
+    0.4618866951531546
+   ],
+   "draws_positive": 32,
+   "n_draws": 32,
+   "held_out_draw_seed": 20261012,
+   "gate_threshold_z": 2.0,
+   "passed": true,
+   "label": "SELF-CONSISTENT OBJECTIVE (not a score estimate)",
+   "circularity_disclosure": "evaluation truth is a HELD-OUT draw set (seed SEED+1), so the greedy is not graded on its own optimisation target; what remains shared is the surface, so this arm tests the DECISION RULE and says nothing about whether the field is competitive"
+  }
+ },
+ "leakage_canary": {
+  "threshold_blocked_auc": 0.9,
+  "physical_layers": {
+   "n_features": 48,
+   "max_blocked_auc": 0.7251565542268308,
+   "n_flagged": [],
+   "verdict": "CLEARED"
+  },
+  "catalogue_derived_features": {
+   "per_feature": {
+    "cat_prox_e5": {
+     "signed_auc": 0.996370661282427,
+     "blocked_auc": 0.996370661282427,
+     "leakage_flag": true
+    },
+    "cat_prox_e15": {
+     "signed_auc": 0.996370661282427,
+     "blocked_auc": 0.996370661282427,
+     "leakage_flag": true
+    },
+    "cat_prox_inv3": {
+     "signed_auc": 0.9890316725698449,
+     "blocked_auc": 0.9890316725698449,
+     "leakage_flag": true
+    },
+    "cat_density_s6": {
+     "signed_auc": 0.9712724912032232,
+     "blocked_auc": 0.9712724912032232,
+     "leakage_flag": true
+    }
+   },
+   "n_flagged": [
+    "cat_density_s6",
+    "cat_prox_e15",
+    "cat_prox_e5",
+    "cat_prox_inv3"
+   ],
+   "verdict": "QUARANTINED \u2014 target WAS the feature source",
+   "artefact_audit_trail": "evidence/lane_expecteddti_exp3b_leaky_audit.json",
+   "note": "The first instrument reported pooled blocked AUC 0.9963 and hide-and-recover DTI 1.0000 in all four groups, with the emission reproducing the withheld positives exactly. Both are ARTEFACT, not results. The circularity is directionally harmful, not merely a statistical sin: the inversion showed the metric pays least exactly where catalogue proximity is highest, so a catalogue-proximity model peaks where the credit is absent."
+  }
+ },
+ "correlation_and_overlap_vs_registry": {
+  "n_compared": 63,
+  "worst_overlap_frac_3px": 0.012,
+  "worst_overlap_file": "gemsdoe49-xgrad-coupled-20261006T203447Z-nan.tif",
+  "overlap_limit": 0.7,
+  "worst_spearman": null,
+  "corr_limit": 0.9,
+  "n_spearman_usable": 0,
+  "spearman_note": "every compared registry raster is a binary dot field, so Spearman on the shared support is undefined; the operative LANE statistic is the 3 px dot-overlap fraction",
+  "duplicate": false,
+  "lane_certified": true,
+  "registry_roots_present": 4,
+  "registry_roots_missing": [],
+  "unverified_note": null,
+  "note": "The rank-correlation arm is reported as UNDEFINED, not as 0.000: every compared registry raster is a binary dot field, so all shared values are equal and Spearman is meaningless. An earlier version scored that as 1.000 and declared a duplicate against a raster with 0.012 overlap \u2014 a false positive that would have stopped the lane for no reason. The 3-px dot-overlap fraction is the operative LANE statistic."
+ },
+ "raster_sha256": "abc46d756dc437ea5a0bf8fe3160bfc8322ffe45b314a043669bc4cc89626681",
+ "raster_zeros_file": "gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-zeros.tif",
+ "raster_zeros_sha256": "abc46d756dc437ea5a0bf8fe3160bfc8322ffe45b314a043669bc4cc89626681",
+ "raster_zeros_bytes": 204538,
+ "raster_nan_file": "gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-nan.tif",
+ "raster_nan_sha256": "491fb1a9751034604ba8ce1937eb3a040d642299e43ccd118603d4c96f9494f8",
+ "raster_nan_bytes": 365741,
+ "validator_output": {
+  "tool": "gems64.validate (shared, from main) + assert_submittable",
+  "zeros": {
+   "file": "gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-zeros.tif",
+   "ok": true,
+   "sha256": "abc46d756dc437ea5a0bf8fe3160bfc8322ffe45b314a043669bc4cc89626681",
+   "bytes": 204538,
+   "n_positive": 14075,
+   "vmin": 0.0,
+   "vmax": 0.9999875426292419,
+   "nodata": null,
+   "crs": "EPSG:32611",
+   "shape": [
+    3730,
+    3292
+   ],
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "n_checks": 18,
+   "failed": [],
+   "on_catalogue_positive_pixels": 0,
+   "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance"
+  },
+  "nan": {
+   "file": "gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-nan.tif",
+   "ok": false,
+   "sha256": "491fb1a9751034604ba8ce1937eb3a040d642299e43ccd118603d4c96f9494f8",
+   "bytes": 365741,
+   "n_positive": 14075,
+   "vmin": 0.0,
+   "vmax": 0.9999875426292419,
+   "nodata": null,
+   "crs": "EPSG:32611",
+   "shape": [
+    3730,
+    3292
+   ],
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "n_checks": 18,
+   "failed": [
+    "no_nan_anywhere",
+    "outside_footprint_zero"
+   ],
+   "on_catalogue_positive_pixels": 0,
+   "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance"
+  },
+  "note": "The -zeros twin is the submittable one and passes assert_submittable. The -nan twin is published bit-identical INSIDE the footprint for comparison only; the shared validator correctly rejects it on no_nan_anywhere, which is the policy this repository adopted after measuring the range error. This lane originally shipped its own scripts/validate_submission.py; that private fork was dropped at merge time and the shared tool is called with the footprint and catalogue so its in-footprint and zero-dots-on-catalogue checks are exercised too."
+ },
+ "submission_name": "gems64-expecteddti-flank0158-14k",
+ "submission_note": "Expected-DTI-optimal greedy (a=0.2) on isotonic physical field, 32 jittered draws, live-calibrated 200m catalogue-flank discount rho=0.158",
+ "submission_note_chars": 138,
+ "surface_quality": {
+  "pct_saturated_raw_at_1": 1.9390625657877343,
+  "n_saturated_raw_at_1": 99016,
+  "n_candidates": 200000,
+  "candidate_raw_min": 0.9996947646141052,
+  "candidate_raw_max": 0.9999875426292419,
+  "n_distinct_raw_in_candidates": 4907,
+  "verdict": "SATURATED. The gradient-boosted field puts 99,016 scored-domain cells (1.94%) at raw score >= 0.9999, so the top 200,000 candidates span only 0.0003 of score range with 4,907 distinct values. Ranking INSIDE that plateau is decided by numpy's tie order, not by geology. The decision rule verified in Experiment 1 is exact, but it is being pointed at a surface that cannot discriminate where it matters. This, not the rule, is why the artifact must not be promoted.",
+  "consequence": "the emission inherits the arbitrariness: its distance-to-catalogue profile does not follow the field's own monotone distance signal",
+  "n_emitted": 14075,
+  "pruned": 0,
+  "rho_flank": 0.15753424657534246,
+  "K_hidden": 10000,
+  "n_draws": 32
+ },
+ "live_anchored_inversion": {
+  "controlled_pair": {
+   "parent": "h27-4-r1-solo-d2-8",
+   "parent_live_dti": 0.2708,
+   "child": "h33-2-b2",
+   "child_live_dti": 0.2778,
+   "removed_dots": 2545,
+   "S_parent_measured": 37654.0,
+   "credit_per_dot_by_K": {
+    "6000": {
+     "c_parent": 0.08649513271474414,
+     "c_child": 0.090972970733521,
+     "c_removed_band": 0.02024424361493125,
+     "marginal_bar_at_parent": 0.05416,
+     "removal_correct_per_rule": true
+    },
+    "7000": {
+     "c_parent": 0.09188432150053483,
+     "c_child": 0.09687513252244116,
+     "c_removed_band": 0.01804385068762266,
+     "marginal_bar_at_parent": 0.05416,
+     "removal_correct_per_rule": true
+    },
+    "7905": {
+     "c_parent": 0.0967615373516754,
+     "c_child": 0.10221658894141392,
+     "c_removed_band": 0.01605249508840861,
+     "marginal_bar_at_parent": 0.05416,
+     "removal_correct_per_rule": true
+    },
+    "9000": {
+     "c_parent": 0.10266269907211621,
+     "c_child": 0.1086794561002815,
+     "c_removed_band": 0.013643064833005836,
+     "marginal_bar_at_parent": 0.05416,
+     "removal_correct_per_rule": true
+    },
+    "10000": {
+     "c_parent": 0.10805188785790691,
+     "c_child": 0.11458161788920167,
+     "c_removed_band": 0.011442671905697603,
+     "marginal_bar_at_parent": 0.05416,
+     "removal_correct_per_rule": true
+    },
+    "12691": {
+     "c_parent": 0.12255419488046967,
+     "c_child": 0.13046433526318588,
+     "c_removed_band": 0.005521414538310287,
+     "marginal_bar_at_parent": 0.05416,
+     "removal_correct_per_rule": true
+    }
+   },
+   "depletion_factor_at_K7905": 6.367644928620709,
+   "robust_over_K": "6000-12691, and the same K appears in both arms so it largely cancels"
+  },
+  "negative_control": {
+   "name": "sgmc-off-catalogue-44k",
+   "live_dti": 0.0512,
+   "finding": "Being off-catalogue is necessary but nowhere near sufficient: 44,090 dots drawn from USGS SGMC traces lying beyond 300 m of the published catalogue scored 0.0512. Any hypothesis of the form 'emit known lineaments the catalogue lacks' is refuted by this receipt unless it also supplies a mechanism predicting WHICH of them the experts would have newly identified."
+  },
+  "projection_not_a_score": {
+   "label": "PROJECTION \u2014 arithmetic on the verified closed form, explicitly NOT a score",
+   "live_leaderboard_top": 0.4133,
+   "live_leaderboard_top_participant": "xiaofanhu",
+   "snapshot_file": "docs/data/leaderboard_snapshot.json",
+   "snapshot_observed_utc": "2026-10-11",
+   "snapshot_verified": true,
+   "snapshot_source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+   "supersedes": "the 2026-10-04 sibling-clone snapshot, whose top of 0.3262 is rank 7 on the live re-read; an earlier draft of this card used 0.3262 as the target and therefore understated the required improvement by roughly a third",
+   "at_S": 37654.0,
+   "at_K": 7905.0,
+   "credit_per_dot_today": 0.10221658894141392,
+   "requires_T_for_live_top": 5726.2,
+   "requires_credit_per_dot_for_live_top": 0.1521,
+   "pct_gain_over_child_for_live_top": 48.8,
+   "requires_T_for_0_3262": 4519.4,
+   "requires_credit_per_dot_for_0_3262": 0.12,
+   "pct_gain_over_child_for_0_3262": 17.4,
+   "receipt_0_2778_live_rank": 23,
+   "receipt_0_2778_live_participant": "extradr19",
+   "prompt_score_0_3774_found_in_any_ledger": false,
+   "prompt_score_0_3195_confirmed": true,
+   "conclusion": "A FIELD problem, not an emission problem: 37,654 -> 44,090 dots adds 88 credit (0.0137 each) against a 0.0556 bar, and the child already has zero dots within 2 px, so there is nothing left to prune. Reaching live #1 needs roughly half again as much credit per dot, which no emission schedule can supply."
+  }
+ },
+ "experiments_used": 3,
+ "elapsed_seconds": 1483.3,
+ "budget_note": "The protocol allowed 3 experiments or 2 hours. The three experiments ran, but wall-clock far exceeded 2 hours: fifteen engine and harness bugs each produced a plausible number rather than an exception, so exactness had to be established cell-by-cell against brute force before any result could be trusted. Recorded rather than hidden.",
+ "gate_passed": false,
+ "failed_arms": [
+  "surface usability"
+ ],
+ "nan_twin_fails_as_expected": true,
+ "nan_twin_failed_checks": [
+  "no_nan_anywhere",
+  "outside_footprint_zero"
+ ],
+ "download_allowed": false,
+ "slots_spent": 0,
+ "verdict": "negative",
+ "verdict_reason": "NEGATIVE RESULT \u2014 DO NOT PROMOTE. the decision rule is verified and beats spacing on held-out draws (z = 15.97, 32/32 draws); the artifact is unique (worst 3-px overlap 0.0120 over 63 registry rasters); the submittable twin passes the shared validator 18/18; but the calibrated surface is saturated (1.94% of cells at raw score 1.0, 4,907 distinct values across the top 200,000 candidates), so the ranking that selects the dots is decided by numpy's tie order, not by geology. Shipping this would spend a slot on a tie-break, not on a field. Failed arms: surface usability.",
+ "artifact_location": "submissions/ (top level). NOT docs/submissions/, which scripts/check_site.py and tests/test_policy.py reserve for exactly the two promoted TIFFs.",
+ "findings_page": "docs/research/lane-expecteddti-findings.md"
+}

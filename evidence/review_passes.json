@@ -1,0 +1,37 @@
+{
+  "review_date": "2026-10-11",
+  "branch": "arena/e58adee5-gemsdoe64",
+  "review_status": "THREE_PASSES_COMPLETE_PROMOTED_SUBMISSION_READY",
+  "pass_1": {
+    "title": "Pass 1 — Implement & Verify Assigned Native-Resolution LiDAR Scarp Lane (H64-L1)",
+    "checks": [
+      "Restored and SHA-256-verified all 17 core/external/pilot rasters and 67 prior registry rasters via scripts/download_competition_data.sh and scripts/prepare_data.py.",
+      "Implemented Sare & Hilley (JOSS 2018, doi:10.21105/joss.01066) Scarplet template matching, AGU 2015 T31A-2838 slope-aware scarp templates, Steger (IEEE TPAMI 1998) sub-pixel curvilinear lines, Frangi et al. (MICCAI 1998) multiscale Hessian line measures (2-20 m), 100 m cell aggregation, cultural-feature masking, and 4-quadrant Leave-One-Quadrant-Out spatial CV in src/gems64/lidar_scarp.py.",
+      "Executed EXP-64-1 (3 m DEM pilot tiles x40y427_3m.tif and x42y425_3m.tif), EXP-64-2 (cultural-feature mask audit + 12 single-feature leakage canaries, max AUC 0.5949 <= 0.90), and EXP-64-3 (4-quadrant spatial CV and whole-segment holdout evaluation via gems57-pooled-hide-v3-se).",
+      "Generated primary portal-safe GeoTIFF submissions/h64-lidar-scarp-cv-20261011-zeros.tif (SHA-256 919dfc5f9e429a8bae0784244191a23cc0d50fa265b8f5085a01f9644ab9e97c) and companion NaN-outside-footprint GeoTIFF submissions/h64-lidar-scarp-cv-20261011-nan.tif (SHA-256 62e330bb8df511c33ac0a3c977f8067b7d72d84324fe2c5d7d901b88c253869b)."
+    ],
+    "result": "PASS"
+  },
+  "pass_2": {
+    "title": "Pass 2 — Review Code & Outputs, Fix Edge Cases, and Verify Arithmetic & Memory Safety",
+    "checks": [
+      "Fixed 2-D cumulative-sum indexing in aggregate_tile_to_100m (src/gems64/lidar_scarp.py).",
+      "Optimized peak memory in compute_native_scarplet_steger_frangi_tile and scripts/run_lidar_scarp_lane.py so all 3 experiments + 67-raster registry audit execute in 205.81 s well within the 3.8 GiB sandbox RAM limit.",
+      "Synchronized research/run_card.json, docs/data/run_card.json, and evidence/run_card.json; updated scripts/run_preflight.py so it cannot overwrite the promoted run card.",
+      "Corrected non-footprint cell count (12,279,160 - 5,167,373 = 7,111,787) across tests and documentation.",
+      "Set mode 0644 on all generated deliverables in submissions/ and docs/submissions/."
+    ],
+    "result": "PASS"
+  },
+  "pass_3": {
+    "title": "Pass 3 — Re-check Against Original Request, Validate Submission, Build Site & Run Test Suite",
+    "checks": [
+      "scripts/validate_submission.py submissions/h64-lidar-scarp-cv-20261011-zeros.tif -> format_pass: true, all_checks_passed: true, min: 0.0, max: 1.0, n_nan: 0, emitted_positive_pixels: 45000, on_catalogue_positive_pixels: 0.",
+      "scripts/build_site.py && scripts/check_site.py -> ok: true, checked_pages: 4, problems: [], approved_tiff_links: 11, production_tiffs: 2.",
+      "pytest -q -> 44 passed in 3.53s.",
+      "All numbers labeled as HOLDOUT-DTI (with evaluator version gems57-pooled-hide-v3-se, withheld_positive_pixels, and 95% block-bootstrap CI) or ORGANIZER-CONFIRMED.",
+      "README.md updated with Core Values ('Maximize P(Win)', 'Own the Outcome'), Parallel-Run Protocol, h33-2-b2 (0.2778) forensic analysis, 5 ranked untried geological hypotheses (H64-U1..H64-U5), holdout tables, and JSON RUN CARD."
+    ],
+    "result": "PASS"
+  }
+}

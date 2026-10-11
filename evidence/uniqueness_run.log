@@ -1,0 +1,27 @@
+{
+  "candidate": "docs/downloads/gems64-h64-dtiopt-greedy-prune-calibrated-20261011T212556Z-54be1965c2f8-zeros.tif",
+  "candidate_sha256": "a8c5fa733053c6f98bbe859ec95c429c5632f2b4ff30a955846de71196990a82",
+  "registry_dir": "/home/user/prior/60GEMSDOE-main/registry",
+  "indexed_records": 19,
+  "directory_derived_records": 43,
+  "scanned": 62,
+  "registry_rasters_checked": 62,
+  "missing_or_invalid": 0,
+  "max_abs_spearman_full_footprint": 0.040309644794807246,
+  "worst_spearman_submission": "calib_h25ctx_01280",
+  "max_dot_overlap_3px": 0.9986898319567075,
+  "worst_overlap_submission": "calib_r13lattice_00904",
+  "worst_jaccard_dot_sets": 0.025083015202511917,
+  "byte_unique": true,
+  "pixel_unique": true,
+  "duplicate_count": 4,
+  "shared_verdict": "negative",
+  "lane_rule": "rho>0.90 or 3px dot overlap>0.70 => duplicate, stop",
+  "lane_passed": false
+}
+worst 5 rows by 3-px overlap:
+   {'submission': 'calib_r13lattice_00904', 'spearman_full_footprint': 0.00047528622003590443, 'my_dots_within_3px_of_theirs': 0.9986898319567075, 'their_dots_within_3px_of_mine': 0.15730201309843156, 'jaccard_dot_sets': 0.008379855712637382, 'error': None}
+   {'submission': 'r13_lattice_s5_00904', 'spearman_full_footprint': 0.00047528622003590443, 'my_dots_within_3px_of_theirs': 0.9986898319567075, 'their_dots_within_3px_of_mine': 0.15730201309843156, 'jaccard_dot_sets': 0.008379855712637382, 'error': None}
+   {'submission': 'r11_greedy_mp', 'spearman_full_footprint': -0.005469720635404364, 'my_dots_within_3px_of_theirs': 0.8281781069021171, 'their_dots_within_3px_of_mine': 0.1726204219854647, 'jaccard_dot_sets': 0.0066363197803149315, 'error': None}
+   {'submission': 'r14_union_tips10_lat6', 'spearman_full_footprint': 0.01731572482850816, 'my_dots_within_3px_of_theirs': 0.8158359441754486, 'their_dots_within_3px_of_mine': 0.2853702056380084, 'jaccard_dot_sets': 0.015171864895786698, 'error': None}
+   {'submission': 'calib_h25ctx_01280', 'spearman_full_footprint': 0.040309644794807246, 'my_dots_within_3px_of_theirs': 0.6644640653185228, 'their_dots_within_3px_of_mine': 0.38816635290876533, 'jaccard_dot_sets': 0.025083015202511917, 'error': None}
