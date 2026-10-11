@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Four ranked, falsifiable geological fault-mapping hypotheses with mechanisms, confounders, open-data links, costs and explicit limitations.">
+  <meta name="theme-color" content="#101923">
+  <title>Ranked hypotheses — GEMSDOE64</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="topbar"><div class="shell topbar-inner">
+  <a class="brand" href="index.html" aria-label="GEMSDOE64 home"><span class="brand-mark">64</span><span>GEMSDOE64</span></a>
+  <nav class="nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="executive-summary.html">Submit guide</a><a aria-current="page" href="hypotheses.html">Hypotheses</a><a href="methodology.html">Method</a><a href="sources.html">Sources</a></nav>
+</div></header>
+<main id="main" class="shell">
+  <section class="hero"><p class="eyebrow">Research register · four candidates</p><h1>Rank the mechanisms. Let the holdout decide.</h1><p class="lede">This is a qualitative, preregistration-style shortlist—not a forecast of competition DTI. The order reflects physical specificity, source prospects and feasibility, not any validated score. No hypothesis has been tested against this competition's spatial holdout or the absent prior-raster registry.</p></section>
+
+  <section class="status-banner amber" aria-labelledby="novelty-warning">
+    <div class="status-icon" aria-hidden="true">!</div><div><h2 id="novelty-warning">NOVELTY IS NOT ESTABLISHED</h2><p>The repository began as a README-only checkout, and sibling-repository feature/registry files were not supplied. Each “distinct” entry below describes a proposed mechanism that differs conceptually from ordinary fault-distance or 2-D event-density features; it is <strong>not</strong> a verified comparison against every shared feature or registry raster. Run the before-placement and final-dot checks for every raster before promotion.</p></div>
+  </section>
+
+  <section class="section" aria-labelledby="rankings-title">
+    <div class="section-head"><p class="eyebrow">Ordered shortlist · no manual-input dependency</p><h2 id="rankings-title">Four falsifiable ideas</h2><p>All proposed transforms should be scripted from public or authorized machine-readable inputs. No hand-traced faults, manual point placement or subjective per-scene labels. Source records are linked in the <a href="sources.html">source register</a>; public listing does not prove AOI coverage or successful download.</p></div>
+
+    <article class="card hypothesis section">
+      <div class="hypothesis-number">01</div><div class="tag-row"><span class="tag good">RANK 1 · FIRST TO SCREEN</span><span class="tag warn">REGIONAL COVERAGE NOT CHECKED</span></div>
+      <h2>3D hypocenter planes → independent surface-fault candidates</h2>
+      <dl class="definition-list">
+        <dt>Layers / source</dt><dd>Relocated Nevada and nearby-earthquake hypocenters (catalogue coordinates, depth, time, uncertainty), from Trugman (2024) and the openly licensed Zenodo release. Compare event-time subsets to identify persistent geometry rather than a single sequence.</dd>
+        <dt>Physical signature</dt><dd>Robust, spatially coherent planar event families with consistent strike/dip and a plausible depth extent; project the fitted planes toward the near-surface trace with uncertainty propagated, rather than merely rasterizing epicenter density.</dd>
+        <dt>Why it could be new</dt><dd>Subsurface fault-plane geometry can reveal structural continuation or a fault not represented by a surface catalogue. This is a different proposed transform from 2-D earthquake-count density, though event catalogues may already be used elsewhere in the shared pipeline.</dd>
+        <dt>Non-fault mimic</dt><dd>Aftershock/induced seismicity clusters, volcanic or dike-related events, mining blasts, and poorly located events can form apparent planes. Depth and time coherence alone do not prove a surface fault trace.</dd>
+        <dt>Novelty in this repo</dt><dd>No feature code or registry raster exists here; distinctness versus the active template is <strong>unverified</strong>. Must pass every-raster correlation and 3-pixel overlap gates before and after placement.</dd>
+        <dt>Source/access</dt><dd>Public Zenodo catalog DOI <a href="https://doi.org/10.5281/zenodo.11167510">10.5281/zenodo.11167510</a>, CC-BY-4.0; associated paper <a href="https://doi.org/10.1785/0220240106">Seismological Research Letters (2024)</a>. Nevada/nearby coverage and 2008–2023 period are described; exact AOI event density and file integration have not been checked.</dd>
+        <dt>Cost / DTI outlook</dt><dd><strong>Medium to high.</strong> Relocation QC, robust 3-D clustering/plane fits, uncertainty propagation and surface projection are required. Highest qualitative priority of these four, but expected DTI is <strong>unknown</strong>; no numeric forecast.</dd>
+        <dt>First falsification</dt><dd>Feature-alone blocked-fold test; exclude synthetic/induced and poorly constrained clusters; compare geometric plane feature against event-density-only and incumbent using the exact same holdout and plausible truth surfaces.</dd>
+      </dl>
+    </article>
+
+    <article class="card hypothesis section">
+      <div class="hypothesis-number">02</div><div class="tag-row"><span class="tag">RANK 2 · COVERAGE GATE FIRST</span><span class="tag warn">LIDAR TILES NOT CHECKED</span></div>
+      <h2>High-resolution terrain → drainage deflection and channel offsets</h2>
+      <dl class="definition-list">
+        <dt>Layers / source</dt><dd>USGS 3DEP lidar-derived DEMs and coverage/elevation indexes. Derive drainage networks, channel direction/curvature, local relief and lineament-aligned offsets automatically at suitable scales.</dd>
+        <dt>Physical signature</dt><dd>Repeated stream deflection, aligned channel elbows, offset or beheaded channels, and systematic slope breaks crossing a plausible fault corridor. Multi-channel coherence is more persuasive than one sharp topographic edge.</dd>
+        <dt>Why it could be new</dt><dd>Fault slip and differential uplift can disrupt drainage and create geomorphic offsets not encoded in a fault catalogue. This targets surface geomorphic response, not simple elevation/slope or a fault-distance buffer.</dd>
+        <dt>Non-fault mimic</dt><dd>Lithologic contacts, resistant beds, landslides, alluvial-fan boundaries, roads/ditches and natural channel meanders can mimic aligned breaks or deflections.</dd>
+        <dt>Novelty in this repo</dt><dd>Terrain derivatives and prior rasters are absent. The repository cannot establish whether an equivalent geomorphometric feature is already in the shared stack; registry comparison is mandatory.</dd>
+        <dt>Source/access</dt><dd>USGS <a href="https://data.usgs.gov/datacatalog/data/USGS:77ae0551-c61e-4979-aedd-d797abdcde0e">3DEP 1-meter DEM collection</a> and <a href="https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer">National Map elevation index</a>. Coverage is public, but specific competition-footprint tile availability, quality and download size have not been checked. A published USGS lidar fault-geomorphology study is a regional analogue, not validation on the competition area.</dd>
+        <dt>Cost / DTI outlook</dt><dd><strong>High.</strong> Tile coverage screening, mosaicking, hydrologic conditioning and scale-aware channel extraction. Qualitative potential: moderate if adequate lidar exists; otherwise low. DTI is <strong>unknown</strong>, not projected.</dd>
+        <dt>First falsification</dt><dd>Check coverage before processing. Build only deterministic terrain derivatives; mask water/roads where data permit; test each derivative alone and against the incumbent on buffered whole-segment folds.</dd>
+      </dl>
+    </article>
+
+    <article class="card hypothesis section">
+      <div class="hypothesis-number">03</div><div class="tag-row"><span class="tag">RANK 3 · SCENE/ACCESS GATE FIRST</span><span class="tag warn">AOI SCENE STACK UNKNOWN</span></div>
+      <h2>Sentinel-1 InSAR → persistent deformation-gradient structures</h2>
+      <dl class="definition-list">
+        <dt>Layers / source</dt><dd>Copernicus Sentinel-1 SAR acquisitions and scripted interferometric time-series or coherence products, accessed through the official Copernicus Data Space Ecosystem. Use only a consistently processed, quality-screened time interval.</dd>
+        <dt>Physical signature</dt><dd>Persistent, spatially coherent lineaments in displacement gradients or decorrelation that cross a plausible fault zone and repeat across independent acquisitions; distinguish a gradient from broad atmospheric ramps.</dd>
+        <dt>Why it could be new</dt><dd>Active creep, subsidence across a structure, or deformation linked to geothermal fluid movement may reveal a currently active fault signal independent of static surface mapping.</dd>
+        <dt>Non-fault mimic</dt><dd>Seasonal soil moisture, groundwater withdrawal, geothermal production/injection, volcanic deformation, atmospheric delay, decorrelation, orbit artefacts and processing seams can all produce apparent gradients.</dd>
+        <dt>Novelty in this repo</dt><dd>No SAR stack or feature inventory is present. It differs conceptually from a static lineament map but may duplicate deformation layers already available in a shared stack; this is untested.</dd>
+        <dt>Source/access</dt><dd>Sentinel data are openly distributed through the <a href="https://dataspace.copernicus.eu/">Copernicus Data Space Ecosystem</a>; account/registration and processing resources may be required. See ESA's <a href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Sentinel-1C_demonstrates_power_to_map_land_deformation">Sentinel-1 land-deformation overview</a>. No AOI scene query, temporal coverage check, account access, or download has been performed.</dd>
+        <dt>Cost / DTI outlook</dt><dd><strong>Very high.</strong> Scene screening, phase unwrapping/time series, atmospheric correction and quality control. Qualitative near-term potential is low until a stable AOI stack is confirmed; DTI is <strong>unknown</strong>.</dd>
+        <dt>First falsification</dt><dd>Automate an AOI/date coverage inventory first. Require repeatability across acquisitions and negative-control non-fault areas, then run a feature-alone spatial holdout test. Stop if the signal follows known pumping or atmospheric artefacts.</dd>
+      </dl>
+    </article>
+
+    <article class="card hypothesis section">
+      <div class="hypothesis-number">04</div><div class="tag-row"><span class="tag">RANK 4 · DATA RETRIEVAL BLOCKED</span><span class="tag stop">GDR LINK FAILED REVIEW</span></div>
+      <h2>INGENIOUS geochemistry and paleogeothermal deposits → concealed fluid pathways</h2>
+      <dl class="definition-list">
+        <dt>Layers / source</dt><dd>Where reliably available: georeferenced hot-spring/well chemistry, temperature, silica/carbonate sinter or tufa indicators, alteration observations and related INGENIOUS/DOE geothermal data. Keep each source/layer distinct before any combination.</dd>
+        <dt>Physical signature</dt><dd>Aligned thermal/geochemical anomalies or paleogeothermal deposits that imply focused fluid discharge along a persistent structural corridor; use spatial continuity and independent chemistry rather than proximity to any single spring.</dd>
+        <dt>Why it could be new</dt><dd>Mineral deposits and geochemical discharge can preserve evidence of older fluid flow and structures where modern topographic expression is weak, supplementing rather than simply copying a mapped-fault layer.</dd>
+        <dt>Non-fault mimic</dt><dd>Stratigraphic permeability, lithologic contacts, volcanic heat, isolated springs or wells, alteration unrelated to a mapped surface trace, and uneven sampling can create aligned-looking anomalies.</dd>
+        <dt>Novelty in this repo</dt><dd>No geochemistry or prior registry is present. Conceptual novelty is plausible relative to a fault-only catalogue but <strong>not established</strong> relative to the shared stack or sibling-project outputs.</dd>
+        <dt>Source/access</dt><dd>OSTI record <a href="https://www.osti.gov/biblio/1881483">INGENIOUS dataset, DOI 10.15121/1881483</a>, documents relevant data themes. Its linked <a href="https://gdr.openei.org/submissions/1391">GDR 1391 record</a> returned “No submission found” on review; actual downloadable files, license and spatial completeness are unverified. Do not build on the record until retrieval and terms are checked.</dd>
+        <dt>Cost / DTI outlook</dt><dd><strong>High / blocked.</strong> Data harmonization and sampling-bias controls are substantial, and source retrieval is unconfirmed. Do not spend an experiment until the dataset is accessible, licensed and spatially validated. DTI is <strong>unknown</strong>.</dd>
+        <dt>First falsification</dt><dd>Verify source files and license, audit sampling footprint, then test each observation type independently. Use spatial block splits that separate whole source clusters; do not infer unsampled areas as absence.</dd>
+      </dl>
+    </article>
+  </section>
+
+  <section class="section" aria-labelledby="ranking-title">
+    <div class="section-head"><p class="eyebrow">Why this order</p><h2 id="ranking-title">A screening priority—not a claimed score ranking.</h2></div>
+    <div class="table-wrap"><table><thead><tr><th>Rank</th><th>Candidate</th><th>Decision rationale</th><th>Current viability</th></tr></thead><tbody>
+      <tr><td>01</td><td>3D relocated seismicity</td><td>Open regional catalogue and a distinct geometric transform; worth checking coverage and confounders first.</td><td>Promising to screen; coverage/novelty unverified.</td></tr>
+      <tr><td>02</td><td>3DEP drainage geomorphology</td><td>Strong physical surface mechanism, but the high-resolution AOI tile footprint is unknown.</td><td>Coverage gate before any processing.</td></tr>
+      <tr><td>03</td><td>Sentinel-1 deformation</td><td>Potentially relevant, but acquisition coverage and expensive time-series processing are unresolved.</td><td>Scene/access gate; low near-term feasibility.</td></tr>
+      <tr><td>04</td><td>INGENIOUS paleothermal / geochemistry</td><td>Relevant multi-physics data themes but the linked data record failed retrieval verification.</td><td>Blocked pending files, terms and footprint.</td></tr>
+    </tbody></table></div>
+    <p class="small">No numerical DTI prediction is assigned to any candidate. An older heat-flow-residual idea remains a possible alternative, not a member of this shortlist; it should be registered before testing if the project reprioritizes it. Any candidate is dropped if it trips a leakage, mimic, registry-duplicate, or cost gate.</p>
+  </section>
+
+  <section class="section"><div class="callout stop"><p><strong>No manual-input dependency:</strong> once approved source data are available, feature extraction, fold construction, scoring and registry comparison must be scripted and reproducible. If a source requires subjective hand-digitization or inaccessible data, mark it blocked rather than silently introducing manual labels.</p></div><p class="small">Source details and checked limitations: <a href="sources.html">source register</a> · research record: <a href="research/limitations_and_next.md">limitations and next steps</a>.</p></section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><div><p><strong>GEMSDOE64</strong> · ranked hypotheses</p><p>Qualitative ranking only · no holdout score or numerical forecast</p></div><a class="backtop" href="#main">Back to top ↑</a></div></footer>
+</body>
+</html>

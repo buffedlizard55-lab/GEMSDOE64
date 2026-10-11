@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Auditable source register for the GEMS fault-mapping project, including official competition guidance, public geology data and verification limits.">
+  <meta name="theme-color" content="#101923">
+  <title>Source register — GEMSDOE64</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="topbar"><div class="shell topbar-inner">
+  <a class="brand" href="index.html" aria-label="GEMSDOE64 home"><span class="brand-mark">64</span><span>GEMSDOE64</span></a>
+  <nav class="nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="executive-summary.html">Submit guide</a><a href="hypotheses.html">Hypotheses</a><a href="methodology.html">Method</a><a aria-current="page" href="sources.html">Sources</a></nav>
+</div></header>
+<main id="main" class="shell">
+  <section class="hero"><p class="eyebrow">Source register · checked records and open questions</p><h1>Record what a source proves—and what it does not.</h1><p class="lede">A source page, catalog listing or DOI is not proof that the bytes were downloaded, licensed for this use, cover the competition footprint, or improve holdout performance. Verification status is called out explicitly below.</p></section>
+
+  <section class="status-banner amber" aria-labelledby="feed-title"><div class="status-icon" aria-hidden="true">i</div><div><h2 id="feed-title">No leaderboard feed, snapshot mirror, or scraper</h2><p>DrivenData's <a href="https://www.drivendata.org/termsofuse/">Terms of Use</a> restrict automated monitoring/copying and manual monitoring/copying absent prior written consent. This project links to official pages without caching rows or polling. Historical values from earlier manual reads are discussed only with dates and provenance caveats, not refreshed or mirrored.</p></div></section>
+
+  <section class="section" aria-labelledby="official-title">
+    <div class="section-head"><p class="eyebrow">Authoritative competition references</p><h2 id="official-title">Rules, data, metric and organizer clarifications</h2><p>These sources govern the format and interpretation. Access to the gated competition files was not established.</p></div>
+    <div class="table-wrap"><table><thead><tr><th>Source</th><th>What it supports</th><th>Verification / caveat</th></tr></thead><tbody>
+      <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official problem description</a></td><td>Fault-mapping task and published distance-weighted Tversky score description.</td><td>Public page reviewed. The synthetic probe checks example arithmetic only; competition evaluator code is not in this checkout.</td></tr>
+      <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/">Competition “About” page</a>; <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/rules/">official rules</a></td><td>Competition context and rules.</td><td>Read as public information; submission eligibility and current schedule must be checked on official pages by the entrant.</td></tr>
+      <tr><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">Competition data page</a></td><td>Authorized source for downloadable competition data and files.</td><td>Fetch redirected to login. No gated files were downloaded; an enrolled account is required.</td></tr>
+      <tr><td><a href="https://github.com/drivendataorg/gems-prize-reference-solution">DrivenData reference solution</a></td><td>Potential authoritative shared tooling / reference implementation.</td><td>Not cloned into or available in this checkout at review time. Reuse the intended shared evaluator/writer, not a private reimplementation.</td></tr>
+      <tr><td><a href="https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516/4">Known-fault mask clarification</a></td><td>Known mapped faults are masked pixel-exactly; nearby unmasked pixels remain scoreable.</td><td>Organizer response. Do not assume an extra buffer is excluded.</td></tr>
+      <tr><td><a href="https://community.drivendata.org/t/leaderboard-aggregation-pooled-over-public-test-pixels-or-mean-of-per-chunk-scores/11550">Metric aggregation clarification</a></td><td>Public leaderboard score is pooled across evaluated pixels rather than an unweighted mean of per-chunk scores.</td><td>Organizer response; use the supplied evaluator for exact computation.</td></tr>
+      <tr><td><a href="https://community.drivendata.org/t/how-were-the-new-test-faults-identified-data-sources-and-fault-types/11527/10">New-test-label provenance</a> · <a href="https://community.drivendata.org/t/where-do-you-draw-the-line/11536">“New fault” discussion</a></td><td>New labels may include extensions or corrections near mapped traces; full provenance is not disclosed.</td><td>Organizer responses; near-trace positives must not be discarded as automatically invalid.</td></tr>
+      <tr><td><a href="https://community.drivendata.org/t/questions-about-the-final-round-rules/11556">Phase 2 rules discussion</a></td><td>Phase 2 label set/rules may change; avoid assuming phase invariance.</td><td>Organizer response, not a promise about future labels.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="section" aria-labelledby="geo-title">
+    <div class="section-head"><p class="eyebrow">Public / official candidate data</p><h2 id="geo-title">Useful sources, with the gaps visible</h2></div>
+    <div class="table-wrap"><table><thead><tr><th>Dataset / record</th><th>Potential project use</th><th>Access, license and limitations</th></tr></thead><tbody>
+      <tr><td>USGS <a href="https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7">GeoDAWN release</a>, DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a></td><td>Competition-area geologic context / source catalogue.</td><td>Official ScienceBase catalog record reviewed. Competition inputs are not present locally and no raster metadata or checksum was recorded.</td></tr>
+      <tr><td>USGS <a href="https://www.usgs.gov/data/heat-flow-maps-and-supporting-data-great-basin-usa">Great Basin heat-flow maps and supporting data</a>, DOI <a href="https://doi.org/10.5066/P9BZPVUC">10.5066/P9BZPVUC</a></td><td>Optional alternative heat-flow residual hypothesis; possible geothermal context.</td><td>Official data record, but local density/resolution and exact competition-footprint coverage have not been evaluated. Heat-flow residual is an alternative, not in the current top-four shortlist.</td></tr>
+      <tr><td>USGS <a href="https://data.usgs.gov/datacatalog/data/USGS:77ae0551-c61e-4979-aedd-d797abdcde0e">3DEP 1-meter DEM collection</a> · <a href="https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer">elevation index</a></td><td>Potential drainage offsets, terrain lineaments, local relief and channel-network features.</td><td>Public collection/index; exact tiles, resolution and quality over the AOI were not checked. Do not assume complete lidar coverage.</td></tr>
+      <tr><td>Trugman (2024), <a href="https://doi.org/10.1785/0220240106">Nevada high-precision earthquake catalogue paper</a> · <a href="https://zenodo.org/records/11167510">Zenodo relocated catalogue</a>, DOI <a href="https://doi.org/10.5281/zenodo.11167510">10.5281/zenodo.11167510</a></td><td>Test 3-D hypocenter planes, distinct from 2-D event density.</td><td>Zenodo record identifies CC-BY-4.0 and Nevada/nearby coverage in 2008–2023. Exact footprint, fields, quality and file retrieval/integration remain unchecked.</td></tr>
+      <tr><td>USGS <a href="https://earthquake.usgs.gov/fdsnws/event/1/">ComCat event API</a></td><td>Potential event catalogue / quality-control context.</td><td>Official API. Any request must be bounded, reproducible and use public service appropriately; no query or download was performed for this project.</td></tr>
+      <tr><td>Jackson &amp; Leeder (1994), <a href="https://doi.org/10.1016/0191-8141(94)90051-5">drainage systems and normal-fault development</a></td><td>Physical basis for drainage response to faulting.</td><td>Peer-reviewed study; mechanistic context, not evidence that the proposed AOI signal exists.</td></tr>
+      <tr><td>USGS <a href="https://www.usgs.gov/publications/airborne-lidar-analysis-and-geochronology-faulted-glacial-moraines-tahoe-sierra-frontal-fault-zone-reveal-substantial-seismic-hazards-lake-tahoe-region-california-nevada-usa">lidar fault-geomorphology study</a></td><td>Example of lidar resolving faulted landforms.</td><td>Regional analogue only (Tahoe/Sierra frontal area); not proof of GEMS AOI tile availability or test lift.</td></tr>
+      <tr><td>Copernicus <a href="https://dataspace.copernicus.eu/">Data Space Ecosystem</a> · ESA <a href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Sentinel-1C_demonstrates_power_to_map_land_deformation">Sentinel-1 land-deformation overview</a></td><td>Potential Sentinel-1 InSAR deformation-gradient layer.</td><td>Open data portal, registration/access process and SAR processing required. No AOI acquisition search, coverage check or download was done.</td></tr>
+      <tr><td>OSTI <a href="https://www.osti.gov/biblio/1881483">INGENIOUS record</a>, DOI <a href="https://doi.org/10.15121/1881483">10.15121/1881483</a> · <a href="https://gdr.openei.org/submissions/1391">GDR 1391</a></td><td>Metadata indicate temperature probes, fault/volcanic maps, heat flow, geodetics, MT, potential fields, paleogeothermal features, seismicity and spring/well chemistry.</td><td>OSTI record verifies themes, not current file availability. GDR page returned “No submission found” when checked. Actual data, license and geographic completeness are unverified; treat as blocked.</td></tr>
+      <tr><td>USGS <a href="https://www.usgs.gov/data/stratigraphic-and-fault-surfaces-three-dimensional-geologic-map-southeastern-gabbs-valley">Gabbs Valley 3D geologic map surfaces</a>, DOI <a href="https://doi.org/10.5066/P9BR3681">10.5066/P9BR3681</a></td><td>Local structural/geologic example for method development or contextual layers.</td><td>CC0 dataset; spatial coverage is local southeastern Gabbs Valley, not the complete GEMS footprint.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="section" aria-labelledby="sibling-title"><div class="section-head"><p class="eyebrow">Internal context · not score verification</p><h2 id="sibling-title">Sibling project pages</h2><p>These pages help identify claims to audit, but their score and artifact statements are not treated as organizer receipts. Do not copy score tables or infer which file earned a score without a receipt.</p></div>
+    <ul class="checklist">
+      <li><span class="checkmark">↗</span><span><a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html">GEMSDOE32 project index</a>: contains owner-level performance/artifact claims. Values and score-to-file attribution are not organizer-verified; this site does not copy or link a leaderboard table.</span></li>
+      <li><span class="checkmark">↗</span><span><a href="https://buffedlizard55-lab.github.io/GEMSDOE54/docs/">GEMSDOE54 docs</a>: reports dated owner/snapshot figures and marks the attribution of the 0.2778 file unverified. Do not treat the page as a current leaderboard feed.</span></li>
+      <li><span class="checkmark">↗</span><span><a href="https://github.com/buffedlizard55-lab/14GEMSDOE/pull/1">14GEMSDOE pull request</a>: sibling development context only.</span></li>
+    </ul>
+  </section>
+
+  <section class="section"><div class="callout"><p><strong>Source acceptance rule:</strong> before any layer is used, retain a source URL/DOI, license/terms, file hash, retrieval date, AOI coverage, spatial/temporal resolution, CRS, nodata semantics, and any quality limitations. No manual hand-copied points, undocumented edits, or gated data treated as open.</p></div></section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><div><p><strong>GEMSDOE64</strong> · source register</p><p>Retrieval status is explicitly separated from catalog existence.</p></div><a class="backtop" href="#main">Back to top ↑</a></div></footer>
+</body>
+</html>
