@@ -106,6 +106,12 @@ brute-force metric oracle. They are not trained ensemble/TTA/MC-dropout outputs,
 not calibration evidence, and never a holdout score. The reference implementation
 has explicit size/time limits and is not a production-scale optimizer.
 
+The lane selector now rejects input with fewer than 32 **distinct** binary truth
+rasters, so repeated copies cannot inflate the draw count. This is only a data
+contract check: it cannot establish that maps came from genuine model-ensemble,
+TTA, or MC-dropout variation. A real run still needs source-run provenance and
+non-wrapping 1–2-pixel jitter; synthetic truth maps remain test fixtures only.
+
 ## Decisive registry stop
 
 [17GEMSDOE's E-proba-multiscale artifact](https://github.com/buffedlizard55-lab/17GEMSDOE/blob/6fc71d19d49dca4960d5434bd81b6dd06fcc030a/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif)
