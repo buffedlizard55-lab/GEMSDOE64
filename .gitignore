@@ -1,0 +1,25 @@
+# ---- derived caches: large, reproducible, never committed -------------------------------
+# field_cache.npz is ~56 MB and Xs.f32 is ~980 MB; both are rebuilt by scripts/build_field.py
+# and scripts/emit_and_ship.py from the hash-pinned official rasters.
+data/processed/
+data/raw/
+data/external/
+
+# ---- python ----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# ---- editors / os ----------------------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ---- logs ------------------------------------------------------------------------------
+*.log

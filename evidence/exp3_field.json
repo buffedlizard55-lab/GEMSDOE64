@@ -1,0 +1,302 @@
+{
+ "n_pos": 60988,
+ "n_neg": 411598,
+ "n_features": 48,
+ "feature_names": [
+  "b01_mag_anom",
+  "b02_rtp",
+  "b03_tmi_hgrad",
+  "b04_geod_2nd_inv",
+  "b05_iso_grav_slope",
+  "b06_tilt",
+  "b07_geod_shear",
+  "b08_geod_dilat",
+  "b09_tmi_vgrad",
+  "b10_dist_eq",
+  "b11_iso_grav_vgrad",
+  "b12_dem_detrend",
+  "b13_iso_grav",
+  "b14_tmi",
+  "b15_depth_base",
+  "b16_eq_density",
+  "b17_conductivity",
+  "b18_iso_grav_hgrad",
+  "b19_dem_detrend_slope",
+  "cond_grad",
+  "cond_high",
+  "conductivity",
+  "dem_curv_plan",
+  "dem_curv_profile",
+  "dem_fabric_aniso",
+  "dem_gradmag",
+  "dem_gradmag_coherent",
+  "dem_laplacian",
+  "dem_localrelief_r2",
+  "dem_localrelief_r5",
+  "dem_slope_official",
+  "dem_tpi_s15",
+  "dem_tpi_s5",
+  "depth_base",
+  "depth_shallow",
+  "dist_eq",
+  "eq_density",
+  "geod_2nd_inv",
+  "geod_dilat",
+  "geod_shear",
+  "igrav_hgrad",
+  "igrav_resid",
+  "tilt_abs",
+  "tilt_pos",
+  "tmi_grad_ratio",
+  "tmi_gradmag",
+  "tmihgrad",
+  "tmivgrad"
+ ],
+ "leakage_canary": {
+  "b01_mag_anom": {
+   "blocked_auc": 0.538865915362045,
+   "signed_auc": 0.538865915362045,
+   "leakage_flag": false
+  },
+  "b02_rtp": {
+   "blocked_auc": 0.5336615441587809,
+   "signed_auc": 0.5336615441587809,
+   "leakage_flag": false
+  },
+  "b03_tmi_hgrad": {
+   "blocked_auc": 0.5249081187005421,
+   "signed_auc": 0.4750918812994579,
+   "leakage_flag": false
+  },
+  "b04_geod_2nd_inv": {
+   "blocked_auc": 0.5353101619915933,
+   "signed_auc": 0.4646898380084067,
+   "leakage_flag": false
+  },
+  "b05_iso_grav_slope": {
+   "blocked_auc": 0.5585532489632155,
+   "signed_auc": 0.5585532489632155,
+   "leakage_flag": false
+  },
+  "b06_tilt": {
+   "blocked_auc": 0.5692450307688162,
+   "signed_auc": 0.43075496923118384,
+   "leakage_flag": false
+  },
+  "b07_geod_shear": {
+   "blocked_auc": 0.5498943824680236,
+   "signed_auc": 0.4501056175319764,
+   "leakage_flag": false
+  },
+  "b08_geod_dilat": {
+   "blocked_auc": 0.5311539454280224,
+   "signed_auc": 0.4688460545719776,
+   "leakage_flag": false
+  },
+  "b09_tmi_vgrad": {
+   "blocked_auc": 0.5067919196027324,
+   "signed_auc": 0.4932080803972676,
+   "leakage_flag": false
+  },
+  "b10_dist_eq": {
+   "blocked_auc": 0.5389763113315355,
+   "signed_auc": 0.46102368866846455,
+   "leakage_flag": false
+  },
+  "b11_iso_grav_vgrad": {
+   "blocked_auc": 0.5268762895433157,
+   "signed_auc": 0.5268762895433157,
+   "leakage_flag": false
+  },
+  "b12_dem_detrend": {
+   "blocked_auc": 0.5268734470595777,
+   "signed_auc": 0.47312655294042233,
+   "leakage_flag": false
+  },
+  "b13_iso_grav": {
+   "blocked_auc": 0.5085846017394817,
+   "signed_auc": 0.49141539826051833,
+   "leakage_flag": false
+  },
+  "b14_tmi": {
+   "blocked_auc": 0.5279647391679956,
+   "signed_auc": 0.5279647391679956,
+   "leakage_flag": false
+  },
+  "b15_depth_base": {
+   "blocked_auc": 0.5013215691944632,
+   "signed_auc": 0.5013215691944632,
+   "leakage_flag": false
+  },
+  "b16_eq_density": {
+   "blocked_auc": 0.539240562038904,
+   "signed_auc": 0.4607594379610959,
+   "leakage_flag": false
+  },
+  "b17_conductivity": {
+   "blocked_auc": 0.504127845634104,
+   "signed_auc": 0.504127845634104,
+   "leakage_flag": false
+  },
+  "b18_iso_grav_hgrad": {
+   "blocked_auc": 0.5208217297443332,
+   "signed_auc": 0.5208217297443332,
+   "leakage_flag": false
+  },
+  "b19_dem_detrend_slope": {
+   "blocked_auc": 0.5836596245574788,
+   "signed_auc": 0.5836596245574788,
+   "leakage_flag": false
+  },
+  "cond_grad": {
+   "blocked_auc": 0.6360770033781658,
+   "signed_auc": 0.6360770033781658,
+   "leakage_flag": false
+  },
+  "cond_high": {
+   "blocked_auc": 0.5396601851160789,
+   "signed_auc": 0.5396601851160789,
+   "leakage_flag": false
+  },
+  "conductivity": {
+   "blocked_auc": 0.6519350586740937,
+   "signed_auc": 0.6519350586740937,
+   "leakage_flag": false
+  },
+  "dem_curv_plan": {
+   "blocked_auc": 0.5059914865137757,
+   "signed_auc": 0.5059914865137757,
+   "leakage_flag": false
+  },
+  "dem_curv_profile": {
+   "blocked_auc": 0.5324466793950566,
+   "signed_auc": 0.4675533206049434,
+   "leakage_flag": false
+  },
+  "dem_fabric_aniso": {
+   "blocked_auc": 0.5943971321661968,
+   "signed_auc": 0.5943971321661968,
+   "leakage_flag": false
+  },
+  "dem_gradmag": {
+   "blocked_auc": 0.7053086208405078,
+   "signed_auc": 0.7053086208405078,
+   "leakage_flag": false
+  },
+  "dem_gradmag_coherent": {
+   "blocked_auc": 0.693209961753386,
+   "signed_auc": 0.693209961753386,
+   "leakage_flag": false
+  },
+  "dem_laplacian": {
+   "blocked_auc": 0.5716959576956874,
+   "signed_auc": 0.4283040423043126,
+   "leakage_flag": false
+  },
+  "dem_localrelief_r2": {
+   "blocked_auc": 0.7026090892745008,
+   "signed_auc": 0.7026090892745008,
+   "leakage_flag": false
+  },
+  "dem_localrelief_r5": {
+   "blocked_auc": 0.7022621448209286,
+   "signed_auc": 0.7022621448209286,
+   "leakage_flag": false
+  },
+  "dem_slope_official": {
+   "blocked_auc": 0.6996786566902136,
+   "signed_auc": 0.6996786566902136,
+   "leakage_flag": false
+  },
+  "dem_tpi_s15": {
+   "blocked_auc": 0.6669349243993986,
+   "signed_auc": 0.3330650756006014,
+   "leakage_flag": false
+  },
+  "dem_tpi_s5": {
+   "blocked_auc": 0.6373747728259853,
+   "signed_auc": 0.3626252271740147,
+   "leakage_flag": false
+  },
+  "depth_base": {
+   "blocked_auc": 0.6733132892467231,
+   "signed_auc": 0.6733132892467231,
+   "leakage_flag": false
+  },
+  "depth_shallow": {
+   "blocked_auc": 0.5003605947376529,
+   "signed_auc": 0.49963940526234707,
+   "leakage_flag": false
+  },
+  "dist_eq": {
+   "blocked_auc": 0.7132930499884182,
+   "signed_auc": 0.7132930499884182,
+   "leakage_flag": false
+  },
+  "eq_density": {
+   "blocked_auc": 0.7136783757877062,
+   "signed_auc": 0.7136783757877062,
+   "leakage_flag": false
+  },
+  "geod_2nd_inv": {
+   "blocked_auc": 0.7248410480215939,
+   "signed_auc": 0.7248410480215939,
+   "leakage_flag": false
+  },
+  "geod_dilat": {
+   "blocked_auc": 0.6626497256207606,
+   "signed_auc": 0.6626497256207606,
+   "leakage_flag": false
+  },
+  "geod_shear": {
+   "blocked_auc": 0.6287235040125041,
+   "signed_auc": 0.6287235040125041,
+   "leakage_flag": false
+  },
+  "igrav_hgrad": {
+   "blocked_auc": 0.5232457832907049,
+   "signed_auc": 0.5232457832907049,
+   "leakage_flag": false
+  },
+  "igrav_resid": {
+   "blocked_auc": 0.5312100061572702,
+   "signed_auc": 0.5312100061572702,
+   "leakage_flag": false
+  },
+  "tilt_abs": {
+   "blocked_auc": 0.6342876393896241,
+   "signed_auc": 0.6342876393896241,
+   "leakage_flag": false
+  },
+  "tilt_pos": {
+   "blocked_auc": 0.6342876393896241,
+   "signed_auc": 0.6342876393896241,
+   "leakage_flag": false
+  },
+  "tmi_grad_ratio": {
+   "blocked_auc": 0.6660036648158294,
+   "signed_auc": 0.6660036648158294,
+   "leakage_flag": false
+  },
+  "tmi_gradmag": {
+   "blocked_auc": 0.6784310446693619,
+   "signed_auc": 0.6784310446693619,
+   "leakage_flag": false
+  },
+  "tmihgrad": {
+   "blocked_auc": 0.6784311652368222,
+   "signed_auc": 0.6784311652368222,
+   "leakage_flag": false
+  },
+  "tmivgrad": {
+   "blocked_auc": 0.537769627445635,
+   "signed_auc": 0.4622303725543651,
+   "leakage_flag": false
+  }
+ },
+ "flagged": [],
+ "seconds": 128.1,
+ "block_px": 96,
+ "buffer_px": 30,
+ "seed": 20261011
+}

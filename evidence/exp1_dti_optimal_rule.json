@@ -1,0 +1,243 @@
+{
+ "checks": {
+  "C1_bruteforce_agrees_with_vectorised": {
+   "pass": true,
+   "max_abs_diff": 7.105427357601002e-15
+  },
+  "C2_FNw_equals_nG_minus_TPw": {
+   "pass": true,
+   "max_abs_diff": 0.0
+  },
+  "C3_closed_form_equals_component_form": {
+   "pass": true,
+   "max_abs_diff": 1.1102230246251565e-16
+  },
+  "C4_lipton_f1_threshold_is_half_optimal_f1": {
+   "pass": true,
+   "residual_by_n": {
+    "1000": 0.0009461190686481935,
+    "10000": 0.0001272217160317446,
+    "100000": 5.208654002081259e-05,
+    "1000000": 1.4374539491768257e-06
+   },
+   "decay_ratios_per_decade": [
+    7.4367733603916815,
+    2.4425065665891745,
+    36.23527560701373
+   ],
+   "residual_at_1e6": 1.4374539491768257e-06,
+   "fixed_point_iteration_tau": 0.23908843392613957,
+   "half_f1_star": 0.23908843392614232,
+   "fixed_point_close": true,
+   "note": "theorem is exact in the continuum; finite-n argmax is pinned to an order statistic"
+  },
+  "C5_tversky_threshold_is_alpha_times_optimal_score": {
+   "pass": true,
+   "by_alpha": {
+    "alpha=0.1": {
+     "residual_at_1e4": 9.68401084373155e-05,
+     "residual_at_1e6": 3.134016905714798e-07,
+     "converges": true
+    },
+    "alpha=0.2": {
+     "residual_at_1e4": 0.00012848745568283526,
+     "residual_at_1e6": 9.463074465837495e-07,
+     "converges": true
+    },
+    "alpha=0.3": {
+     "residual_at_1e4": 3.469327281846457e-05,
+     "residual_at_1e6": 5.181231715334356e-07,
+     "converges": true
+    },
+    "alpha=0.5": {
+     "residual_at_1e4": 0.0001452065263368718,
+     "residual_at_1e6": 3.505571473910729e-06,
+     "converges": true
+    },
+    "alpha=0.8": {
+     "residual_at_1e4": 0.00017857068315008107,
+     "residual_at_1e6": 4.37475149184241e-06,
+     "converges": true
+    }
+   },
+   "dti_alpha02_at_score_030": 0.06,
+   "matches_prompt_claim_of_about_0p06": true
+  },
+  "C6_spatial_marginal_rule_k_gt_alpha_dti": {
+   "pass": true,
+   "violations": 0,
+   "n_measurements": 35,
+   "closed_form_dti_max_error": 5.551115123125783e-17,
+   "sign_pairs_observed": [
+    [
+     false,
+     false
+    ],
+    [
+     true,
+     true
+    ]
+   ],
+   "boundary_straddled_at_smallest_lattice_weight": true,
+   "lattice_kernel_weights": [
+    1.0,
+    0.666666666667,
+    0.528595479209,
+    0.333333333333,
+    0.2546440075,
+    0.057190958418
+   ],
+   "example_negative": [
+    {
+     "N": 100,
+     "C": 25,
+     "dti": 0.2941176470588201,
+     "bar": 0.058823529411764025,
+     "k": 0.057190958418,
+     "gain": -1.9161631382935695e-05,
+     "dT": 0.05719095841793731,
+     "dM": 0.05719095841793731,
+     "dD": 0.2,
+     "construction_exact": true,
+     "predicted_positive": false,
+     "actual_positive": false,
+     "agree": true
+    }
+   ],
+   "example_positive": [
+    {
+     "N": 100,
+     "C": 2,
+     "dti": 0.024875621890546953,
+     "bar": 0.004975124378109391,
+     "k": 0.666666666667,
+     "gain": 0.008209572484969594,
+     "dT": 0.666666666666667,
+     "dM": 0.666666666666667,
+     "dD": 0.2,
+     "construction_exact": true,
+     "predicted_positive": true,
+     "actual_positive": true,
+     "agree": true
+    }
+   ]
+  },
+  "C7_joint_greedy_beats_independent_thresholding": {
+   "pass": true,
+   "joint_wins_heldout": "5/5",
+   "joint_wins_expected": "5/5",
+   "mean_dti_gap_heldout": 0.6717670614339275,
+   "per_config": [
+    {
+     "config": {
+      "h": 64,
+      "w": 64,
+      "c": 3,
+      "n_cold": 34,
+      "p_cold": 0.4,
+      "seed": 11
+     },
+     "mass_A": 771,
+     "mass_B": 43,
+     "dti_A_heldout": 0.15699696714260308,
+     "dti_B_heldout": 0.8518518518518203,
+     "dti_gap": 0.6948548847092173,
+     "tp_A": 23.0,
+     "tp_B": 23.0,
+     "n_truth": 23,
+     "expected_dti_A": 0.16147639257844948,
+     "expected_dti_B": 0.8556320402745566,
+     "expected_gap": 0.6941556476961072
+    },
+    {
+     "config": {
+      "h": 64,
+      "w": 64,
+      "c": 5,
+      "n_cold": 40,
+      "p_cold": 0.35,
+      "seed": 12
+     },
+     "mass_A": 913,
+     "mass_B": 64,
+     "dti_A_heldout": 0.222295680146576,
+     "dti_B_heldout": 0.8991228070175241,
+     "dti_gap": 0.6768271268709481,
+     "tp_A": 41.0,
+     "tp_B": 41.0,
+     "n_truth": 41,
+     "expected_dti_A": 0.21186300325117807,
+     "expected_dti_B": 0.884313139539529,
+     "expected_gap": 0.6724501362883508
+    },
+    {
+     "config": {
+      "h": 80,
+      "w": 80,
+      "c": 3,
+      "n_cold": 60,
+      "p_cold": 0.3,
+      "seed": 13
+     },
+     "mass_A": 1357,
+     "mass_B": 68,
+     "dti_A_heldout": 0.09547231313762503,
+     "dti_B_heldout": 0.7142857142856931,
+     "dti_gap": 0.618813401148068,
+     "tp_A": 25.0,
+     "tp_B": 24.0,
+     "n_truth": 25,
+     "expected_dti_A": 0.10415140279287052,
+     "expected_dti_B": 0.7583036627093028,
+     "expected_gap": 0.6541522599164323
+    },
+    {
+     "config": {
+      "h": 80,
+      "w": 80,
+      "c": 4,
+      "n_cold": 55,
+      "p_cold": 0.5,
+      "seed": 14
+     },
+     "mass_A": 1236,
+     "mass_B": 80,
+     "dti_A_heldout": 0.24177731985348794,
+     "dti_B_heldout": 0.9253246753246602,
+     "dti_gap": 0.6835473554711723,
+     "tp_A": 57.0,
+     "tp_B": 57.0,
+     "n_truth": 57,
+     "expected_dti_A": 0.21826737752691278,
+     "expected_dti_B": 0.9028426457087978,
+     "expected_gap": 0.6845752681818851
+    },
+    {
+     "config": {
+      "h": 96,
+      "w": 64,
+      "c": 3,
+      "n_cold": 45,
+      "p_cold": 0.25,
+      "seed": 15
+     },
+     "mass_A": 1006,
+     "mass_B": 44,
+     "dti_A_heldout": 0.09106952999525252,
+     "dti_B_heldout": 0.7758620689654839,
+     "dti_gap": 0.6847925389702314,
+     "tp_A": 18.0,
+     "tp_B": 18.0,
+     "n_truth": 18,
+     "expected_dti_A": 0.10112916496131992,
+     "expected_dti_B": 0.7484995100280672,
+     "expected_gap": 0.6473703450667473
+    }
+   ],
+   "note": "both rules see only the 32-draw ensemble and are scored on a held-out draw. NOT mass-matched: rule B stops where the exact marginal gain is <= 0, which is the DTI-optimal stopping point; rule A emits everything above the naive bar and so spends 18-31x the mass for the SAME captured TP_w. That identity of TP_w is the whole finding: the extra mass buys no credit and pays alpha=0.2 per unit."
+  }
+ },
+ "all_pass": true,
+ "n_checks": 7,
+ "n_pass": 7
+}

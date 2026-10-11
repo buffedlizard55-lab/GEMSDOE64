@@ -1,0 +1,155 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Executive summary — how to submit — GEMSDOE64</title><style>
+:root{--bg:#0f1419;--panel:#171d26;--panel2:#1e2632;--ink:#e8edf4;--mut:#9fb0c3;
+--line:#2a3441;--ok:#2ecc71;--bad:#ff6b6b;--warn:#ffb84d;--acc:#5aa9ff;--mono:ui-monospace,
+SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 22px 80px}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+h1{font-size:1.95rem;margin:.2em 0 .35em;line-height:1.2}
+h2{font-size:1.35rem;margin:2em 0 .6em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+h3{font-size:1.06rem;margin:1.5em 0 .4em;color:#cfe0f2}
+p{margin:.55em 0}
+code,pre{font-family:var(--mono)}
+code{background:var(--panel2);padding:.12em .38em;border-radius:4px;font-size:.88em}
+pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+overflow-x:auto;font-size:.83rem;line-height:1.55}
+nav{display:flex;flex-wrap:wrap;gap:6px;padding:10px 0 22px;border-bottom:1px solid var(--line);
+margin-bottom:26px;font-size:.87rem}
+nav a{padding:5px 11px;border-radius:20px;background:var(--panel);border:1px solid var(--line)}
+nav a.on{background:var(--acc);color:#08111c;border-color:var(--acc);font-weight:600}
+.banner{border-radius:12px;padding:20px 22px;margin:0 0 22px;border:2px solid}
+.banner.ok{background:#0d2a1a;border-color:var(--ok)}
+.banner.bad{background:#2a1010;border-color:var(--bad)}
+.banner.warn{background:#2a2110;border-color:var(--warn)}
+.banner .t{font-size:1.3rem;font-weight:700;margin:0 0 6px}
+.banner.ok .t{color:var(--ok)}.banner.bad .t{color:var(--bad)}.banner.warn .t{color:var(--warn)}
+.dl{display:inline-block;background:var(--ok);color:#06130c;font-weight:700;font-size:1.05rem;
+padding:14px 30px;border-radius:10px;margin:12px 10px 12px 0}
+.dl.off{background:#39424e;color:#b9c6d4}
+.dl:hover{text-decoration:none;filter:brightness(1.08)}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.87rem}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);font-weight:600}
+tr:nth-child(even) td{background:#141a22}
+td.n,th.n{text-align:right;font-family:var(--mono)}
+.pill{display:inline-block;padding:1px 8px;border-radius:11px;font-size:.74rem;font-weight:700;
+font-family:var(--mono);letter-spacing:.02em}
+.pill.h{background:#123a24;color:#7ee2a8}.pill.o{background:#12283a;color:#7ec8ff}
+.pill.s{background:#3a2f12;color:#ffd47e}.pill.n{background:#3a1a1a;color:#ff9d9d}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi .v{font-size:1.6rem;font-weight:700;font-family:var(--mono);color:var(--acc)}
+.kpi .l{font-size:.78rem;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.small{font-size:.83rem;color:var(--mut)}
+.mut{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+ol li,ul li{margin:.35em 0}
+.foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:.8rem;
+color:var(--mut)}
+</style></head><body><div class="wrap">
+<nav><a class="" href="index.html">Home</a><a class="on" href="executive-summary.html">Executive Summary</a><a class="" href="why-02778.html">Why 02778</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="run-card.html">Run Card</a><a class="" href="evidence.html">Evidence</a></nav>
+<h1>Executive summary — how to submit</h1><p class="small">What to upload, what to name it, and exactly why the previous upload was rejected</p>
+
+<div class="banner bad"><p class="t">THIS ARTIFACT MUST NOT BE SUBMITTED</p><p>NEGATIVE RESULT. The decision rule is verified and it beats spacing on held-out draws, the artifact is unique and format-valid, but the calibrated surface is saturated (1.94% of cells at raw score 1.0), so the ranking that selects the dots is arbitrary inside the plateau. Shipping this would spend a slot on a tie-break, not on a field. Do not promote.</p><p>It is published here because the protocol requires negative results to be deliverables, and because the format work behind it is reusable. Do not spend a weekly slot on it.</p></div>
+<h2>Step 0 — decide whether to submit at all</h2>
+<p><strong>DO NOT SUBMIT.</strong> The verdict above is produced by
+<code>scripts/gate_and_publish.py</code>, not by judgement. It is the conjunction of four
+conditions: the rule gate must beat spacing by &gt;2 block-bootstrap SEs, the LANE duplicate check
+must not trip, the format gate must pass, and the calibrated surface must be usable for ranking.
+The last one failed.</p>
+
+<h2>Step 1 — get the file</h2>
+<p>Two twins are written with <strong>bit-identical values inside the footprint</strong>. They
+differ only outside it. Submit the <em>zeros</em> file.</p>
+<table><tr><th>file</th><th class="n">bytes</th><th>sha256 (first 32)</th><th class="n">positive
+pixels</th><th class="n">value range in footprint</th><th>CRS</th><th>shape</th><th>nodata tag</th>
+<th>format gate</th></tr>
+<tr><td><code>gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-zeros.tif</code></td>
+<td class="n">204,538</td><td><code>abc46d756dc437ea5a0bf8fe3160bfc8…</code></td>
+<td class="n">14,075</td>
+<td class="n">[0.0000, 1.0000]</td>
+<td>EPSG:32611</td><td>3730×3292</td>
+<td>None</td>
+<td><span class="pill h">PASS</span></td></tr>
+<tr><td><code>gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-nan.tif</code></td>
+<td class="n">365,741</td><td><code>491fb1a9751034604ba8ce1937eb3a04…</code></td>
+<td class="n">14,075</td>
+<td class="n">[0.0000, 1.0000]</td>
+<td>EPSG:32611</td><td>3730×3292</td>
+<td>None</td>
+<td><span class="pill h">PASS</span></td></tr>
+</table>
+<p class="small">Download: <a href="downloads/gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-zeros.tif">gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-zeros.tif</a> ·
+<a href="downloads/gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-nan.tif">gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-nan.tif</a></p>
+
+<h2>Step 2 — submit on DrivenData</h2>
+<ol>
+<li>Sign in at <a href="https://www.drivendata.org/competitions/306/doe-gems/">the competition
+page</a> and open <strong>Submit</strong>.</li>
+<li>Upload the <code>-zeros.tif</code> file. Do not rename it, re-compress it, or open and
+re-save it in a GIS package — any of those can reintroduce a nodata tag or change the dtype.</li>
+<li>Enter the <strong>submission name</strong>: <code>gems64-expecteddti-flank0158-14k</code></li>
+<li>Enter the <strong>short note</strong> (this is what distinguishes it in your submission list
+later): <code>Expected-DTI-optimal greedy (a=0.2) on isotonic physical field, 32 jittered draws, live-calibrated 200m catalogue-flank discount rho=0.158</code><br>
+<span class="small">138 characters — the limit is 140.</span></li>
+<li>Submit. Copy the score off the submission page and record it as
+<code>ORGANIZER-CONFIRMED</code> in <code>registry/score-ledger.csv</code>. Until you have that
+receipt, no local number may be described as a score.</li>
+</ol>
+<p class="small"><strong>Cap:</strong> 3 submissions per week (Prize Rules §3.4), and exactly
+<strong>one</strong> final submission is selected without knowledge of the private score
+(§3.6.2). Slots are the scarce resource; that is why the gate exists.</p>
+
+<h2>Step 3 — what the format must be, and why the earlier upload was rejected</h2>
+<p>The published format (competition page 967) requires: the same projected CRS as the training
+data (EPSG:32611); the same resolution (100 m); the same bounds, with data outside the bounds
+null or NaN; a single float32 layer with values between 0 and 1 indicating probability of fault
+presence.</p>
+<p>The earlier rejection <code>"Predicted values must be in range [0, 1]"</code> has
+<strong>two distinct mechanisms</strong>, both measured in this repository against the real
+rasters:</p>
+<table>
+<tr><th>Mechanism</th><th>Root cause</th><th>Fix</th></tr>
+<tr><td><strong>A — NaN inside the footprint</strong></td>
+<td>The footprint mask was derived from a single <em>feature band</em>. Band 1 has 5,165,852 valid
+in-footprint cells against the template's 5,167,373, so <strong>3,061 scored pixels</strong> were
+stranded as NaN. The form's test <code>((v&gt;=0)&amp;(v&lt;=1)).all()</code> is False for NaN.</td>
+<td>Take the footprint from <code>sample_submission.tif</code> (the official template), never from
+a feature band.</td></tr>
+<tr><td><strong>B — a finite value outside [0, 1]</strong></td>
+<td>The feature sentinel <code>-3.4028234663852886e+38</code> survived into the output on those
+same 3,061 in-footprint cells.</td>
+<td>Replace the sentinel with NaN before any arithmetic, then write an
+<strong>all-finite</strong> raster: zeros outside the footprint, values in [0,1] inside, and
+<strong>no nodata tag</strong>.</td></tr>
+</table>
+<p>The organizer's own reference notebook writer passes <strong>no <code>nodata=</code></strong>
+argument and writes finite sigmoid output, so all-finite-and-untagged is what the reference
+solution itself produces. The ledger in the sibling repositories shows the all-finite and
+NaN-outside twins of the same artifact scoring <strong>identically</strong>, so the fix costs
+nothing.</p>
+<p><code>scripts/validate_submission.py</code> enforces all of this and is the gate that ran above.
+Run it yourself on any file before uploading:</p>
+<pre>python scripts/validate_submission.py docs/downloads/*.tif</pre>
+
+<h2>Step 4 — verify independently</h2>
+<pre>python scripts/verify_dti_optimal.py     # the decision rule, 7 checks
+python scripts/invert_live_scores.py     # the live-anchored inversion
+python scripts/build_field.py            # features + leakage canary
+python scripts/train_field.py            # blocked OOF + isotonic
+python scripts/emit_and_ship.py          # surface, emission, GeoTIFF
+python scripts/gate_and_publish.py       # the gate + LANE check + verdict
+python -m pytest tests/ -q</pre>
+<p class="small">Requires <code>GEMS64_DATA</code> pointing at a directory holding the three
+hash-pinned official rasters. Pins are in <code>registry/data_manifest.json</code>.</p>
+
+<div class="foot">GEMSDOE64 · Expected-DTI-optimal selection lane · DrivenData competition 306
+(DOE GEMS) · site generated 2026-10-11 22:16 UTC by <code>scripts/build_site.py</code> directly from
+<code>evidence/*.json</code> — no number on this site is hand-entered.</div>
+</div></body></html>
