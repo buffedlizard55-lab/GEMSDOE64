@@ -29,22 +29,37 @@ class Parser(HTMLParser):
 
 def check():
     problems = []
+    import hashlib
     card = json.loads((DOCS / 'data/run_card.json').read_text())
     source_card = json.loads((ROOT / 'evidence/run_card.json').read_text())
     if card != source_card: problems.append('site run card differs from measured evidence')
-    if card.get('verdict') != 'negative' or card.get('download_allowed'):
-        problems.append('negative publisher cannot display promoted evidence')
-    rasters = [p for p in DOCS.rglob('*') if p.suffix.lower() in ('.tif', '.tiff', '.zip')]
-    if rasters: problems.append('negative site contains TIFF/ZIP files')
+    verdict = card.get('verdict')
+    approved = verdict in ('promote', 'promote-to-selector-only')
+    rasters = sorted(p for p in DOCS.rglob('*') if p.suffix.lower() in ('.tif', '.tiff', '.zip'))
+    banner = 'OK TO DOWNLOAD' if approved else 'NOT CLEARED FOR SUBMISSION'
+    if approved:
+        if not card.get('download_allowed'): problems.append('promoted card forbids its download')
+        declared = {d['path'] for d in card.get('approved_downloads', [])}
+        for rel in declared:
+            f = DOCS / rel
+            if not f.is_file(): problems.append(f'declared download missing: {rel}'); continue
+            if f.suffix.lower() == '.tif':
+                h = hashlib.sha256(f.read_bytes()).hexdigest()
+                if h != card.get('raster_sha256'):
+                    problems.append(f'{rel} sha256 {h[:12]} != card {str(card.get("raster_sha256"))[:12]}')
+        for f in rasters:
+            if str(f.relative_to(DOCS)) not in declared:
+                problems.append(f'undeclared raster published: {f.relative_to(DOCS)}')
+    else:
+        if rasters: problems.append('negative site contains TIFF/ZIP files')
+        if card.get('download_allowed'): problems.append('negative card allows a download')
     pages = {}
     for path in DOCS.glob('*.html'):
         p = Parser(); p.feed(path.read_text()); pages[path.resolve()] = p
         if p.lang != 'en' or p.h1 != 1: problems.append(f'{path}: language or heading hierarchy')
         if p.duplicates: problems.append(f'{path}: duplicate IDs {p.duplicates}')
-        if any(x != 'data/run_card.json' for x in p.downloads):
-            problems.append(f'{path}: unauthorized download link')
-        if 'NOT CLEARED FOR SUBMISSION' not in path.read_text():
-            problems.append(f'{path}: missing prominent verdict')
+        if banner not in path.read_text():
+            problems.append(f'{path}: missing prominent verdict {banner!r}')
     for path, p in pages.items():
         for link in p.links:
             parsed = urlsplit(link)
@@ -59,8 +74,11 @@ def check():
             elif parsed.fragment and target in pages and parsed.fragment not in pages[target].ids:
                 problems.append(f'{path}: missing fragment {link}')
     if len(pages) != 4: problems.append('expected four main pages')
+    if not any('data/run_card.json' in p.downloads for p in pages.values()):
+        problems.append('the run card is not offered as a download anywhere')
     return dict(ok=not problems, checked_pages=len(pages), problems=problems,
-                approved_tiff_links=0, production_tiffs=0)
+                verdict=verdict, approved_tiff_links=(len(rasters) if approved else 0),
+                production_tiffs=len(rasters))
 
 
 if __name__ == '__main__':

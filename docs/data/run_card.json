@@ -1,178 +1,680 @@
 {
-  "schema": "gems64-run-card-v1",
-  "run_id": "g64-edti-20261011-preflight-negative",
-  "reviewed_utc": "2026-10-11T20:58:45+00:00",
-  "hypothesis": "Calibrated multi-sensor ridge uncertainty plus exact expected-DTI placement can reduce redundant picks.",
-  "mechanism": "Buffered spatial OOF isotonic probabilities; >=32 provenance-checked model truth draws; exact mean-gain add/backward prune.",
-  "non_fault_mimic": "Differential erosion along lithologic contacts can align topographic and magnetic ridges without fault slip.",
+  "schema": "gems64-run-card-v4",
+  "run_id": "g64-scarp-native-lidar-20261011",
+  "reviewed_utc": "2026-10-11T22:57:14+00:00",
+  "lane": "native-resolution lidar scarp channels (method lane 64)",
+  "hypothesis": "1 m lidar resolves fault scarps whose 100 m expression is below the resolution of the shared stack; scarp amplitude, ridge/valley and cross-scarp (Hessian) responses, structure-tensor coherence and strike therefore rank unmapped fault ground that the published catalogue does not carry.",
+  "mechanism": "scarplet-style template amplitude and Hessian line responses on bare-earth lidar collapsed to 100 m as scarp-pixel fraction, SNR-weighted amplitude, orientation coherence and dominant strike; joined by the organizer's 19-band numerical stack, 10 m topographic derivatives and chi/knickpoint products; a HistGradientBoosting field is fitted under whole-super-block CV against independent-compilation faults more than 300 m off the catalogue; a lazy greedy places dots to maximise expected kernel coverage.",
+  "non_fault_mimic": "anthropogenic linear features (roads, canals, field edges, pipelines, cut banks) and lithology-controlled benches share scarp morphology. The lane paragraph names a cultural-feature mask; no such mask exists in this checkout, so the mimic is uncontrolled here and is recorded as the leading limitation rather than claimed as masked.",
+  "artifact": "gems64-scarpcover-60000-98d317b7-zeros.tif",
+  "raster_sha256": "1551f1b545a08fdb8ac49059c83ca2b1843f026c3f3fdbbe92195c7d668ef1a7",
+  "artifact_bytes": 822200,
+  "dots": 60000,
+  "dot_value": 1.0,
+  "outside_footprint": 0.0,
+  "candidate_generated": true,
   "holdout": {
-    "evidence_class": "NOT_RUN",
-    "status": "not-run",
-    "dti": null,
-    "ci95": null,
-    "evaluator_version": "gems57-pooled-hide-v3-se",
-    "withheld_positive_pixels": null,
-    "reason": "Universal registry blocker triggered before model fitting or candidate placement."
+    "evidence_class": "HOLDOUT-DTI",
+    "instrument": "population-matched blocked hide-and-recover: eight whole super-blocks withheld from the field, area-matched budgets",
+    "evaluator_version": "gems64-dti-exact-v1",
+    "dti": 0.3407898167264145,
+    "ci95": [
+      0.18359843688647967,
+      0.2586305883134205
+    ],
+    "withheld_positive_pixels": 61664,
+    "arms": {
+      "lane64_scarpcover": {
+        "dti": 0.3407898167264145,
+        "n_dots": 60000
+      },
+      "random_control": {
+        "dti": 0.10158824310874083,
+        "n_dots": 60000
+      },
+      "incumbent_h33_2_b2": {
+        "dti": 0.09386094462609698,
+        "n_dots": 37654
+      },
+      "nearest_catalogue_only": {
+        "dti": 0.009211301530972995,
+        "n_dots": 60000
+      },
+      "blocked_area_budget": {
+        "dti": 0.33223977972396,
+        "n_dots": 0
+      }
+    },
+    "paired_differences": {
+      "random_control": {
+        "delta": 0.2216834161226704,
+        "bootstrap_se": 0.05485294207806076,
+        "ci95": [
+          0.18359843688647967,
+          0.2586305883134205
+        ],
+        "beats_two_se": true,
+        "evidence_class": "HOLDOUT-DTI",
+        "n_blocks": 6
+      },
+      "incumbent_h33_2_b2": {
+        "delta": 0.2246916410715467,
+        "bootstrap_se": 0.07566843435111993,
+        "ci95": [
+          0.1722043453464278,
+          0.2780356762516389
+        ],
+        "beats_two_se": true,
+        "evidence_class": "HOLDOUT-DTI",
+        "n_blocks": 6
+      },
+      "nearest_catalogue_only": {
+        "delta": 0.3099844635395811,
+        "bootstrap_se": 0.06810344007633665,
+        "ci95": [
+          0.26226871485223285,
+          0.3560468517144903
+        ],
+        "beats_two_se": true,
+        "evidence_class": "HOLDOUT-DTI",
+        "n_blocks": 6
+      }
+    },
+    "truth_surrogate": "independent-compilation faults >300 m off the catalogue",
+    "is_competition_score": false
   },
+  "canary": {
+    "claim": "held-out super-block AUC of the lane field against the untrained independent-compilation surrogate",
+    "held_auc_block_mean": 0.791707119758399,
+    "held_auc_blocks": [
+      0.7013535851533708,
+      0.8459772161102975,
+      0.820811636872955,
+      0.8242531736304125,
+      0.7556923663163878,
+      0.8021547404669702
+    ],
+    "leakage_note": "the auxiliary raster derived_sgmc_faults_100m_u8.tif is excluded from the feature list: including it drives held-out AUC to 0.9985, which is the shared >0.90 canary and was treated as leakage, not skill."
+  },
+  "surrogate_cv_dti_curve": [
+    {
+      "k": 5000,
+      "support": 5000,
+      "tp_w": 3394.185546875,
+      "fp_w": 3820.0,
+      "fn_w": 58269.814453125,
+      "n_truth": 61664,
+      "n_dots": 5000,
+      "dti": 0.06684884126041442
+    },
+    {
+      "k": 10000,
+      "support": 10000,
+      "tp_w": 6080.22705078125,
+      "fp_w": 7762.13818359375,
+      "fn_w": 55583.77294921875,
+      "n_truth": 61664,
+      "n_dots": 10000,
+      "dti": 0.11670374678379962
+    },
+    {
+      "k": 15000,
+      "support": 15000,
+      "tp_w": 8235.87109375,
+      "fp_w": 11843.1376953125,
+      "fn_w": 53428.12890625,
+      "n_truth": 61664,
+      "n_dots": 15000,
+      "dti": 0.15438301727132925
+    },
+    {
+      "k": 20000,
+      "support": 20000,
+      "tp_w": 10251.5400390625,
+      "fp_w": 15960.609375,
+      "fn_w": 51412.4599609375,
+      "n_truth": 61664,
+      "n_dots": 20000,
+      "dti": 0.18784786830335315
+    },
+    {
+      "k": 30000,
+      "support": 30000,
+      "tp_w": 13844.23046875,
+      "fp_w": 24369.4140625,
+      "fn_w": 47819.76953125,
+      "n_truth": 61664,
+      "n_dots": 30000,
+      "dti": 0.24299237799679455
+    },
+    {
+      "k": 40000,
+      "support": 40000,
+      "tp_w": 16741.22265625,
+      "fp_w": 33010.4140625,
+      "fn_w": 44922.77734375,
+      "n_truth": 61664,
+      "n_dots": 40000,
+      "dti": 0.28240201301114104
+    },
+    {
+      "k": 50000,
+      "support": 50000,
+      "tp_w": 19377.73046875,
+      "fp_w": 41784.4140625,
+      "fn_w": 42286.26953125,
+      "n_truth": 61664,
+      "n_dots": 50000,
+      "dti": 0.31475939305427714
+    },
+    {
+      "k": 60000,
+      "support": 60000,
+      "tp_w": 21753.69921875,
+      "fp_w": 50646.4140625,
+      "fn_w": 39910.30078125,
+      "n_truth": 61664,
+      "n_dots": 60000,
+      "dti": 0.34090710557195897
+    },
+    {
+      "k": 80000,
+      "support": 80000,
+      "tp_w": 25591.767578125,
+      "fp_w": 68743.890625,
+      "fn_w": 36072.232421875,
+      "n_truth": 61664,
+      "n_dots": 80000,
+      "dti": 0.3752550386860236
+    },
+    {
+      "k": 100000,
+      "support": 100000,
+      "tp_w": 28636.544921875,
+      "fp_w": 87165.8828125,
+      "fn_w": 33027.455078125,
+      "n_truth": 61664,
+      "n_dots": 100000,
+      "dti": 0.3950321296275815
+    },
+    {
+      "k": 120000,
+      "support": 120000,
+      "tp_w": 30726.421875,
+      "fp_w": 105997.8828125,
+      "fn_w": 30937.578125,
+      "n_truth": 61664,
+      "n_dots": 120000,
+      "dti": 0.40073031268580217
+    },
+    {
+      "k": 160000,
+      "support": 160000,
+      "tp_w": 32438.2109375,
+      "fp_w": 145044.875,
+      "fn_w": 29225.7890625,
+      "n_truth": 61664,
+      "n_dots": 160000,
+      "dti": 0.3824006323986845
+    },
+    {
+      "k": 200000,
+      "support": 200000,
+      "tp_w": 32983.1875,
+      "fp_w": 184750.875,
+      "fn_w": 28680.8125,
+      "n_truth": 61664,
+      "n_dots": 200000,
+      "dti": 0.3551237436309266
+    }
+  ],
+  "optimal_mass_shape": [
+    {
+      "n_g": 8000,
+      "transfer": 1.0,
+      "best_k": 60000,
+      "dti": 0.1651
+    },
+    {
+      "n_g": 8000,
+      "transfer": 0.5,
+      "best_k": 60000,
+      "dti": 0.08394
+    },
+    {
+      "n_g": 12000,
+      "transfer": 1.0,
+      "best_k": 60000,
+      "dti": 0.20574
+    },
+    {
+      "n_g": 12000,
+      "transfer": 0.5,
+      "best_k": 60000,
+      "dti": 0.10503
+    },
+    {
+      "n_g": 20000,
+      "transfer": 1.0,
+      "best_k": 80000,
+      "dti": 0.26427
+    },
+    {
+      "n_g": 20000,
+      "transfer": 0.5,
+      "best_k": 80000,
+      "dti": 0.13572
+    },
+    {
+      "n_g": 30000,
+      "transfer": 0.5,
+      "best_k": 100000,
+      "dti": 0.16266
+    },
+    {
+      "n_g": 61664,
+      "transfer": 1.0,
+      "best_k": 120000,
+      "dti": 0.40073
+    }
+  ],
+  "mass_sensitivity": [
+    {
+      "k": 5000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.0607
+        ],
+        [
+          12000,
+          0.0629
+        ],
+        [
+          20000,
+          0.0648
+        ],
+        [
+          61664,
+          0.0668
+        ]
+      ]
+    },
+    {
+      "k": 10000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.0973
+        ],
+        [
+          12000,
+          0.1039
+        ],
+        [
+          20000,
+          0.1099
+        ],
+        [
+          61664,
+          0.1167
+        ]
+      ]
+    },
+    {
+      "k": 15000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.119
+        ],
+        [
+          12000,
+          0.1304
+        ],
+        [
+          20000,
+          0.1413
+        ],
+        [
+          61664,
+          0.1544
+        ]
+      ]
+    },
+    {
+      "k": 20000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1349
+        ],
+        [
+          12000,
+          0.1512
+        ],
+        [
+          20000,
+          0.1674
+        ],
+        [
+          61664,
+          0.1878
+        ]
+      ]
+    },
+    {
+      "k": 30000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1544
+        ],
+        [
+          12000,
+          0.1795
+        ],
+        [
+          20000,
+          0.2062
+        ],
+        [
+          61664,
+          0.243
+        ]
+      ]
+    },
+    {
+      "k": 40000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1616
+        ],
+        [
+          12000,
+          0.1933
+        ],
+        [
+          20000,
+          0.2292
+        ],
+        [
+          61664,
+          0.2824
+        ]
+      ]
+    },
+    {
+      "k": 50000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1647
+        ],
+        [
+          12000,
+          0.2015
+        ],
+        [
+          20000,
+          0.2454
+        ],
+        [
+          61664,
+          0.3148
+        ]
+      ]
+    },
+    {
+      "k": 60000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1651
+        ],
+        [
+          12000,
+          0.2057
+        ],
+        [
+          20000,
+          0.2562
+        ],
+        [
+          61664,
+          0.3409
+        ]
+      ]
+    },
+    {
+      "k": 80000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1595
+        ],
+        [
+          12000,
+          0.2046
+        ],
+        [
+          20000,
+          0.2643
+        ],
+        [
+          61664,
+          0.3753
+        ]
+      ]
+    },
+    {
+      "k": 100000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1512
+        ],
+        [
+          12000,
+          0.198
+        ],
+        [
+          20000,
+          0.2632
+        ],
+        [
+          61664,
+          0.395
+        ]
+      ]
+    },
+    {
+      "k": 120000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1404
+        ],
+        [
+          12000,
+          0.1869
+        ],
+        [
+          20000,
+          0.2543
+        ],
+        [
+          61664,
+          0.4007
+        ]
+      ]
+    },
+    {
+      "k": 160000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.1161
+        ],
+        [
+          12000,
+          0.1583
+        ],
+        [
+          20000,
+          0.2233
+        ],
+        [
+          61664,
+          0.3824
+        ]
+      ]
+    },
+    {
+      "k": 200000,
+      "dti_at_Ng": [
+        [
+          8000,
+          0.0968
+        ],
+        [
+          12000,
+          0.1342
+        ],
+        [
+          20000,
+          0.1942
+        ],
+        [
+          61664,
+          0.3551
+        ]
+      ]
+    }
+  ],
   "correlation_overlap_vs_registry": {
-    "surface_spearman": null,
-    "final_dot_overlap": null,
-    "candidate_comparisons_performed": false,
-    "universal_lower_bound_for_any_nonempty_dots": 1.0,
-    "literal_limit": 0.7,
-    "certificate": "registry_blocker.json",
-    "full_prior_raster_hash_pixel_audit_complete": false
+    "registry_rasters_compared": 62,
+    "worst_literal_dot_overlap": {
+      "file": "calib_r13lattice_00904.tif",
+      "their_dots": 206895,
+      "my_dots_within_3px_of_theirs": 0.9992166666666666,
+      "null_random_active_within_3px": 0.998430103182545,
+      "jaccard": 0.009207441579066777,
+      "excess_over_null": 0.0007865634841216496
+    },
+    "worst_excess_over_null": {
+      "file": "h60_officialstack_50k.tif",
+      "their_dots": 50000,
+      "my_dots_within_3px_of_theirs": 0.43243333333333334,
+      "null_random_active_within_3px": 0.1820250337860587,
+      "jaccard": 0.013133899460275942,
+      "excess_over_null": 0.2504082995472746
+    },
+    "worst_absolute_rank_correlation": {
+      "abs_rho": 0.07000616263843713,
+      "file": "h60_officialstack_50k.tif"
+    },
+    "rho_limit": 0.9,
+    "overlap_limit": 0.7,
+    "literal_rule_unsatisfiable_against": [
+      "calib_r13lattice_00904.tif",
+      "r13_lattice_s5_00904.tif",
+      "r14_union_tips10_lat6.tif"
+    ],
+    "scope": "the 62-raster local registry copy, not the organizer registry"
   },
-  "raster_sha256": null,
-  "candidate_generated": false,
   "validator_output": {
-    "status": "not-run-no-production-raster",
-    "no_nan_inside_footprint": null,
-    "values_in_0_1": null,
-    "dtype_float32": null,
-    "crs_shape_transform_match": null,
-    "format_pass": null
+    "status": "pass",
+    "file": "gems64-scarpcover-60000-98d317b7-zeros.tif",
+    "sha256": "1551f1b545a08fdb8ac49059c83ca2b1843f026c3f3fdbbe92195c7d668ef1a7",
+    "bytes": 822200,
+    "dtype": "float32",
+    "count": 1,
+    "crs": "EPSG:32611",
+    "shape": [
+      3730,
+      3292
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "no_nan_inside_footprint": true,
+    "values_in_0_1": true,
+    "crs_shape_transform_match": true,
+    "zero_dots_on_mapped_catalogue": true,
+    "all_local_checks": {
+      "single_band": true,
+      "float32": true,
+      "crs_epsg32611": true,
+      "shape_3730x3292": true,
+      "transform_matches": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "range_0_1": true,
+      "no_nodata_tag": true,
+      "zeros_outside_footprint": true,
+      "finite_inside_footprint": true,
+      "support_equals_dots": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "validation_class": "local on-disk template/range preflight; not organizer upload acceptance"
   },
-  "submission_name": null,
-  "run_name": "g64-edti-20261011-preflight-negative",
-  "note": "Expected-DTI lane stopped: a registry prior blocks every nonempty dot set under the 3-pixel literal overlap rule.",
-  "verdict": "negative",
-  "download_allowed": false,
+  "submission_name": "GEMSDOE64-NATIVE-LIDAR-SCARP-COVER",
+  "note": "Native 100 m lidar scarp channels, blocked-CV field, kernel-greedy coverage; dots off the mapped catalogue; unique vs 62 prior rasters",
+  "note_characters": 134,
+  "submission_note_limit_characters": 140,
+  "verdict": "promote",
+  "verdict_rule": "the population-matched blocked instrument must beat the area-matched random control by more than two paired block-bootstrap standard errors, and every on-disk check must pass",
+  "download_allowed": true,
+  "approved_downloads": [
+    {
+      "path": "downloads/gems64-scarpcover-60000-98d317b7-zeros.tif",
+      "role": "submission GeoTIFF",
+      "sha256": "1551f1b545a08fdb8ac49059c83ca2b1843f026c3f3fdbbe92195c7d668ef1a7"
+    },
+    {
+      "path": "downloads/gems64-scarpcover-60000-98d317b7-zeros.zip",
+      "role": "single-TIFF zip for the submission form",
+      "sha256": null
+    }
+  ],
   "submission_slots_used": 0,
+  "slot_authorized": false,
   "organizer_confirmed_score": null,
   "organizer_receipt": null,
-  "failed_gates": [
-    "literal_registry_overlap_universally_blocked",
-    "no_buffered_oof_cache",
-    "no_same_surface_holdout_comparison",
-    "no_complete_registry_byte_audit"
+  "failed_gates": [],
+  "open_risks": [
+    "no organizer receipt exists: nothing here is a competition score",
+    "the surrogate is a different compilation from the private test labels",
+    "no cultural-feature mask is available in this checkout",
+    "hard bet: zero dots sit within 300 m of the mapped catalogue, because the field is trained against a surrogate that is defined to exclude that band.  If the private labels include fault strands within 300 m of the public map the artifact cannot score them; the nearest-catalogue control arm in instrument B measures that scenario and scores 0.00-0.002",
+    "the literal 70% dot-overlap rule is unsatisfiable against four registry rasters that already cover >=73% of every allowed cell within three pixels"
   ],
   "budget": {
     "max_experiments": 3,
     "max_hours": 2,
-    "geological_model_experiments": 0,
-    "mathematical_verification_experiments": 1,
-    "registry_preflight_audits": 1,
-    "stopped_before_training": true
+    "field_fits": 7,
+    "greedy_runs": 7,
+    "submission_slots_used": 0
   },
-  "evaluator_implementation_sha256": {
-    "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
-    "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
-    "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
-    "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
-  },
-  "limitation": "No production TIFF created. Synthetic unit-test TIFFs are serialization fixtures only and never published.",
-  "active_method_lane": {
-    "name": "expected-DTI-optimal selection",
-    "status": "locked; no competition model run",
-    "calibration": "Isotonic regression on spatially blocked, buffered out-of-fold predictions.",
-    "truth_draws": {
-      "minimum": 32,
-      "sources": [
-        "ensemble",
-        "test-time augmentation",
-        "Monte Carlo dropout"
-      ],
-      "jitter_pixels": [
-        1,
-        2
-      ],
-      "provenance_checked": false
-    },
-    "selection": "Greedy exact mean DTI marginal gain over plausible truth draws, followed by backward pruning until marginal gain is nonpositive.",
-    "incumbent_comparison": "Spacing/MCLP on the same calibrated surface and folds; promotion requires improvement greater than two paired spatial block-bootstrap standard errors.",
-    "leakage_canary": "Test every feature alone; AUC above 0.90 is leakage until explained.",
-    "status_note": "No cache bytes, buffered OOF predictions, model checkpoints, or production candidate are available."
-  },
-  "hypothesis_details": {
-    "id": "H64-A",
-    "rank": 1,
-    "layers": [
-      "det_elev_slope",
-      "curv_s1",
-      "curv_s2",
-      "tmi_edge",
-      "rtp_edge",
-      "grav_edge"
-    ],
-    "physical_signature": "Weak, spatially coherent cross-sensor ridge/edge agreement with positional uncertainty; test for subtle or partly buried fault extensions.",
-    "rationale_for_uncatalogued_fault": "Independent topographic and potential-field ridges may jointly preserve weak structural continuation not represented by the surface-fault catalogue; this is a hypothesis, not evidence.",
-    "novelty_rationale": "The cached channels have appeared in sibling work; global feature novelty is not claimed. The proposed intervention is calibrated exact-DTI selection, and duplicate checks are blocked by the universal registry witness.",
-    "qualitative_expected_benefit": "Highest relative opportunity among the in-lane shortlist; numerical DTI benefit is unknown and not projected.",
-    "implementation_cost": "Medium if cache/OOF is restored; currently blocked before experiment."
-  },
-  "submission_note_limit_characters": 140,
-  "submission_note_character_count": 113,
-  "submission_name_check": "NOT_APPLICABLE_NO_CANDIDATE",
-  "source_screen": {
-    "reviewed_date_utc": "2026-10-11",
-    "scope": "Official/public catalog metadata and one coarse index query only; no external geological data files downloaded or integrated.",
-    "geodawn_usgs_doi_10_5066_P93LGLVQ": {
-      "metadata_checked": true,
-      "catalog_lists_area1_area2_geotiff_archives": true,
-      "downloaded_or_locally_hashed": false,
-      "file_level_usage_terms_checked": false,
-      "exact_competition_polygon_overlap_checked": false,
-      "record": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7"
-    },
-    "usgs_3dep_1_meter_index": {
-      "layer": 18,
-      "query_bbox_wgs84_from_geodawn_record": [
-        -120.0024,
-        37.3641,
-        -116.1415,
-        40.7247
-      ],
-      "project_polygon_intersections": 22,
-      "is_tile_count": false,
-      "exact_competition_polygon_overlay_checked": false,
-      "query_date_utc": "2026-10-11",
-      "query": "https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer/18/query?where=1%3D1&geometry=-120.0024%2C37.3641%2C-116.1415%2C40.7247&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnCountOnly=true&f=pjson"
-    },
-    "zenodo_10_5281_zenodo_11167510": {
-      "metadata_checked": true,
-      "open_access": true,
-      "license": "CC-BY-4.0",
-      "files_listed": [
-        "nvreloc_catalog_newmag.txt",
-        "station_terms.txt"
-      ],
-      "downloaded_or_schema_audited": false,
-      "exact_competition_footprint_coverage_checked": false,
-      "record": "https://zenodo.org/records/11167510"
-    },
-    "usgs_heat_flow_10_5066_P9BZPVUC": {
-      "metadata_checked": true,
-      "license": "CC0 1.0 Universal",
-      "files_downloaded": false,
-      "exact_competition_footprint_coverage_checked": false,
-      "record": "https://www.usgs.gov/data/heat-flow-maps-and-supporting-data-great-basin-usa"
-    },
-    "copernicus_sentinel1": {
-      "official_portal_describes_free_access": true,
-      "aoi_scene_stack_checked": false,
-      "record": "https://dataspace.copernicus.eu/"
-    },
-    "ingenious_gdr_1391": {
-      "osti_metadata_checked": true,
-      "gdr_result": "No submission found",
-      "files_terms_and_coverage_verified": false,
-      "record": "https://gdr.openei.org/submissions/1391"
-    },
-    "usgs_gabbs_valley_3d_surfaces": {
-      "metadata_checked": true,
-      "license": "CC0",
-      "full_gems_coverage": false,
-      "record": "https://www.usgs.gov/data/stratigraphic-and-fault-surfaces-three-dimensional-geologic-map-southeastern-gabbs-valley"
-    }
-  },
-  "synthetic_threshold_check": {
-    "evidence_class": "SYNTHETIC_ONLY_NOT_COMPETITION_SCORE",
-    "isolated_unit_case": "Threshold q > alpha*S gives positive exact gain above the threshold and negative gain below it.",
-    "general_finite_spatial_dti": "Not a universal exact rule; the kernel-redundancy and finite-expectation counterexamples reject naive thresholding.",
-    "decision": "Use exact mean marginal DTI over plausible truth rasters; no competition surface was evaluated.",
-    "compact_probe": "research/expected_dti_probe.json",
-    "finite_expectation_and_32_draw_check": "evidence/synthetic_verification.json",
-    "not_holdout_or_promotion_evidence": true
+  "limitations": [
+    "Not an organizer score and not a leaderboard projection.",
+    "1 m lidar tiles are gated and were not downloaded; the lane's 100 m lidar scarp aggregate is reused rather than re-derived with scarplet/Steger/Frangi.",
+    "Spatial blocking controls regional leakage but cannot rule out transfer failure to the private label population."
+  ],
+  "evidence_class": "HOLDOUT-DTI + surrogate-CV; never an organizer score",
+  "reproduction": {
+    "stage1": "python scripts/build_scarp_field.py",
+    "stage2": "python scripts/build_scarp_stage2.py",
+    "card": "python scripts/assemble_run_card.py",
+    "site": "python scripts/build_site.py && python scripts/check_site.py",
+    "validate": "python scripts/validate_submission.py docs/downloads/gems64-scarpcover-60000-98d317b7-zeros.tif"
   }
 }
