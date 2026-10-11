@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How to submit &mdash; GEMSDOE64</title><style>
+:root{--ink:#101820;--mut:#5b6b7b;--line:#dde5ec;--ok:#0b7a3b;--bad:#b3261e;--acc:#0b5cad}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#f7fafc}
+header{background:#0d2137;color:#fff;padding:26px 20px}header h1{margin:0 0 6px;font-size:24px}header p{margin:0;color:#c9d8e6}
+.wrap{max-width:1000px;margin:0 auto;padding:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0}
+.dl{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;font-size:18px}
+.btn.sec{background:#fff;color:var(--acc);border:2px solid var(--acc)}
+.verdict{font-weight:800;font-size:18px;padding:8px 14px;border-radius:8px}
+.v-ok{background:#e6f6ec;color:var(--ok);border:1px solid #a9dfbe}
+.v-no{background:#fdecea;color:var(--bad);border:1px solid #f2b8b5}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left}
+th{background:#f1f5f9}td.n{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+pre{background:#0d2137;color:#e8f0f7;padding:12px;border-radius:8px;overflow-x:auto}
+.mut{color:var(--mut);font-size:13px}ol li,ul li{margin:4px 0}
+h2{font-size:19px;margin:4px 0 10px}h3{font-size:16px;margin:14px 0 6px}
+nav a{color:#c9d8e6;text-decoration:none;margin-right:14px;font-size:14px}
+.tag{display:inline-block;background:#eef3f8;border:1px solid var(--line);border-radius:20px;padding:2px 10px;font-size:12px;margin:2px 4px 2px 0}
+</style></head><body>
+<header><div class="wrap" style="padding:0"><h1>Executive summary &mdash; how to make a submission</h1>
+<p>Five clicks from this site to a portal submission.</p>
+<nav><a href="index.html">Home</a><a href="executive-summary.html">How to submit</a>
+<a href="method.html">Method &amp; evidence</a></nav></div></header><div class="wrap">
+<div class="card"><h2>1. Download</h2>
+<p><a class="btn" href="index.html">Go to the download button</a></p>
+<p>This session's file: <code>gems64-h64-dtiopt-greedy-prune-calibrated-20261011T212556Z-54be1965c2f8-zeros.tif</code></p>
+<p>Status: <b>NOT cleared</b>: the holdout gate was not met, so this file is a research artifact. Do not spend a weekly submission slot on it.</p></div>
+<div class="card"><h2>2. Upload</h2>
+<ol>
+<li>Click the blue <b>DOWNLOAD</b> button on the home page. You get a
+single-band GeoTIFF (<code>.tif</code>). The <code>.zip</code> next to it contains
+the same one TIFF if you prefer to upload a zip.</li>
+<li>Open the competition <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">submission page</a>
+and press <b>New submission</b>.</li>
+<li><b>File to submit:</b> choose the downloaded <code>.tif</code> (or the <code>.zip</code>).</li>
+<li><b>Note (optional):</b> paste the note shown on the home page
+(&le;140 characters) so the run is recognisable later.</li>
+<li>Press submit. The portal re-checks CRS, shape, geotransform and value range.</li>
+</ol></div>
+<div class="card"><h2>3. What the portal checks (and what we pre-checked)</h2>
+<ul>
+<li>single band, <code>float32</code></li>
+<li>shape <code>3730 &times; 3292</code>, CRS <code>EPSG:32611</code>,
+transform <code>(100, 0, 243350, 0, -100, 4508550)</code> &mdash; 100 m pixels</li>
+<li>every finite value inside <code>[0, 1]</code>; the writer is fail-closed and
+refuses to clip, fill or repair anything</li>
+<li>all-finite export (no NaN anywhere): outside-footprint cells are 0.0, matching
+this family's accepted <code>-zeros</code> submissions. The organiser's own
+<code>sample_submission.tif</code> uses NaN outside the footprint; both encodings
+have been accepted by the portal for this family, and the metric is evaluated
+inside the footprint.</li>
+<li>zero positive mass on mapped catalogue pixels (they are masked out of
+scoring, so a dot there is pure false-positive mass)</li>
+</ul></div>
+<div class="card"><h2>4. Naming convention</h2>
+<p><code>gems64-&lt;method&gt;-&lt;UTC stamp&gt;-&lt;12-hex array digest&gt;-zeros.tif</code>.
+The digest is the sha256 of the decoded pixel array, so two files with the same
+name suffix are the same raster.</p></div>
+<div class="card"><h2>5. Budget rule</h2>
+<p>This session does not spend a submission slot. Promotion is a separate
+selector step inside the weekly cap shown on the submission page.</p></div>
+</div></body></html>

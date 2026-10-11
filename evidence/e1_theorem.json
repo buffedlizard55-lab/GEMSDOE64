@@ -1,0 +1,90 @@
+{
+  "experiment": "E1-theorem",
+  "elapsed_s": 25.75,
+  "threshold_rule_alpha02": {
+    "alpha": 0.2,
+    "dti": 0.3,
+    "analytic_bar": 0.06,
+    "empirical_bar": 0.061,
+    "abs_error": 0.0010000000000000009,
+    "monotone_in_kappa": true,
+    "quoted_0p2_0p30_bar": 0.06,
+    "ok": true
+  },
+  "threshold_rule_alpha05": {
+    "alpha": 0.5,
+    "dti": 0.3,
+    "analytic_bar": 0.15,
+    "empirical_bar": 0.151,
+    "abs_error": 0.0010000000000000009,
+    "monotone_in_kappa": true,
+    "quoted_0p2_0p30_bar": 0.06,
+    "ok": true
+  },
+  "lipton_alpha05": {
+    "alpha": 0.5,
+    "dti_star": 0.18083419142962598,
+    "empirical_optimal_threshold": 0.08354135338345864,
+    "predicted_bar": 0.09041709571481299,
+    "abs_error": 0.006875742331354351,
+    "rel_error": 0.08230345874089899,
+    "ok": true
+  },
+  "lipton_alpha02": {
+    "alpha": 0.2,
+    "dti_star": 0.26649182115822095,
+    "empirical_optimal_threshold": 0.056027568922305766,
+    "predicted_bar": 0.05329836423164419,
+    "abs_error": 0.0027292046906615755,
+    "rel_error": 0.04871181711357497,
+    "ok": true
+  },
+  "greedy_vs_exhaustive": [
+    {
+      "n_candidates": 13,
+      "subsets_enumerated": 8192,
+      "exhaustive_optimum": 0.5933493395805588,
+      "greedy_after_prune": 0.5933493395805588,
+      "greedy_optimality_gap": 0.0,
+      "mean_field_expected_dti": 0.5933493384184585,
+      "mc_mean_dti": 0.5789395279456484,
+      "mc_se": 0.008951734231730877,
+      "mc_draws": 64,
+      "n_dots": 7,
+      "n_dots_optimal": 7,
+      "mean_field_vs_mc_z": 1.609722775474296,
+      "ok": true
+    },
+    {
+      "n_candidates": 13,
+      "subsets_enumerated": 8192,
+      "exhaustive_optimum": 0.562324525773187,
+      "greedy_after_prune": 0.562324525773187,
+      "greedy_optimality_gap": 0.0,
+      "mean_field_expected_dti": 0.561876059646569,
+      "mc_mean_dti": 0.5513250698891231,
+      "mc_se": 0.010793444756253965,
+      "mc_draws": 64,
+      "n_dots": 8,
+      "n_dots_optimal": 8,
+      "mean_field_vs_mc_z": 0.9775368286693048,
+      "ok": true
+    },
+    {
+      "n_candidates": 13,
+      "subsets_enumerated": 8192,
+      "exhaustive_optimum": 0.4801927628889519,
+      "greedy_after_prune": 0.4801927628889519,
+      "greedy_optimality_gap": 0.0,
+      "mean_field_expected_dti": 0.48072215517898764,
+      "mc_mean_dti": 0.4691932207824894,
+      "mc_se": 0.00998524998743891,
+      "mc_draws": 64,
+      "n_dots": 7,
+      "n_dots_optimal": 7,
+      "mean_field_vs_mc_z": 1.1545964708946956,
+      "ok": true
+    }
+  ],
+  "all_ok": true
+}
