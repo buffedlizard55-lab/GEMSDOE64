@@ -22,6 +22,13 @@ used; there is no private scoring or TIFF-writing fork in the lane package.
 The advertised 35-channel cache receipt points to `/tmp/gems32/work/feature_stack.npy`;
 its bytes were not present in the checkout or in the inspected Git trees.
 A receipt is not a cache. No substitute feature stack was rebuilt.
+The [pinned feature receipt](https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/registry/feature_receipt.json)
+reports 5,165,852 footprint cells, while the downloaded sample has 5,167,373 finite
+cells: a **receipt-level difference of 1,521 cells**. Feature bytes were unavailable,
+so this is not a measured feature-mask comparison. It is a format/provenance
+warning: do not use a narrower feature-validity mask to put NaNs inside the
+sample footprint. This does not establish the cause of the user's rejected file.
+
 
 Pinned sample/catalogue TIFFs were recovered through GitHub bridges. They have
 the expected grid, but a matching third-party hash is not independent proof of
