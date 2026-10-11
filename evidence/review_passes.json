@@ -23,7 +23,7 @@
   },
   "pass_3": {
     "scope": "Final requirement audit, rerun tests and artifact audits, deterministic site rebuild, PR checks and merge",
-    "status": "local re-check complete; remote CI and deployment to be checked during PR/merge",
+    "status": "complete: local re-check and remote CI passed; deployment checked separately after merge",
     "nonnegotiable": "Do not convert the negative run into a downloadable raster or claim a score.",
     "tests_passed": 39,
     "known_warnings": "7 upstream rasterio/affine PendingDeprecationWarnings; no test failures",
@@ -42,6 +42,11 @@
       "No real-data feature canary, OOF model, or HOLDOUT-DTI comparison",
       "No complete all-prior pixel audit; only the decisive universal witness needed for the stop",
       "No organizer receipt, live leaderboard/cap verification, or direct third-party source acquisition"
-    ]
+    ],
+    "remote_ci": {
+      "source_commit": "5988787",
+      "conclusion": "success",
+      "url": "https://github.com/buffedlizard55-lab/GEMSDOE64/actions/runs/38171530980"
+    }
   }
 }
