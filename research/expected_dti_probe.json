@@ -1,0 +1,33 @@
+{
+  "evidence_class": "SYNTHETIC CHECK ONLY \u2014 not HOLDOUT-DTI and not ORGANIZER-CONFIRMED",
+  "interpretation": "The q > alpha*S threshold is numerically correct for the isolated, nonredundant unit-count case. It is not a safe independent-pixel rule for the competition's max-over-neighborhood 300 m kernel. Use mean exact marginal DTI over plausible truth rasters; do not replace the template evaluator with this probe.",
+  "isolated_unit_case": {
+    "alpha_times_baseline": 0.06,
+    "baseline_dti_each_world": 0.3,
+    "check": "PASS \u2014 q > alpha*S helps and q < alpha*S hurts in the isolated case",
+    "mean_dti_gain_above_threshold": 0.003632148377124611,
+    "mean_dti_gain_below_threshold": -0.0036321483771257768,
+    "synthetic_truth_frequency_above_threshold": 0.07,
+    "synthetic_truth_frequency_below_threshold": 0.05
+  },
+  "kernel_redundancy_counterexample": {
+    "alpha_times_mean_baseline_dti": 0.16888045540796967,
+    "candidate_truth_frequency": 0.5,
+    "check": "PASS \u2014 exact greedy rule rejects the redundant candidate",
+    "exact_mean_marginal_dti_gain": -0.0006522770398482702,
+    "mean_baseline_dti": 0.8444022770398483,
+    "mean_dti_after_addition": 0.84375,
+    "truth_rasters": 2
+  },
+  "not_a_competition_score": true,
+  "published_worked_example": {
+    "check": "PASS",
+    "computed_dti": 0.6026516673362796,
+    "input_terms": {
+      "FN_w": 2.0,
+      "FP_w": 1.89,
+      "TP_w": 3.0
+    },
+    "published_rounded_dti": 0.6
+  }
+}
