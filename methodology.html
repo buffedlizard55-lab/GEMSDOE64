@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The expected-DTI-optimal selection protocol, its synthetic-only counterexample, and evidence gates for GEMS fault predictions.">
+  <meta name="theme-color" content="#101923">
+  <title>Methodology — GEMSDOE64</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="topbar"><div class="shell topbar-inner">
+  <a class="brand" href="index.html" aria-label="GEMSDOE64 home"><span class="brand-mark">64</span><span>GEMSDOE64</span></a>
+  <nav class="nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="executive-summary.html">Submit guide</a><a href="hypotheses.html">Hypotheses</a><a aria-current="page" href="methodology.html">Method</a><a href="sources.html">Sources</a></nav>
+</div></header>
+<main id="main" class="shell">
+  <section class="hero"><p class="eyebrow">Selection protocol · current lane</p><h1>Optimize the score’s marginal gain, not a pixel threshold.</h1><p class="lede">The only active method is expected-DTI-optimal selection: use spatially held-out evidence to estimate plausible truth, then add or remove candidates according to their exact marginal contribution under the competition’s distance kernel.</p></section>
+
+  <section class="status-banner" aria-labelledby="method-status">
+    <div class="status-icon" aria-hidden="true">!</div><div><h2 id="method-status">PROTOCOL DEFINED · COMPETITION EVALUATION NOT RUN</h2><p>The toy probe passes on synthetic sparse rasters. The official/shared evaluator, holdout labels and raster inputs are missing here. Consequently, there is no competition-scale score, calibration, confidence interval, or cleared output.</p></div>
+  </section>
+
+  <section class="section" aria-labelledby="metric-title">
+    <div class="section-head"><p class="eyebrow">Metric context</p><h2 id="metric-title">The published score rewards near coverage and penalizes excess prediction.</h2><p>The public description specifies a distance-weighted Tversky index, with <code>α = 0.2</code>, <code>β = 0.8</code>, and a linear triangular kernel with <code>R = 300 m</code>. The grid is 100 m. The exact competition/template implementation must be reused when data are available; the expression below is only a concise description of the published weighted counts.</p></div>
+    <div class="callout"><p><strong>DTI = TP<sub>w</sub> / (TP<sub>w</sub> + α·FP<sub>w</sub> + β·FN<sub>w</sub>)</strong></p><p>For a truth pixel <em>g</em>, distance-kernel support is <code>k(d) = max(1 − d/R, 0)</code>. Its coverage is the maximum over candidate pixels of predicted value × kernel weight. Uncovered truth contributes to false negatives; predicted mass not supported by nearby truth contributes to false positives. The tiny synthetic script transcribes this operation for point sets only.</p></div>
+    <p class="small">Source: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">official competition problem description</a>. A worked term example in that description rounds to 0.60; the probe recomputes it as 0.6026516673. This formula check is not an evaluator certification.</p>
+  </section>
+
+  <section class="section" id="synthetic" aria-labelledby="toy-title">
+    <div class="section-head"><p class="eyebrow">Synthetic-only audit · executed 2026-10-11</p><h2 id="toy-title">What the threshold tells us—and what it cannot.</h2><p>The script <code>scripts/verify_expected_dti_rule.py</code> uses only Python’s standard library. It emits the same results in <a href="research/expected_dti_probe.json">a machine-readable JSON record</a>. It contains no real fault labels, pixels or competition score.</p></div>
+    <div class="card-grid">
+      <article class="card"><div class="tag-row"><span class="tag good">PASS · ISOLATED TOY</span></div><h3>When there is no overlap</h3><p>In a deliberately isolated unit-count case with baseline score 0.30, the shorthand threshold <code>q &gt; αS</code> is 0.06. A candidate occurring in 7% of synthetic truth draws yields mean score gain <code>+0.00363215</code>; one at 5% yields <code>−0.00363215</code>.</p><p class="small">This validates a narrow algebraic intuition, not an optimal competition selector.</p></article>
+      <article class="card"><div class="tag-row"><span class="tag warn">COUNTEREXAMPLE · REDUNDANCY</span></div><h3>Kernel overlap changes the answer</h3><p>For two sparse synthetic truth rasters and an existing prediction at pixel 0 and 2, candidate pixel 3 is positive in half the draws. It exceeds <code>α × mean baseline DTI</code> (0.500 vs 0.16888), yet exact mean DTI falls from <code>0.84440228</code> to <code>0.84375</code>.</p><p class="small">The exact marginal gain is <code>−0.00065228</code>. The greedy selector correctly rejects it.</p></article>
+      <article class="card"><div class="tag-row"><span class="tag stop">NOT A COMPETITION RESULT</span></div><h3>Never promote these numbers</h3><p>The examples check the decision logic on toy rasters. They provide no out-of-fold calibration, withheld-positive count, block bootstrap, registry comparison, GeoTIFF, or submission receipt.</p><p class="small">Evidence label: <strong>SYNTHETIC CHECK ONLY</strong>.</p></article>
+    </div>
+    <div class="callout warn"><p><strong>Takeaway:</strong> a per-pixel occurrence probability is not a safe independent threshold for the expected score when the metric uses a max-over-neighborhood kernel and predicted points compete to cover the same truth. Evaluate the <em>exact marginal DTI change for every plausible truth raster</em>.</p></div>
+  </section>
+
+  <section class="section" aria-labelledby="pipeline-title">
+    <div class="section-head"><p class="eyebrow">Locked method lane</p><h2 id="pipeline-title">Required run, from spatial validation to a go/no-go.</h2><p>These are requirements for a future authorized run. None of the competition-data steps below is claimed complete in this checkout.</p></div>
+    <div class="steps">
+      <article class="step"><div><h3>Pre-register one mechanism and a plausible mimic</h3><p>Choose from the ranked hypothesis register. State the physical signal, where novelty could arise, available source layers, suspected confounders, and an explicit cost/time budget before inspecting holdout results.</p></div></article>
+      <article class="step"><div><h3>Hide whole fault segments with a spatial buffer</h3><p>Reuse the shared cached feature stack and evaluator. Build blocked folds around complete segments; derive catalogue features only from visible faults. Mask visible faults pixel-exactly—organizer clarification says nearby unmasked pixels remain scoreable.</p></div></article>
+      <article class="step"><div><h3>Run leakage canaries and calibration</h3><p>Test every feature alone. Treat a holdout AUC above 0.90 as a leakage warning until explained. Calibrate out-of-fold probabilities by isotonic regression using spatially blocked folds. A high score is not evidence of generalization until leakage checks pass.</p></div></article>
+      <article class="step"><div><h3>Generate plausible truth rasters</h3><p>Use the specified ensemble/TTA/MC-dropout outputs, including small spatial jitter, to form at least 32 plausible truth surfaces. Record how each draw was generated and keep visible-fault pixels masked as specified.</p></div></article>
+      <article class="step"><div><h3>Select on exact expected marginal DTI</h3><p>Starting from the incumbent prediction, greedily add the ridge-candidate pixel with the largest mean exact DTI gain over all draws. Prune backward whenever exact marginal gain is non-positive. Compare against the incumbent spacing/MCLP placement on the same surfaces—not a different test set.</p></div></article>
+      <article class="step"><div><h3>Demand uncertainty-aware lift</h3><p>Use a spatial block bootstrap on the same holdout surfaces. Promotion requires improvement greater than two bootstrap standard errors and a fully reported 95% confidence interval. If the interval or leakage evidence is unclear, stop rather than call a projection a score.</p></div></article>
+      <article class="step"><div><h3>Check novelty against every registered raster</h3><p>Log rank correlation and the fraction of dots within 3 pixels of each registry raster before placement and after final selection. If correlation exceeds 0.90 or overlap exceeds 70% for any registry entry, mark the run a duplicate and stop.</p></div></article>
+      <article class="step"><div><h3>Validate the exact bytes and close the run card</h3><p>Use the shared writer/validator; confirm grid, CRS, transform, dimensions, dtype, nodata behavior, finite [0,1] values, and pixel/hash agreement. Store SHA-256, evaluator version, withheld-positive count, 95% CI, unique name, ≤140-character note, and a promote/negative verdict.</p></div></article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="stop-title">
+    <div class="section-head"><p class="eyebrow">Budget and stop rules</p><h2 id="stop-title">No blind experiments. No surprise submissions.</h2></div>
+    <div class="table-wrap"><table><thead><tr><th>Rule</th><th>Current requirement</th><th>State here</th></tr></thead><tbody>
+      <tr><td>Method lane</td><td>Expected-DTI-optimal selection only; no method drift.</td><td><span class="tag good">LOCKED</span></td></tr>
+      <tr><td>Shared code</td><td>Reuse cached feature stack, <code>evaluate_holdout.py</code>, and <code>submission_writer.py</code>; no private fork.</td><td><span class="tag stop">ABSENT</span></td></tr>
+      <tr><td>Experiment cap</td><td>Stop after 3 experiments or 2 hours.</td><td><span class="tag good">NO EXPERIMENT RUN</span></td></tr>
+      <tr><td>Submission slot</td><td>Do not spend a slot or upload automatically; any future submission requires separate owner selection.</td><td><span class="tag good">NOT USED</span></td></tr>
+      <tr><td>Download gate</td><td>Offer only a novel, holdout-improved, exact-validated TIFF with hash and complete run card.</td><td><span class="tag stop">NOT MET</span></td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="section"><div class="callout stop"><p><strong>Present verdict: negative.</strong> There is not enough shared tooling or data to run the mandated holdout and output gates. The right action is to restore those shared inputs, not to replace them with a look-alike private evaluator or manufacture a raster.</p></div></section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><div><p><strong>GEMSDOE64</strong> · method page</p><p>Evidence level: synthetic probe only · no HOLDOUT-DTI score</p></div><a class="backtop" href="#main">Back to top ↑</a></div></footer>
+</body>
+</html>

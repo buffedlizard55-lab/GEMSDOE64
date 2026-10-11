@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An auditable, evidence-gated GEMS Prize research project. Current submission status: not cleared; no GeoTIFF is available.">
+  <meta name="theme-color" content="#101923">
+  <title>GEMSDOE64 — GEMS Prize research</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <a class="brand" href="index.html" aria-label="GEMSDOE64 home"><span class="brand-mark">64</span><span>GEMSDOE64</span></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a aria-current="page" href="index.html">Overview</a>
+      <a href="executive-summary.html">Submit guide</a>
+      <a href="hypotheses.html">Hypotheses</a>
+      <a href="methodology.html">Method</a>
+      <a href="sources.html">Sources</a>
+    </nav>
+  </div>
+</header>
+<main id="main" class="shell">
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">DOE GEMS Prize · evidence-gated research</p>
+        <h1>Find new faults.<br>Keep every claim auditable.</h1>
+        <p class="lede">A research workspace for spatially validated fault predictions—not a score showcase. We stay in the expected-DTI-optimal selection lane, measure against buffered fault-segment holdouts, and publish a submission only after every gate passes.</p>
+        <div class="button-row">
+          <a class="button" href="executive-summary.html">Executive submit guide <span aria-hidden="true">→</span></a>
+          <a class="button secondary" href="hypotheses.html">Review the hypotheses</a>
+        </div>
+      </div>
+      <div class="hero-mark" aria-hidden="true"><div class="geo-lines"></div><div class="hero-orbit">FAULT<br>TRACE<br>RESEARCH</div></div>
+    </div>
+  </section>
+
+  <section class="status-banner" aria-labelledby="status-title">
+    <div class="status-icon" aria-hidden="true">!</div>
+    <div>
+      <h2 id="status-title">NOT CLEARED — no downloadable submission file exists</h2>
+      <p><strong>Do not download or submit a GEMSDOE64 TIFF.</strong> This checkout contains no competition rasters, cached feature stack, shared evaluator/writer, or registry. No candidate was made; holdout DTI, registry uniqueness, pixel/metadata validation, and file hash gates are unrun. The recorded outcome is a deliberate negative, not a missing link.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="decision-title">
+    <div class="section-head">
+      <p class="eyebrow">Decision, not spin</p>
+      <h2 id="decision-title">A synthetic pass is not a competition result</h2>
+      <p>The standard-library probe checks the published formula and verifies why local point-probability thresholding can fail under the 300 m spatial kernel. It is not holdout scoring and cannot clear a raster.</p>
+    </div>
+    <div class="card-grid">
+      <article class="card">
+        <div class="tag-row"><span class="tag good">SYNTHETIC CHECK · PASS</span></div>
+        <h3>Decision-rule intuition tested</h3>
+        <p>In an isolated unit-count case, the threshold behaves as expected. A two-truth-raster counterexample shows exact marginal DTI can decrease after adding a redundant candidate, despite its raw occurrence frequency exceeding <code>α × S</code>.</p>
+        <p class="small"><a href="methodology.html#synthetic">Inspect the worked result</a> · <a href="research/expected_dti_probe.json">machine-readable output</a></p>
+      </article>
+      <article class="card">
+        <div class="tag-row"><span class="tag stop">NO HOLDOUT-DTI</span></div>
+        <h3>Evidence is blocked upstream</h3>
+        <p>The shared feature cache, exact holdout evaluator, submission writer, registry rasters, and authorized competition files were not found in this checkout. No score, confidence interval, or uniqueness comparison is claimed.</p>
+        <p class="small"><a href="research/limitations_and_next.md">Blockers and recovery path</a></p>
+      </article>
+      <article class="card">
+        <div class="tag-row"><span class="tag warn">CLAIM UNVERIFIED</span></div>
+        <h3>H33 attribution is unverified</h3>
+        <p>The user-cited value is not linked to a verifiable artifact or organizer receipt in this project. A pruning explanation is plausible, but cannot establish the cause. It remains an unverified claim—not a result.</p>
+        <p class="small"><a href="research/score_review.md">Read the provenance review</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="gates-title">
+    <div class="section-head">
+      <p class="eyebrow">What must happen before “download”</p>
+      <h2 id="gates-title">Six hard gates. No exceptions.</h2>
+      <p>When a gate fails or its evidence is unavailable, the status stays red. A public webpage or synthetic raster cannot substitute for the missing artifact.</p>
+    </div>
+    <ul class="checklist">
+      <li><span class="checkmark">01</span><span><strong>Data and provenance:</strong> authorized competition files, exact shared feature cache and tools, with input hashes and grid metadata recorded.</span></li>
+      <li><span class="checkmark">02</span><span><strong>Leakage control:</strong> feature-alone canaries; AUC above 0.90 is a leakage warning pending explanation; whole fault segments are withheld with a buffer.</span></li>
+      <li><span class="checkmark">03</span><span><strong>Holdout lift:</strong> visible-only catalogue features, pixel-exact visible-fault mask, pooled holdout DTI, positive count and 95% CI; promotion requires over 2 block-bootstrap standard errors versus incumbent on the same surfaces.</span></li>
+      <li><span class="checkmark">04</span><span><strong>Novelty and non-duplication:</strong> compare every registry raster before placement and final dots; stop if rank correlation exceeds 0.90 or more than 70% of dots lie within 3 pixels.</span></li>
+      <li><span class="checkmark">05</span><span><strong>Exact output checks:</strong> template writer plus validator, matching single-band float32 grid and valid values, pixel agreement, and SHA-256 recorded.</span></li>
+      <li><span class="checkmark">06</span><span><strong>Submission card:</strong> unique, unused name; note no longer than 140 characters; all evidence and verdict recorded. No automatic upload or slot use.</span></li>
+    </ul>
+    <div class="button-row"><a class="button secondary" href="research/run_card.json">Open the current negative run card</a><a class="button secondary" href="executive-summary.html">Read the upload guide</a></div>
+  </section>
+
+  <section class="section" aria-labelledby="brief-title">
+    <div class="section-head">
+      <p class="eyebrow">Project brief</p>
+      <h2 id="brief-title">Mechanism first. Evidence next.</h2>
+      <p>Fault prediction is an inference problem with look-alike geology, label uncertainty and spatial dependence. The research register ranks 5 distinct, publicly sourced hypotheses, labels what is and is not confirmed, and names a physical mimic for each.</p>
+    </div>
+    <div class="card-grid">
+      <a class="card card-link" href="hypotheses.html"><div class="tag-row"><span class="tag">5 RANKED HYPOTHESES</span></div><h3>Geological signals</h3><p>Relocated hypocenter geometry, GeoDAWN airborne geophysics, DEM-derived drainage deflection, Sentinel-1 deformation, and geothermal surface geochemistry—each subject to coverage, access and novelty checks.</p></a>
+      <a class="card card-link" href="methodology.html"><div class="tag-row"><span class="tag">EXPECTED DTI</span></div><h3>Selection, not thresholding</h3><p>Choose candidates by exact mean marginal score change across plausible truth rasters. Local probabilities alone ignore the spatial redundancy in the score kernel.</p></a>
+      <a class="card card-link" href="sources.html"><div class="tag-row"><span class="tag">SOURCE REGISTER</span></div><h3>Open does not mean ready</h3><p>Free/official sources are linked alongside license, spatial coverage, access and retrieval caveats. No proposed layer is presented as downloaded or integrated.</p></a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="principles-title">
+    <div class="section-head">
+      <p class="eyebrow">Operating principles</p>
+      <h2 id="principles-title">Maximize P(Win). Own the Outcome.</h2>
+    </div>
+    <div class="callout">
+      <p><strong>Maximize P(Win):</strong> scarce experiment and submission budgets go to tests with a measurable chance of spatial holdout improvement, not leaderboard imitation.</p>
+      <p><strong>Own the Outcome:</strong> the negative decision, missing inputs, score uncertainty, and next unblock steps are written down. Failed or blocked tests stay visible.</p>
+    </div>
+    <p class="small">Leaderboard monitoring and score mirroring are intentionally excluded. See the <a href="https://www.drivendata.org/termsofuse/">official Terms of Use</a> and use the competition page directly for current information, subject to its terms.</p>
+  </section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><div><p><strong>GEMSDOE64</strong> · evidence-gated fault mapping research</p><p>Last reviewed: 2026-10-11 · Submission: <span class="blocker">NOT CLEARED</span></p></div><a class="backtop" href="#main">Back to top ↑</a></div></footer>
+</body>
+</html>
