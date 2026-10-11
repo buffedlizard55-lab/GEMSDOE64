@@ -1,0 +1,79 @@
+{
+  "ceiling_auc": 0.9,
+  "max_directional_auc": 0.5948510430496051,
+  "any_flagged": false,
+  "features": [
+    {
+      "feature": "scarp_pixel_fraction",
+      "auc": 0.43471804844948414,
+      "directional_auc": 0.5652819515505159,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "snr_weighted_amplitude",
+      "auc": 0.5284076198240657,
+      "directional_auc": 0.5284076198240657,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "structure_tensor_coherence",
+      "auc": 0.4789021211851373,
+      "directional_auc": 0.5210978788148627,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "dominant_strike",
+      "auc": 0.5098197775054389,
+      "directional_auc": 0.5098197775054389,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "hessian_sharpness",
+      "auc": 0.5934861914406331,
+      "directional_auc": 0.5934861914406331,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "scarplet_rel_age",
+      "auc": 0.581711482017461,
+      "directional_auc": 0.581711482017461,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "slope_polarity",
+      "auc": 0.4936704575466788,
+      "directional_auc": 0.5063295424533212,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "slope_p90",
+      "auc": 0.585515840379404,
+      "directional_auc": 0.585515840379404,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "relief_10m",
+      "auc": 0.5834181423385442,
+      "directional_auc": 0.5834181423385442,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "curv_10m",
+      "auc": 0.5948510430496051,
+      "directional_auc": 0.5948510430496051,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "hs_lin",
+      "auc": 0.5894188244982168,
+      "directional_auc": 0.5894188244982168,
+      "leakage_until_proven_otherwise": false
+    },
+    {
+      "feature": "mag_grad",
+      "auc": 0.5272038535847056,
+      "directional_auc": 0.5272038535847056,
+      "leakage_until_proven_otherwise": false
+    }
+  ]
+}

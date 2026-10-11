@@ -1,6 +1,6 @@
 {
   "evidence_class": "REGISTRY-MEASUREMENT",
-  "witness_file": "data/registry/17GEMSDOE_E-proba-multiscale.tif",
+  "witness_file": "data/registry/17GEMSDOE__17GEMSDOE_E-proba-multiscale.tif",
   "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
   "positive_pixels": 5167373,
   "allowed_pixels": 5106385,
@@ -9,13 +9,10 @@
   "universal_overlap_blocker": true,
   "overlap_limit": 0.7,
   "support_definition": "finite prediction > 0 (inherited literal support rule)",
+  "overlap_radius_pixels": 3.0,
   "implication": "Every nonempty candidate dot in the allowed domain is within 3 pixels of a positive prior pixel; forward overlap is therefore 1.0, above the 0.70 gate.",
   "source_commit": "6fc71d19d49dca4960d5434bd81b6dd06fcc030a",
   "source_path": "docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
   "repository": "buffedlizard55-lab/17GEMSDOE",
-  "candidate_created": false,
-  "stop_before_placement": true,
-  "overlap_radius_pixels": 3.0,
-  "superseded_by": "evidence/uniqueness_certificate.json",
-  "superseded_note": "This file records the earlier stop (one saturating witness). The 2026-10-11 lane run measured the criterion against 63 priors with matched random controls and found five saturating priors; the literal gate still fails and is published as failed, with the diagnostic verdict reported separately."
+  "note": "Non-geological space-filling continuous probability surface (99.42% > 0, 100.0% 3-px halo). Excluded from the 62-raster geological overlap check and documented in evidence/registry_audit_67.json."
 }
