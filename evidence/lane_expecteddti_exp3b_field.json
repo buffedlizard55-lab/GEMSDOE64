@@ -1,0 +1,395 @@
+{
+ "physical_only": {
+  "pooled_blocked_auc": 0.730077138133062,
+  "pooled_ap": 0.21894629914212932,
+  "prevalence": 0.12905164351038753,
+  "per_fold": [
+   {
+    "fold": 0,
+    "n_train": 367615,
+    "n_val": 101264,
+    "n_val_pos": 8548,
+    "n_buffered_out": 3707,
+    "auc": 0.7095360606845994,
+    "ap": 0.20530007704447384
+   },
+   {
+    "fold": 1,
+    "n_train": 372642,
+    "n_val": 95220,
+    "n_val_pos": 8597,
+    "n_buffered_out": 4724,
+    "auc": 0.6954920940958005,
+    "ap": 0.157418655470241
+   },
+   {
+    "fold": 2,
+    "n_train": 377090,
+    "n_val": 92553,
+    "n_val_pos": 5100,
+    "n_buffered_out": 2943,
+    "auc": 0.8829313549485293,
+    "ap": 0.2888498171211915
+   },
+   {
+    "fold": 3,
+    "n_train": 373535,
+    "n_val": 94797,
+    "n_val_pos": 12002,
+    "n_buffered_out": 4254,
+    "auc": 0.6600281905428347,
+    "ap": 0.18195725841979754
+   },
+   {
+    "fold": 4,
+    "n_train": 381225,
+    "n_val": 88752,
+    "n_val_pos": 26741,
+    "n_buffered_out": 2609,
+    "auc": 0.8916660580028567,
+    "ap": 0.6837963247596539
+   }
+  ],
+  "fold_auc_spread": 0.23163786746002202,
+  "brier_raw": 0.12320613116025925,
+  "brier_isotonic": 0.10363051295280457,
+  "calibration_bins": [
+   {
+    "bin": 2,
+    "n": 139780,
+    "mean_calibrated": 0.0014316214947029948,
+    "observed_rate": 0.0014308198597796538,
+    "gap": 8.016349233410432e-07
+   },
+   {
+    "bin": 3,
+    "n": 33531,
+    "mean_calibrated": 0.08655119687318802,
+    "observed_rate": 0.08654677760877993,
+    "gap": 4.419264408084267e-06
+   },
+   {
+    "bin": 4,
+    "n": 58096,
+    "mean_calibrated": 0.13369345664978027,
+    "observed_rate": 0.13369250895070228,
+    "gap": 9.476990779910821e-07
+   },
+   {
+    "bin": 5,
+    "n": 45495,
+    "mean_calibrated": 0.1569625586271286,
+    "observed_rate": 0.15696230354984064,
+    "gap": 2.550772879583718e-07
+   },
+   {
+    "bin": 6,
+    "n": 51576,
+    "mean_calibrated": 0.17886267602443695,
+    "observed_rate": 0.17886226151698464,
+    "gap": 4.1450745230653396e-07
+   },
+   {
+    "bin": 7,
+    "n": 28362,
+    "mean_calibrated": 0.22022470831871033,
+    "observed_rate": 0.22022424370636767,
+    "gap": 4.6461234265438023e-07
+   },
+   {
+    "bin": 9,
+    "n": 115746,
+    "mean_calibrated": 0.23764969408512115,
+    "observed_rate": 0.23764968119848634,
+    "gap": 1.2886634814801567e-08
+   }
+  ],
+  "leakage_canary": {
+   "per_feature": {
+    "b01_mag_anom": {
+     "signed_auc": 0.4992846609090563,
+     "blocked_auc": 0.5007153390909437,
+     "leakage_flag": false
+    },
+    "b02_rtp": {
+     "signed_auc": 0.4936720229913273,
+     "blocked_auc": 0.5063279770086727,
+     "leakage_flag": false
+    },
+    "b03_tmi_hgrad": {
+     "signed_auc": 0.49123604776871843,
+     "blocked_auc": 0.5087639522312816,
+     "leakage_flag": false
+    },
+    "b04_geod_2nd_inv": {
+     "signed_auc": 0.5176545425856238,
+     "blocked_auc": 0.5176545425856238,
+     "leakage_flag": false
+    },
+    "b05_iso_grav_slope": {
+     "signed_auc": 0.5573341618090445,
+     "blocked_auc": 0.5573341618090445,
+     "leakage_flag": false
+    },
+    "b06_tilt": {
+     "signed_auc": 0.4428057011373552,
+     "blocked_auc": 0.5571942988626448,
+     "leakage_flag": false
+    },
+    "b07_geod_shear": {
+     "signed_auc": 0.5087076868010973,
+     "blocked_auc": 0.5087076868010973,
+     "leakage_flag": false
+    },
+    "b08_geod_dilat": {
+     "signed_auc": 0.5417598127831498,
+     "blocked_auc": 0.5417598127831498,
+     "leakage_flag": false
+    },
+    "b09_tmi_vgrad": {
+     "signed_auc": 0.4935249291796092,
+     "blocked_auc": 0.5064750708203908,
+     "leakage_flag": false
+    },
+    "b10_dist_eq": {
+     "signed_auc": 0.5469046900915406,
+     "blocked_auc": 0.5469046900915406,
+     "leakage_flag": false
+    },
+    "b11_iso_grav_vgrad": {
+     "signed_auc": 0.534700899060152,
+     "blocked_auc": 0.534700899060152,
+     "leakage_flag": false
+    },
+    "b12_dem_detrend": {
+     "signed_auc": 0.479489691923913,
+     "blocked_auc": 0.520510308076087,
+     "leakage_flag": false
+    },
+    "b13_iso_grav": {
+     "signed_auc": 0.4714374228708831,
+     "blocked_auc": 0.5285625771291169,
+     "leakage_flag": false
+    },
+    "b14_tmi": {
+     "signed_auc": 0.49848570824816835,
+     "blocked_auc": 0.5015142917518316,
+     "leakage_flag": false
+    },
+    "b15_depth_base": {
+     "signed_auc": 0.5054329498233816,
+     "blocked_auc": 0.5054329498233816,
+     "leakage_flag": false
+    },
+    "b16_eq_density": {
+     "signed_auc": 0.542192467932417,
+     "blocked_auc": 0.542192467932417,
+     "leakage_flag": false
+    },
+    "b17_conductivity": {
+     "signed_auc": 0.47863518199299515,
+     "blocked_auc": 0.5213648180070048,
+     "leakage_flag": false
+    },
+    "b18_iso_grav_hgrad": {
+     "signed_auc": 0.5080242951024877,
+     "blocked_auc": 0.5080242951024877,
+     "leakage_flag": false
+    },
+    "b19_dem_detrend_slope": {
+     "signed_auc": 0.5910577091629792,
+     "blocked_auc": 0.5910577091629792,
+     "leakage_flag": false
+    },
+    "cond_grad": {
+     "signed_auc": 0.6542086259826192,
+     "blocked_auc": 0.6542086259826192,
+     "leakage_flag": false
+    },
+    "cond_high": {
+     "signed_auc": 0.5508044918316821,
+     "blocked_auc": 0.5508044918316821,
+     "leakage_flag": false
+    },
+    "conductivity": {
+     "signed_auc": 0.6729083333380634,
+     "blocked_auc": 0.6729083333380634,
+     "leakage_flag": false
+    },
+    "dem_curv_plan": {
+     "signed_auc": 0.500082284329005,
+     "blocked_auc": 0.500082284329005,
+     "leakage_flag": false
+    },
+    "dem_curv_profile": {
+     "signed_auc": 0.4599707945511862,
+     "blocked_auc": 0.5400292054488138,
+     "leakage_flag": false
+    },
+    "dem_fabric_aniso": {
+     "signed_auc": 0.5880088457031125,
+     "blocked_auc": 0.5880088457031125,
+     "leakage_flag": false
+    },
+    "dem_gradmag": {
+     "signed_auc": 0.7251565542268308,
+     "blocked_auc": 0.7251565542268308,
+     "leakage_flag": false
+    },
+    "dem_gradmag_coherent": {
+     "signed_auc": 0.7134135291728892,
+     "blocked_auc": 0.7134135291728892,
+     "leakage_flag": false
+    },
+    "dem_laplacian": {
+     "signed_auc": 0.4217122951493086,
+     "blocked_auc": 0.5782877048506914,
+     "leakage_flag": false
+    },
+    "dem_localrelief_r2": {
+     "signed_auc": 0.7224055296069823,
+     "blocked_auc": 0.7224055296069823,
+     "leakage_flag": false
+    },
+    "dem_localrelief_r5": {
+     "signed_auc": 0.7232926669007826,
+     "blocked_auc": 0.7232926669007826,
+     "leakage_flag": false
+    },
+    "dem_slope_official": {
+     "signed_auc": 0.7187859298611183,
+     "blocked_auc": 0.7187859298611183,
+     "leakage_flag": false
+    },
+    "dem_tpi_s15": {
+     "signed_auc": 0.3352123503738807,
+     "blocked_auc": 0.6647876496261194,
+     "leakage_flag": false
+    },
+    "dem_tpi_s5": {
+     "signed_auc": 0.35880542934087434,
+     "blocked_auc": 0.6411945706591257,
+     "leakage_flag": false
+    },
+    "depth_base": {
+     "signed_auc": 0.6742922544892348,
+     "blocked_auc": 0.6742922544892348,
+     "leakage_flag": false
+    },
+    "depth_shallow": {
+     "signed_auc": 0.4997856285380499,
+     "blocked_auc": 0.50021437146195,
+     "leakage_flag": false
+    },
+    "dist_eq": {
+     "signed_auc": 0.7000510063549978,
+     "blocked_auc": 0.7000510063549978,
+     "leakage_flag": false
+    },
+    "eq_density": {
+     "signed_auc": 0.6960406923255716,
+     "blocked_auc": 0.6960406923255716,
+     "leakage_flag": false
+    },
+    "geod_2nd_inv": {
+     "signed_auc": 0.6787123553112979,
+     "blocked_auc": 0.6787123553112979,
+     "leakage_flag": false
+    },
+    "geod_dilat": {
+     "signed_auc": 0.6573493632823786,
+     "blocked_auc": 0.6573493632823786,
+     "leakage_flag": false
+    },
+    "geod_shear": {
+     "signed_auc": 0.6259080525858716,
+     "blocked_auc": 0.6259080525858716,
+     "leakage_flag": false
+    },
+    "igrav_hgrad": {
+     "signed_auc": 0.5109026480235042,
+     "blocked_auc": 0.5109026480235042,
+     "leakage_flag": false
+    },
+    "igrav_resid": {
+     "signed_auc": 0.5246680243266654,
+     "blocked_auc": 0.5246680243266654,
+     "leakage_flag": false
+    },
+    "tilt_abs": {
+     "signed_auc": 0.6406461043068898,
+     "blocked_auc": 0.6406461043068898,
+     "leakage_flag": false
+    },
+    "tilt_pos": {
+     "signed_auc": 0.6406461043068898,
+     "blocked_auc": 0.6406461043068898,
+     "leakage_flag": false
+    },
+    "tmi_grad_ratio": {
+     "signed_auc": 0.6766061606759411,
+     "blocked_auc": 0.6766061606759411,
+     "leakage_flag": false
+    },
+    "tmi_gradmag": {
+     "signed_auc": 0.6724051520000063,
+     "blocked_auc": 0.6724051520000063,
+     "leakage_flag": false
+    },
+    "tmihgrad": {
+     "signed_auc": 0.6724058988684319,
+     "blocked_auc": 0.6724058988684319,
+     "leakage_flag": false
+    },
+    "tmivgrad": {
+     "signed_auc": 0.47043505372884303,
+     "blocked_auc": 0.5295649462711569,
+     "leakage_flag": false
+    }
+   },
+   "flagged": [],
+   "max_blocked_auc": 0.7251565542268308
+  },
+  "passes_canary": true
+ },
+ "catalogue_derived": {
+  "leakage_canary": {
+   "per_feature": {
+    "cat_prox_e5": {
+     "signed_auc": 0.996370661282427,
+     "blocked_auc": 0.996370661282427,
+     "leakage_flag": true
+    },
+    "cat_prox_e15": {
+     "signed_auc": 0.996370661282427,
+     "blocked_auc": 0.996370661282427,
+     "leakage_flag": true
+    },
+    "cat_prox_inv3": {
+     "signed_auc": 0.9890316725698449,
+     "blocked_auc": 0.9890316725698449,
+     "leakage_flag": true
+    },
+    "cat_density_s6": {
+     "signed_auc": 0.9712724912032232,
+     "blocked_auc": 0.9712724912032232,
+     "leakage_flag": true
+    }
+   },
+   "flagged": [
+    "cat_density_s6",
+    "cat_prox_e15",
+    "cat_prox_e5",
+    "cat_prox_inv3"
+   ],
+   "max_blocked_auc": 0.996370661282427
+  },
+  "verdict": "QUARANTINED: circular target. Excluded from the emission model; documented here as the leakage the canary exists to catch."
+ },
+ "removed_artefact": {
+  "first_version_pooled_auc": 0.9963,
+  "first_version_hide_and_recover_dti": 1.0,
+  "diagnosis": "circular: catalogue-proximity features predicting the catalogue; emission reproduced the withheld positives exactly"
+ },
+ "seconds": 89.1
+}

@@ -1,0 +1,103 @@
+{
+ "manifest_version": "1.1",
+ "integrity_policy": "Full digests are measured from the bytes on disk at manifest-write time. Where an earlier session recorded only a prefix, the prefix is cross-checked and the match is reported explicitly. No digest on this page is transcribed from memory.",
+ "official_competition": "DrivenData 306 - DOE GEMS",
+ "official_urls": [
+  "https://www.drivendata.org/competitions/306/doe-gems/page/967/"
+ ],
+ "grid": {
+  "width": 3292,
+  "height": 3730,
+  "crs": "EPSG:32611",
+  "resolution_m": 100.0,
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "footprint_cells": 5167373,
+  "catalogue_cells": 60988,
+  "scored_cells": 5106385,
+  "feature_sentinel_cells_in_footprint": 3061,
+  "sentinel_value": -3.4028234663852886e+38,
+  "grid_note": "all values measured from the official rasters by src/gems64/grid.py"
+ },
+ "files": [
+  {
+   "path": "data/raw/training_features.tif",
+   "role": "official feature stack, 19 bands float32, LZW, nodata -3.4028234663852886e+38",
+   "bytes_expected": 418912844,
+   "bytes_measured": 418912844,
+   "bytes_match": true,
+   "sha256_prefix_recorded": "4371c82e3b8339b8",
+   "sha256_measured": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+   "sha256_prefix_measured": "4371c82e3b8339b8",
+   "prefix_match": true,
+   "pin_pass": true,
+   "verification": "byte length exact and first 16 hex chars match the pin recorded during restore; the full digest is measured now, never transcribed"
+  },
+  {
+   "path": "data/raw/labels.tif",
+   "role": "official labels, int8, nodata -1",
+   "bytes_expected": 425830,
+   "bytes_measured": 425830,
+   "bytes_match": true,
+   "sha256_prefix_recorded": "7ba308ccdc4418b3",
+   "sha256_measured": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+   "sha256_prefix_measured": "7ba308ccdc4418b3",
+   "prefix_match": true,
+   "pin_pass": true,
+   "verification": "byte length exact and first 16 hex chars match the pin recorded during restore; the full digest is measured now, never transcribed"
+  },
+  {
+   "path": "data/raw/sample_submission.tif",
+   "role": "official template - footprint source ONLY, never its values",
+   "bytes_expected": 1599597,
+   "bytes_measured": 1599597,
+   "bytes_match": true,
+   "sha256_prefix_recorded": "2176d08e485aa2cd",
+   "sha256_measured": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+   "sha256_prefix_measured": "2176d08e485aa2cd",
+   "prefix_match": true,
+   "pin_pass": true,
+   "verification": "byte length exact and first 16 hex chars match the pin recorded during restore; the full digest is measured now, never transcribed"
+  },
+  {
+   "path": "data/raw/external/derived_sgmc_faults_100m_u8.tif",
+   "role": "external geoscience layer",
+   "bytes_measured": 198602,
+   "sha256_measured": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0",
+   "note": "no prior pin recorded; digest measured now so future restores can be checked"
+  },
+  {
+   "path": "data/raw/external/gdr_qfaults_traces.csv",
+   "role": "external geoscience layer",
+   "bytes_measured": 126177,
+   "sha256_measured": "9702f2e5c382a4f472ae834d22b94990983b059677a37adfafd51c50f75e643c",
+   "note": "no prior pin recorded; digest measured now so future restores can be checked"
+  },
+  {
+   "path": "data/raw/external/gdr_wellspring_in_footprint.csv",
+   "role": "external geoscience layer",
+   "bytes_measured": 2146771,
+   "sha256_measured": "122718e65bdf55aab0ee12ad20d80062f0deb1de957225a61ad880dd5dc196ea",
+   "note": "no prior pin recorded; digest measured now so future restores can be checked"
+  },
+  {
+   "path": "data/raw/external/gdr_volcanic_vents_in_footprint.csv",
+   "role": "external geoscience layer",
+   "bytes_measured": 672,
+   "sha256_measured": "f91bafbaccaaf2754e71d60434fc0f9eb2c7b880c6e714883f4974542ff6a0bf",
+   "note": "no prior pin recorded; digest measured now so future restores can be checked"
+  }
+ ]
+}

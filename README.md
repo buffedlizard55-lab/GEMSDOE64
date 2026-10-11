@@ -79,6 +79,25 @@ Using `scripts/audit_h33.py` ([`evidence/h33_forensics.json`](evidence/h33_foren
    - Furthermore, `5,021` of `H33-2-B2`'s dots (`13.33%`) lie in cultural road/claim/canal corridors (`tiger_road_distance_m < 75 m`, `blm_closed_claim_distance_m < 60 m`, or flat-basin cardinal canals) where true off-catalogue USGS SGMC faults are **$4.66\times$ depleted**.
    - By introducing **native 1–3 m lidar scarp channels** (Scarplet + slope-aware detrending + Steger + Frangi), fixing the **$90^\circ$ strike reference-frame bug**, applying the **cultural-feature mask**, and retraining under **4-fold spatial CV**, we unlock substantial `HOLDOUT-DTI` gains across both range fronts and basin interiors.
 
+> **Irregularity flagged on the `0.3774` target, resolved against this repository's own verified
+> snapshot.** [`docs/data/leaderboard_snapshot.json`](docs/data/leaderboard_snapshot.json)
+> (`observed_utc: 2026-10-11`, `verified: true`, manual rendered-page fetch of 50 rows) carries an
+> erratum recording a live re-read whose rows 1–10 supersede the snapshot body. On that re-read the
+> top of the board is **`0.4133`** (`xiaofanhu`), then `0.3585` (`cfld__`) and `0.3418`
+> (`JerryDataWorks`); **`0.3195` is confirmed real** (`DARD`, rank 9) and the `0.2778` receipt
+> analysed above sits at **rank 23** (`extradr19`). The `0.3262` that was #1 on 2026-10-04
+> (`nchuzhoy`) is now rank 7.
+>
+> **`0.3774` appears nowhere** — not in the 50 snapshot rows, not in the live re-read rows, and not
+> in any of the five sibling-clone ledgers. Treat it as unconfirmed until an `ORGANIZER-CONFIRMED`
+> receipt exists; drivendata.org is unreachable from the sandbox, so it could not be checked at
+> source. Consequence for the heading above: any improvement computed against `0.3262` understates
+> the gap by roughly a third. Reaching live #1 from `H33-2-B2`'s `S = 37,654` at `K = 7,905` needs
+> `T = 5,726`, i.e. credit per dot of `0.1521` against `0.1022` today — **`+48.8%`**, not the
+> `+17.4%` that `0.3262` implies. Both figures are `PROJECTION` (arithmetic on the verified closed
+> form `T = D·(α·S + β·K)`), never scores; the derivation is in
+> [`docs/research/lane-expecteddti-findings.md`](docs/research/lane-expecteddti-findings.md).
+
 ---
 
 ## 2. Five Candidate Geological Hypotheses (Ranked by Expected DTI Gain & Cost)
@@ -133,7 +152,32 @@ PYTHONPATH=.:src .venv/bin/python scripts/check_site.py
 
 # 4. Run the test suite
 PYTHONPATH=.:src .venv/bin/python -m pytest -q
+
+# 5. Expected-DTI-optimal lane (see §7). Steps a-c rebuild its receipts end to end; d-e regenerate
+#    its findings page and run card. None of these touch docs/*.html, docs/data/ or docs/downloads/,
+#    so step 3's `git diff --exit-code -- docs` guard is unaffected.
+#    The field/emission steps need the competition rasters; point GEMS64_DATA at them (defaults to
+#    data/raw). The LANE uniqueness check reads registry rasters from sibling clones — override with
+#    GEMS64_REGISTRY_ROOTS, and note it reports lane_certified=false rather than "not a duplicate"
+#    if none are reachable.
+PYTHONPATH=.:src GEMS64_DATA=data/raw .venv/bin/python scripts/lane_expecteddti_verify_rule.py
+PYTHONPATH=.:src GEMS64_DATA=data/raw .venv/bin/python scripts/lane_expecteddti_invert_live_scores.py
+PYTHONPATH=.:src GEMS64_DATA=data/raw .venv/bin/python scripts/lane_expecteddti_build_field.py
+PYTHONPATH=.:src GEMS64_DATA=data/raw .venv/bin/python scripts/lane_expecteddti_train_field.py
+PYTHONPATH=.:src GEMS64_DATA=data/raw .venv/bin/python scripts/lane_expecteddti_emit_and_ship.py
+PYTHONPATH=.:src GEMS64_DATA=data/raw .venv/bin/python scripts/lane_expecteddti_gate.py
+PYTHONPATH=.:src .venv/bin/python scripts/build_lane_findings_expecteddti.py
+PYTHONPATH=.:src .venv/bin/python scripts/make_run_card_expecteddti.py
+PYTHONPATH=.:src .venv/bin/python scripts/check_submission.py \
+  submissions/gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-zeros.tif
 ```
+
+> Step 5's gate exits non-zero by design: it returns `2` for a negative verdict, so a shell chain
+> should not treat that as a build failure. `scripts/make_run_card.py` builds the **published** card
+> only — note that its `lane` string still reads "expected-DTI-optimal selection on a calibrated
+> surface" while `evidence/run_card.json` describes the lidar lane, i.e. that builder is stale
+> relative to the card it would overwrite. Do not run it against
+> `evidence/run_card_expecteddti.json`; use `scripts/make_run_card_expecteddti.py`.
 
 ---
 
@@ -257,3 +301,150 @@ Build a clean GitHub Pages UI with an executive summary subpage explaining how t
   "verdict": "promote"
 }
 ```
+
+---
+
+## 7. Supplementary Evidence Set — the Expected-DTI-optimal lane (`verdict: negative`)
+
+A second parallel run implemented the **Expected-DTI-optimal selection** lane: replace heuristic dot
+spacing with a decision rule on a calibrated surface, greedy-add the candidate pixel with the largest
+mean DTI gain under this repository's exact kernel metric over an ensemble of 32 plausible truth
+rasters, then prune backward, and gate the result against spacing placement by more than two
+block-bootstrap SEs.
+
+> **Its verdict is `negative` — DO NOT DOWNLOAD AND DO NOT SUBMIT ITS GEOTIFF.** It is an audit
+> artifact, not a candidate, and it is deliberately **not** in `docs/downloads/` or `docs/`
+> anywhere. The promoted submission remains
+> `submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z.tif` as §0 states. **No weekly slot was
+> spent by this lane.**
+
+* write-up — [`docs/research/lane-expecteddti-findings.md`](docs/research/lane-expecteddti-findings.md),
+  generated from the receipts by `scripts/build_lane_findings_expecteddti.py` with **no hand-entered
+  numbers**;
+* run card — [`evidence/run_card_expecteddti.json`](evidence/run_card_expecteddti.json), built by
+  `scripts/make_run_card_expecteddti.py`. This is a **second** card and must never be confused with
+  the published [`evidence/run_card.json`](evidence/run_card.json), which `scripts/check_site.py`
+  requires to be mirrored byte-for-byte at `docs/data/run_card.json`;
+* receipts — `evidence/lane_expecteddti_exp1_rule.json` (`VERIFIED`, 7/7 checks),
+  `_exp2_inversion.json`, `_exp3a_field.json`, `_exp3b_field.json` (`HOLDOUT-AUC`, spatially
+  blocked), `_exp3b_leaky_audit.json` (the quarantined leaky first instrument, kept as the audit
+  trail), `_exp3c_emission.json`, `_exp3d_gate.json`;
+* code — `src/gems64/lane_expecteddti/{gridext,metricext,engine,emission}.py` and
+  `scripts/lane_expecteddti_*.py`. These **keep no private fork**: grid constants come from
+  `gems64.grid`, and the kernel, lattice offsets, α/β, brute-force oracle and marginal rule come from
+  `gems64.metric`; the gate calls the shared `gems64.validate` (18 checks) and `assert_submittable`;
+* artifact — `submissions/gems64-expecteddti-flank0.158-14k-20261011T210000Z-af6336e0-zeros.tif`
+  (sha256 `abc46d756dc437ea…`, 14,075 positive px, **PASS 18/18**) and its `-nan` comparison twin
+  (**FAIL 16/18** on `no_nan_anywhere` + `outside_footprint_zero` — must never be uploaded).
+
+**Decision-relevant result.** The rule is verified — joint greedy beat independent thresholding on
+5/5 held-out draws with identical `TP_w` at 18–31× less mass, confirming that the 3-px kernel makes
+adjacent picks redundant — and it beat spacing placement by `z = +15.97` on 32/32 held-out draws. But
+the **surface is saturated**: 1.94 % of scored cells sit at raw score 1.0 and the top 200,000
+candidates span 0.0003 of score range with only 4,907 distinct values, so the ranking that selects
+every dot is decided by numpy's tie order rather than by geology. A verified optimal rule pointed at
+an uninformative surface yields an arbitrary dot set that looks excellent against truth sampled from
+itself. One arm failed (`surface usability`); the other three passed.
+
+**Why the no-private-fork rule mattered, corroborated by a sibling lane on the same day.** Commit
+`06e6991` ("Fix metric_terms `TP_w` (shifted_max over p*k)") records that lane 64's *own*
+certified-credit accumulator in `scripts/build_scarp_stage2.py` "maximised the triangular kernel
+alone when building `TP_w`, so a truth cell with no dot on it was credited 0 instead of the kernel
+weight of its nearest dot". The shared `src/gems64/metric.py` was not touched — the defect lived
+entirely in a private reimplementation, and the fix was cross-checked against
+`gems57.metric.dti_bruteforce`. This lane hit the *same family* of defect (its bug #1: `commit`
+assigned `best[]` instead of taking a max, so a farther cell overwrote credit a nearer cell had
+earned) but caught it before shipping, because it consumes the shared `gems64.metric` and verifies
+its vectorised `TP_w` against the shared brute-force oracle to 7.1e-15 (`VERIFIED` check C1) rather
+than re-deriving the kernel. Both lanes independently rediscovering the same trap in a
+coverage-credit accumulator is the strongest available argument for the protocol's "fix shared tools
+once in the template and report; never keep a private fork".
+
+**Its most transferable finding independently corroborates §1.** Inverting `T = D·(α·S + β·K)`
+through the verified closed form over the registry's one controlled pair (`h27-4-r1-solo-d2-8` at
+`0.2708` with 2,545 dots inside 2 px of the published catalogue, versus `h33-2-b2` at `0.2778` with
+zero) quantifies the flank band as a **6.3× credit depletion** — ≈`0.016` per removed dot against
+≈`0.102` per retained dot — robust for every plausible hidden-truth size `K = 6,000–12,691`. So the
+collar removal was *required* by the marginal rule, not merely score-improving, which is the same
+conclusion §1 reaches by pixel diffing. Its negative control `sgmc-off-catalogue-44k` at **`0.0512`**
+bounds every off-catalogue hypothesis: being off-catalogue is necessary but nowhere near sufficient.
+
+---
+
+## 8. Original Task Prompt — the Expected-DTI-optimal parallel run (preserved verbatim)
+
+<details>
+<summary><b>Click to expand. §5 preserves the lidar-scarp lane's prompt; this is the second
+parallel run's prompt, preserved verbatim and re-read at the start of every session.</b></summary>
+
+### Primary task
+
+Generate a **unique, downloadable GeoTIFF submission** for DrivenData competition 306 "DOE GEMS"
+(geothermal exploration / hidden-fault prediction, northwestern Great Basin, Nevada; EPSG:32611,
+100 m grid).
+
+**Assigned LANE (single method paragraph — stay inside it):**
+
+> **Expected-DTI-optimal selection.** Replace heuristic spacing with a decision rule on a
+> calibrated surface. For a Tversky-family score with α+β=1, adding a pixel raises expected score
+> when its calibrated probability exceeds α × the optimal score; for DTI (α=0.2) that is ≈0.06 at
+> DTI 0.30. Extends Lipton, Elkan & Narayanaswamy (ECML-PKDD 2014: F1-optimal threshold = half
+> optimal F1) — must verify numerically on synthetic rasters first. 3-px kernel makes adjacent
+> picks redundant → do NOT threshold independently. Calibrate by isotonic regression on spatially
+> blocked, buffered out-of-fold predictions. Treat ensemble/TTA/MC-dropout outputs (jittered 1–2
+> px) as ≥32 plausible truth rasters. Greedily add the ridge-candidate pixel with largest mean DTI
+> gain under the repo's exact kernel metric, then prune backward until marginal gain ≤ 0. Gate:
+> beat current spacing/MCLP placement on the same surface by >2 block-bootstrap SEs. Finish:
+> normalize to [0,1]; write float32 EPSG:32611 100 m GeoTIFF (NaN only outside footprint); pass
+> `validate_submission.py`; hash/pixel-agreement check against ALL prior rasters; offer download
+> ONLY if gate met, else log the negative result.
+
+### Parallel-run protocol (also mandatory)
+
+1. **LANE discipline**: if rank-correlation with any registry raster >0.90, or >70% of dots fall
+   within 3 px of one registry raster's dots → log as duplicate and STOP. Check on surface before
+   placement AND on final dots.
+2. **REUSE, DON'T REBUILD**: use the template's cached feature stack, `evaluate_holdout.py`,
+   `submission_writer.py`. Holdout = hide-and-recover: withhold whole fault segments with buffer,
+   derive every catalogue-based feature only from visible faults, mask visible faults pixel-exactly,
+   score pooled DTI (α=0.2, β=0.8, 300 m triangular kernel). Fix shared tools once in the template
+   and report; never keep a private fork.
+3. **LABEL EVERY NUMBER** as `HOLDOUT-DTI (evaluator version, #withheld positives, 95% CI)` or
+   `ORGANIZER-CONFIRMED (submission-page receipt)`. A projection is never written as a score.
+4. **LEAKAGE CANARY**: test each feature alone on holdout first; AUC >0.90 = leakage until proven
+   otherwise.
+5. **RUN CARD**: end with one JSON card containing hypothesis; mechanism; named non-fault process
+   that could mimic it; holdout DTI + CI; correlation/overlap vs registry; raster sha256; validator
+   output (no NaN inside footprint, values in [0,1], CRS/shape/transform match); submission name +
+   note ≤140 chars; verdict promote/negative. **Negative results ARE deliverables.**
+6. **BUDGET**: stop after 3 experiments or 2 hours. Do not pick submissions / spend slots —
+   promotion is a separate selector step within the weekly cap.
+
+### Also required
+
+- Answer (PhD-level) **WHY** `h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros` scored **0.2778**
+  (highest on the GEMSDOE32 site) and whether we can beat it.
+- Produce **3–5 NEW candidate geological hypotheses** (each naming layers, physical
+  signature/transform, why it catches a fault **MISSING** from the USGS/INGENIOUS catalogue rather
+  than an existing one, how it differs from anything already in the repo), ranked by expected DTI
+  gain vs implementation cost, with the top one validated on the spatially-blocked holdout
+  **BEFORE** touching a submission slot.
+- Name the specific **free official data source** needed if a candidate requires new external data,
+  and verify obtainability.
+- Put the **full prompt into the repo README** and re-read it each session.
+- Build a clean **GitHub Pages site** with obvious download of the submission TIF plus an
+  executive-summary subpage explaining exactly how to submit; include a **unique submission name**
+  and a **short note** (e.g. "clustering with k=25").
+- Fix the previously-reported submission error **`"Predicted values must be in range [0, 1]"`**.
+- Work autonomously, no manual input; verify line by line from official sources with links for
+  manual review; flag irregularities; **NO hallucinations**.
+- Run **3 passes** (implement → review for bugs/edge cases → re-check against original request).
+- Finish by creating a **PR and merging it to `main`**, plus suggestions for remaining work and
+  limitations.
+
+### Core values to keep central
+
+**"Maximize P(Win)"** and **"Own the Outcome"**.
+
+</details>
+
