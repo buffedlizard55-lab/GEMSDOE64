@@ -1,0 +1,15 @@
+building global surface ...
+  surface: visible=47502 hidden=12206 calib_auc=0.8333 n_cal=92975
+  prior correction r=0.078333: sum_w 235017 -> 21884
+  candidates=250000  sum_p=21884.2
+  prune pass removed 4685, DTI=0.249508
+  prune pass removed 54, DTI=0.249508
+  selected 52665 dots, expected DTI=0.24951, mean kappa=0.1750
+Traceback (most recent call last):
+  File "/home/user/GEMSDOE64/scripts/e3_build_submission.py", line 204, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/user/GEMSDOE64/scripts/e3_build_submission.py", line 153, in main
+    metadata=dict(experiment="E3", selector="expected-dti-greedy+backward-prune",
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: dict() got multiple values for keyword argument 'n_dots'

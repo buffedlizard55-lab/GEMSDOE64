@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Method and evidence &mdash; GEMSDOE64</title><style>
+:root{--ink:#101820;--mut:#5b6b7b;--line:#dde5ec;--ok:#0b7a3b;--bad:#b3261e;--acc:#0b5cad}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#f7fafc}
+header{background:#0d2137;color:#fff;padding:26px 20px}header h1{margin:0 0 6px;font-size:24px}header p{margin:0;color:#c9d8e6}
+.wrap{max-width:1000px;margin:0 auto;padding:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0}
+.dl{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;font-size:18px}
+.btn.sec{background:#fff;color:var(--acc);border:2px solid var(--acc)}
+.verdict{font-weight:800;font-size:18px;padding:8px 14px;border-radius:8px}
+.v-ok{background:#e6f6ec;color:var(--ok);border:1px solid #a9dfbe}
+.v-no{background:#fdecea;color:var(--bad);border:1px solid #f2b8b5}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left}
+th{background:#f1f5f9}td.n{text-align:right;font-variant-numeric:tabular-nums}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+pre{background:#0d2137;color:#e8f0f7;padding:12px;border-radius:8px;overflow-x:auto}
+.mut{color:var(--mut);font-size:13px}ol li,ul li{margin:4px 0}
+h2{font-size:19px;margin:4px 0 10px}h3{font-size:16px;margin:14px 0 6px}
+nav a{color:#c9d8e6;text-decoration:none;margin-right:14px;font-size:14px}
+.tag{display:inline-block;background:#eef3f8;border:1px solid var(--line);border-radius:20px;padding:2px 10px;font-size:12px;margin:2px 4px 2px 0}
+</style></head><body>
+<header><div class="wrap" style="padding:0"><h1>Method and evidence</h1>
+<p>Every number below is written by a script in this repository.</p>
+<nav><a href="index.html">Site home</a><a href="lane64.html">Lane H64</a><a href="lane64-how-to-submit.html">How to submit</a>
+<a href="lane64-method.html">Method &amp; evidence</a></nav></div></header><div class="wrap">
+<div class="card"><h2>Objective</h2>
+<p>The score is a distance-weighted Tversky index with alpha = 0.2, beta = 0.8
+and a 300 m (3 px) triangular kernel. Because FN<sub>w</sub> = |G| &minus; TP<sub>w</sub>,</p>
+<pre>DTI = T / (0.2*(T + F) + 0.8*|G|)</pre>
+<p>Adding one unit-mass dot at x changes T by
+<code>dT = sum_g w_g max(0, k(x,g) - C_g)</code> and F by
+<code>dF = 1 - E[max_g k(x,g) B_g]</code>. The exact accept test is
+<code>dT &gt; alpha*T*dF / (alpha*F + beta*|G|)</code>, which for a non-redundant dot
+reduces to <code>kappa &gt; alpha*DTI</code> (0.06 at DTI 0.30). Adjacent picks are
+redundant under the 3-px kernel, so pixels are never thresholded independently:
+the greedy tracks the running credit field C and the backward prune removes any
+dot whose removal raises DTI.</p></div>
+<div class="card"><h2>Feature stack (45 bands)</h2><span class='tag'>d_cat</span><span class='tag'>k_cat_3</span><span class='tag'>k_cat_8</span><span class='tag'>d_tip</span><span class='tag'>k_tip_3</span><span class='tag'>d_strike_extrap</span><span class='tag'>k_strike_extrap_3</span><span class='tag'>cat_density_11</span><span class='tag'>topo_slope_p90</span><span class='tag'>topo_slope_max</span><span class='tag'>topo_steep_frac</span><span class='tag'>topo_slope_std</span><span class='tag'>topo_relief_local</span><span class='tag'>topo_curv_prof_absmax</span><span class='tag'>topo_aspect_coherence</span><span class='tag'>topo_hs_lineament</span><span class='tag'>topo_dem_mean</span><span class='tag'>lidar_scarp_b01</span><span class='tag'>lidar_scarp_b02</span><span class='tag'>lidar_scarp_b03</span><span class='tag'>lidar_scarp_b04</span><span class='tag'>lidar_scarp_b05</span><span class='tag'>lidar_scarp_b06</span><span class='tag'>lidar_scarp_b07</span><span class='tag'>lidar_scarp_b08</span><span class='tag'>lidar_scarp_b09</span><span class='tag'>lidar_scarp_b10</span><span class='tag'>lidar_scarp_b11</span><span class='tag'>lidar_scarp_b12</span><span class='tag'>geodawn_rad_b01</span><span class='tag'>geodawn_rad_b02</span><span class='tag'>geodawn_rad_b03</span><span class='tag'>geodawn_rad_b04</span><span class='tag'>geodawn_ext_b01</span><span class='tag'>geodawn_ext_b02</span><span class='tag'>geodawn_ext_b03</span><span class='tag'>geodawn_ext_b04</span><span class='tag'>dem_elev</span><span class='tag'>dem_slope</span><span class='tag'>dem_lap</span><span class='tag'>dem_slope_std_5</span><span class='tag'>dem_rough</span><span class='tag'>d_thermal_point</span><span class='tag'>k_thermal_8</span><span class='tag'>d_thermal_hot</span>
+<p class="mut">Catalogue-derived bands are rebuilt per fold from the visible
+catalogue only. Bands from <code>lidar_scarp_features_u8.tif</code>,
+<code>geodawn_rad_u8.tif</code> and <code>geodawn_extensions_u8.tif</code> are exposed
+as numbered codes: no manifest ships with those rasters, so no band semantics are
+claimed (irregularity IR-64-BANDS-01).</p></div>
+<div class="card"><h2>Holdout instrument and leakage canary</h2><table><tr><th>fold</th><th>visible catalogue px</th><th>inner-hidden positives</th><th>withheld positives</th><th>held-out-quadrant AUC</th><th>max single-feature AUC (leakage canary)</th></tr><tr><td>fold0</td><td class='n'>41,469</td><td class='n'>8,268</td><td class='n'>1,923</td><td class='n'>0.6949</td><td class='n'>0.755</td></tr><tr><td>fold1</td><td class='n'>41,915</td><td class='n'>7,687</td><td class='n'>2,367</td><td class='n'>0.7296</td><td class='n'>0.7354</td></tr><tr><td>fold2</td><td class='n'>43,185</td><td class='n'>5,678</td><td class='n'>3,781</td><td class='n'>0.7667</td><td class='n'>0.7069</td></tr><tr><td>fold3</td><td class='n'>43,591</td><td class='n'>5,673</td><td class='n'>3,250</td><td class='n'>0.8248</td><td class='n'>0.7383</td></tr></table>
+<p class="mut">Canary rule: any single feature with AUC &gt; 0.90 is treated as
+leakage until proven otherwise.</p></div>
+<div class="card"><h2>Per-fold results</h2><table><tr><th>fold</th><th>mass</th><th>sum_w</th><th>expected_dti</th><th>mean_kappa</th><th>dtiopt</th><th>nms_2p8</th><th>mclp</th><th>distance_only</th><th>random</th></tr><tr><td>0</td><td>11124</td><td class='n'>1607.4000</td><td class='n'>0.0873</td><td class='n'>0.0302</td><td class='n'>0.0648</td><td class='n'>0.1074</td><td class='n'>0.0634</td><td class='n'>0.0639</td><td class='n'>0.0808</td></tr><tr><td>1</td><td>10807</td><td class='n'>1896.3000</td><td class='n'>0.0916</td><td class='n'>0.0351</td><td class='n'>0.0908</td><td class='n'>0.1461</td><td class='n'>0.0978</td><td class='n'>0.0619</td><td class='n'>0.1077</td></tr><tr><td>2</td><td>7610</td><td class='n'>1212.9000</td><td class='n'>0.0951</td><td class='n'>0.0355</td><td class='n'>0.0546</td><td class='n'>0.1076</td><td class='n'>0.0566</td><td class='n'>0.0782</td><td class='n'>0.0752</td></tr><tr><td>3</td><td>4692</td><td class='n'>706.2000</td><td class='n'>0.0863</td><td class='n'>0.0316</td><td class='n'>0.0424</td><td class='n'>0.0921</td><td class='n'>0.0420</td><td class='n'>0.0523</td><td class='n'>0.0624</td></tr></table></div>
+</div></body></html>

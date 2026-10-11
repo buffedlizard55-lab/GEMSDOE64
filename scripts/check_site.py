@@ -6,6 +6,7 @@ import hashlib
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
+import hashlib
 import json
 
 ROOT = Path(__file__).resolve().parents[1]

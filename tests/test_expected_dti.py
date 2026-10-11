@@ -1,7 +1,22 @@
+import itertools
+
 import numpy as np
 import pytest
 from gems57 import metric
 from gems64.expected_dti import ExpectedDTI, plugin_tversky
+
+
+def unique_truths(shape, count=32, allowed=None):
+    allowed = np.ones(shape, dtype=bool) if allowed is None else allowed
+    coordinates = np.argwhere(allowed)
+    if 1 << len(coordinates) <= count:
+        raise ValueError("not enough truth patterns for the test fixture")
+    truths = np.zeros((count, *shape), dtype=bool)
+    for index in range(count):
+        for bit, (row, col) in enumerate(coordinates):
+            if (index + 1) & (1 << bit):
+                truths[index, row, col] = True
+    return truths
 
 
 @pytest.mark.parametrize('seed', range(8))
@@ -16,9 +31,18 @@ def test_exact_metric_matches_literal_oracle(seed):
 
 
 def test_mean_ratio_is_not_ratio_of_means():
+    # Out-of-kernel border markers keep the 32 truth rasters distinct without
+    # changing the center candidate's exact metric support.
+    border = ([(0, x) for x in range(7)] + [(6, x) for x in range(7)] +
+              [(y, 0) for y in range(1, 6)] + [(y, 6) for y in range(1, 6)])
     truths = np.zeros((32, 7, 7), bool)
-    truths[:16, 3, 3] = True
-    truths[16:, 1:6, 1:6] = True
+    for i in range(32):
+        if i < 16:
+            truths[i, 3, 3] = True
+        else:
+            truths[i, 1:6, 1:6] = True
+        y, x = border[i % 16]
+        truths[i, y, x] = True
     cand = np.zeros((7, 7), bool); cand[3, 3] = True
     oracle = ExpectedDTI(truths, cand)
     exact = [metric.dti_binary(cand, t)['dti'] for t in truths]
@@ -29,12 +53,17 @@ def test_mean_ratio_is_not_ratio_of_means():
 
 
 def test_selector_redundancy_and_backward_stop():
+    far = [(10, x) for x in range(11)] + [(y, 10) for y in range(10)]
+    pairs = list(itertools.combinations(far, 2))
     truths = np.zeros((32, 11, 11), bool); truths[:, 5, 5] = True
+    for i, pair in enumerate(pairs[:32]):
+        for y, x in pair:
+            truths[i, y, x] = True
     cand = np.zeros((11, 11), bool); cand[4:7, 4:7] = True; cand[0, 0] = True
     result = ExpectedDTI(truths, cand).select()
     assert result.dots.sum() == 1
     assert result.dots[5, 5]
-    assert result.mean_synthetic_dti == pytest.approx(1)
+    assert result.mean_synthetic_dti == pytest.approx(1 / (1 + 0.8 * 2 + metric.EPS))
     assert result.max_remaining_add_gain <= 1e-12
     assert result.max_remaining_remove_gain <= 1e-12
 
@@ -46,47 +75,60 @@ def test_kernel_can_credit_more_than_one_truth():
 
 
 def test_candidate_mask_known_cells_rejected():
-    t = np.zeros((32, 3, 3), bool)
-    cand = np.zeros((3, 3), bool); cand[1, 1] = True
     allowed = np.ones((3, 3), bool); allowed[1, 1] = False
+    t = unique_truths((3, 3), allowed=allowed)
+    cand = np.zeros((3, 3), bool); cand[1, 1] = True
     with pytest.raises(ValueError, match='allowed'):
         ExpectedDTI(t, cand, allowed=allowed)
 
 
 def test_no_silent_truth_or_memory_substitution():
-    t = np.ones((32, 3, 3), bool)
+    t = unique_truths((3, 3))
     with pytest.raises(ValueError, match='32'):
         ExpectedDTI(t[:2], t[0])
     with pytest.raises(ValueError, match='binary'):
         ExpectedDTI(t.astype(float) * .5, t[0])
     with pytest.raises(MemoryError):
-        ExpectedDTI(t, t[0], max_matrix_elements=5)
+        ExpectedDTI(t, np.ones((3, 3), bool), max_matrix_elements=5)
+    repeated = np.repeat(t[:1], 32, axis=0)
+    with pytest.raises(ValueError, match='distinct plausible truth rasters'):
+        ExpectedDTI(repeated, t[0])
+    with pytest.raises(ValueError, match='at least 32'):
+        ExpectedDTI(t, t[0], min_draws=1)
     with pytest.raises(ValueError):
         plugin_tversky([np.nan], [True])
 
 
-def test_empty_truth_draws_have_zero_score():
-    oracle = ExpectedDTI(np.zeros((32, 3, 3), bool), np.ones((3, 3), bool))
-    result = oracle.select()
-    assert not result.dots.any()
-    assert result.mean_synthetic_dti == 0
+def test_empty_truth_draws_are_rejected_as_non_distinct():
+    truths = np.zeros((32, 3, 3), bool)
+    with pytest.raises(ValueError, match='distinct plausible truth rasters'):
+        ExpectedDTI(truths, np.ones((3, 3), bool))
 
 
 def test_backward_pruning_removes_early_redundant_center():
+    boundary = ([(0, x) for x in range(9)] + [(8, x) for x in range(9)] +
+                [(y, 0) for y in range(1, 8)] + [(y, 8) for y in range(1, 8)])
     truths = np.zeros((32, 9, 9), bool)
     truths[:, 3, 3] = True; truths[:, 3, 5] = True; truths[:, 5, 4] = True
-    candidates = truths[0].copy(); candidates[4, 4] = True
+    for i, (y, x) in enumerate(boundary):
+        truths[i, y, x] = True
+    candidates = np.zeros((9, 9), bool)
+    candidates[3, 3] = True; candidates[3, 5] = True
+    candidates[5, 4] = True; candidates[4, 4] = True
     result = ExpectedDTI(truths, candidates).select()
     assert result.additions[0]['pixel'] == [4, 4]
     assert result.removals[0]['pixel'] == [4, 4]
-    np.testing.assert_array_equal(result.dots, truths[0])
-    assert result.mean_synthetic_dti == pytest.approx(1)
+    expected = np.zeros((9, 9), bool)
+    expected[3, 3] = True; expected[3, 5] = True; expected[5, 4] = True
+    np.testing.assert_array_equal(result.dots, expected)
+    assert result.mean_synthetic_dti == pytest.approx(3 / (3 + metric.BETA + metric.EPS))
     assert result.max_remaining_remove_gain <= 0
 
 
 def test_selector_never_returns_a_truncated_time_budget_result():
-    truths = np.zeros((32, 5, 5), bool); truths[:, 2, 2] = True
-    oracle = ExpectedDTI(truths, truths[0])
+    truths = unique_truths((5, 5))
+    candidates = np.zeros((5, 5), bool); candidates[2, 2] = True
+    oracle = ExpectedDTI(truths, candidates)
     with pytest.raises(TimeoutError):
         oracle.select(max_seconds=1e-30)
     with pytest.raises(ValueError):
