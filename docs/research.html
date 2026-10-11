@@ -93,6 +93,11 @@ synthetic jittered line rasters verified exact agreement with the literal
 brute-force metric oracle. They are not trained ensemble/TTA/MC-dropout outputs,
 not calibration evidence, and never a holdout score. The reference implementation
 has explicit size/time limits and is not a production-scale optimizer.</p>
+<p>The lane selector now rejects input with fewer than 32 <strong>distinct</strong> binary truth
+rasters, so repeated copies cannot inflate the draw count. This is only a data
+contract check: it cannot establish that maps came from genuine model-ensemble,
+TTA, or MC-dropout variation. A real run still needs source-run provenance and
+non-wrapping 1–2-pixel jitter; synthetic truth maps remain test fixtures only.</p>
 <h2 id="decisive-registry-stop">Decisive registry stop</h2>
 <p><a href="https://github.com/buffedlizard55-lab/17GEMSDOE/blob/6fc71d19d49dca4960d5434bd81b6dd06fcc030a/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif">17GEMSDOE's E-proba-multiscale artifact</a>
 has positive finite values at <strong>all 5,167,373 footprint cells</strong>. Its 3-pixel halo
