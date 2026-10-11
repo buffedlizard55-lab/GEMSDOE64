@@ -1,56 +1,234 @@
 {
-  "evidence_class": "RECEIPT-COMPARISON-NOT-FEATURE-BYTE-VALIDATION",
-  "source_url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/registry/feature_receipt.json",
-  "source_sha256": "e13b313c7c75493391ea0ee62fa85a5df160e3436459bb3dd576323b49304961",
-  "receipt": {
-    "channels": [
-      "band01",
-      "band02",
-      "band03",
-      "band04",
-      "band05",
-      "band06",
-      "band07",
-      "band08",
-      "band09",
-      "band10",
-      "band11",
-      "band12",
-      "band13",
-      "band14",
-      "band15",
-      "band16",
-      "band17",
-      "band18",
-      "band19",
-      "curv_s1",
-      "curv_s2",
-      "ridge_s1",
-      "ridge_s2",
-      "ridge_s3",
-      "relief5",
-      "tophat2",
-      "tmi_edge",
-      "rtp_edge",
-      "grav_edge",
-      "cond_edge",
-      "depth_grad",
-      "coherence_s2",
-      "strike_cos",
-      "strike_sin",
-      "footprint"
-    ],
-    "n_channels": 35,
+  "status": "verified",
+  "lidar_2m_stack": {
+    "sha256": "d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568",
+    "bytes": 36943606,
     "shape": [
       3730,
       3292
     ],
-    "footprint_px": 5165852,
-    "path": "/tmp/gems32/work/feature_stack.npy",
-    "seconds": 168.7
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "count": 12,
+    "dtype": "uint8",
+    "descriptions": [
+      "ex_max",
+      "ex_mean",
+      "step_max",
+      "lapneg_max",
+      "lappos_max",
+      "downface_max",
+      "upface_max",
+      "cross_max",
+      "relief",
+      "coh100",
+      "strike",
+      "valid"
+    ],
+    "finite_cells_band1": 12279160
   },
-  "sample_finite_footprint": 5167373,
-  "declared_feature_footprint_difference": 1521,
-  "feature_bytes_available": false,
-  "implication": "Do not use the narrower declared feature footprint as the output nodata mask. Not evidence of the cause of the previously rejected file."
+  "lidar_3m_stack": {
+    "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
+    "bytes": 43839078,
+    "shape": [
+      3730,
+      3292
+    ],
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "count": 7,
+    "dtype": "int16",
+    "descriptions": [
+      "h_gate07",
+      "h_gate12",
+      "h_all",
+      "sigma_mean",
+      "facing_at",
+      "strike_at",
+      "cover"
+    ],
+    "finite_cells_band1": 12279160
+  },
+  "topo_10m_stack": {
+    "sha256": "a6398d9950965dec6aae6ccecdaa6ced48645d133eab222cbdd11def9bdabfa4",
+    "bytes": 32523329,
+    "shape": [
+      3730,
+      3292
+    ],
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "count": 9,
+    "dtype": "uint8",
+    "descriptions": [
+      "slope_p90",
+      "slope_max",
+      "steep_frac",
+      "slope_std",
+      "relief_local",
+      "curv_prof_absmax",
+      "aspect_coherence",
+      "hs_lineament",
+      "dem_mean"
+    ],
+    "finite_cells_band1": 12279160
+  },
+  "geodawn_100m_stack": {
+    "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "bytes": 418912844,
+    "shape": [
+      3730,
+      3292
+    ],
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "count": 19,
+    "dtype": "float32",
+    "descriptions": [
+      "mag_anom - Magnetic anomaly - deviation from expected Earth's magnetic field",
+      "rtp - Reduced to pole magnetic data - magnetic anomaly corrected for latitude effects",
+      "tmi_hg - Total magnetic intensity horizontal gradient - rate of change in horizontal direction",
+      "geod_2ndinv - Geodetic second invariant - measure of strain rate tensor magnitude",
+      "iso_grav_anom_slope - Isostatic gravity anomaly slope - gradient of gravity after isostatic correction",
+      "tc - Tilt angle or total curvature - magnetic field derivative for edge detection",
+      "geod_shearrate - Geodetic shear rate - rate of angular deformation from GPS/InSAR",
+      "geod_dilaterate - Geodetic dilatation rate - rate of volumetric strain (expansion/contraction)",
+      "tmi_vg - Total magnetic intensity vertical gradient - rate of change in vertical direction",
+      "deq_n100a15 - Distance to earthquake (n=100km radius, a=15\u00b0 azimuth parameters)",
+      "iso_grav_anom_vg - Isostatic gravity anomaly vertical gradient - vertical rate of change",
+      "det_elev - Detrended elevation - topography with regional trends removed",
+      "iso_grav_anom - Isostatic gravity anomaly - gravity after compensating for topographic mass",
+      "tmi - Total magnetic intensity - total strength of magnetic field",
+      "depth_to_base_surf - Depth to basement surface - thickness of sedimentary cover",
+      "ieq_n100a15 - Earthquake intensity or density (n=100km radius, a=15\u00b0 parameters)",
+      "cond_surf - Conductivity surface - electrical conductivity of subsurface",
+      "iso_grav_anom_hg - Isostatic gravity anomaly horizontal gradient - horizontal rate of change",
+      "det_elev_slope - Detrended elevation slope - gradient of elevation after detrending"
+    ],
+    "finite_cells_band1": 12279160
+  },
+  "cultural_masks": {
+    "tiger_road_distance_m": {
+      "sha256": "e5350423508968fa2d32b0a6ae0d3fb4ae3ea645e3b8736f0c8e7ad9ff2f2988",
+      "bytes": 10492276,
+      "shape": [
+        3730,
+        3292
+      ],
+      "crs": "EPSG:32611",
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "count": 1,
+      "dtype": "float32",
+      "descriptions": [
+        null
+      ],
+      "finite_cells_band1": 5167373
+    },
+    "blm_closed_claim_distance_m": {
+      "sha256": "a88356423c03fc8b6510a84f77cee2b1d38c4ccbd7761bc95c1ca8332a2e166a",
+      "bytes": 5752587,
+      "shape": [
+        3730,
+        3292
+      ],
+      "crs": "EPSG:32611",
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "count": 1,
+      "dtype": "float32",
+      "descriptions": [
+        null
+      ],
+      "finite_cells_band1": 5167373
+    }
+  },
+  "pilot_3m_tiles": {
+    "x40y427_3m": {
+      "sha256": "3a14850f2d33bb8b7ae077951c589ad9866f1978e0722691f2ef6ffcffeee718",
+      "bytes": 5677887,
+      "shape": [
+        3337,
+        3337
+      ],
+      "crs": "EPSG:26911",
+      "transform": [
+        3.000299670362601,
+        0.0,
+        399993.99966901785,
+        0.0,
+        -3.000299670362601,
+        4270006.0000292035
+      ],
+      "count": 1,
+      "dtype": "int16",
+      "descriptions": [
+        null
+      ],
+      "finite_cells_band1": 11135569
+    },
+    "x42y425_3m": {
+      "sha256": "927c36c88debcaa65e9de9fbd0f3adf02b338614fbaed86e3e321111084735de",
+      "bytes": 4156097,
+      "shape": [
+        3337,
+        3337
+      ],
+      "crs": "EPSG:26911",
+      "transform": [
+        3.000299670362601,
+        0.0,
+        419993.9996882569,
+        0.0,
+        -3.000299670362601,
+        4250006.000006528
+      ],
+      "count": 1,
+      "dtype": "int16",
+      "descriptions": [
+        null
+      ],
+      "finite_cells_band1": 11135569
+    }
+  }
 }

@@ -1,0 +1,30 @@
+negative sub-sampling rate r = 150000/5106385 = 0.029375
+  fold0: sum_w=1607 mass=11124 mean-field DTI=0.0873
+    mass=11124.0000 sum_w=1607.4000 expected_dti=0.0873 mean_kappa=0.0302 dtiopt=0.0648 nms_2p8=0.1074 mclp=0.0634 distance_only=0.0639 random=0.0808
+  fold1: sum_w=1896 mass=10807 mean-field DTI=0.0916
+    mass=10807.0000 sum_w=1896.3000 expected_dti=0.0916 mean_kappa=0.0351 dtiopt=0.0908 nms_2p8=0.1461 mclp=0.0978 distance_only=0.0619 random=0.1077
+  fold2: sum_w=1213 mass=7610 mean-field DTI=0.0951
+    mass=7610.0000 sum_w=1212.9000 expected_dti=0.0951 mean_kappa=0.0355 dtiopt=0.0546 nms_2p8=0.1076 mclp=0.0566 distance_only=0.0782 random=0.0752
+  fold3: sum_w=706 mass=4692 mean-field DTI=0.0863
+    mass=4692.0000 sum_w=706.2000 expected_dti=0.0863 mean_kappa=0.0316 dtiopt=0.0424 nms_2p8=0.0921 mclp=0.0420 distance_only=0.0523 random=0.0624
+{
+  "pooled_dti": {
+    "nms_2p8": 0.11394,
+    "random": 0.08199,
+    "mclp": 0.065522,
+    "distance_only": 0.064925,
+    "dtiopt": 0.063553
+  },
+  "gate": {
+    "baseline": "nms_2p8",
+    "delta": -0.050388,
+    "se": 0.003029,
+    "z": -16.636,
+    "ci": [
+      -0.056164,
+      -0.043485
+    ],
+    "threshold": "delta > 2*SE",
+    "passed": false
+  }
+}

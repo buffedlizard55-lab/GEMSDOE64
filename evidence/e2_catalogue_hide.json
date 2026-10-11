@@ -1,0 +1,399 @@
+{
+  "schema": "gems64-e2-v1",
+  "evidence_class": "HOLDOUT-DTI (catalogue hide-and-recover, proxy instrument)",
+  "generated_utc": "2026-10-11T22:07:28+00:00",
+  "evaluator_version": "gems57-pooled-hide-v3-se",
+  "split": "gems57.spatial.folds (label-blind quadrants, 80 px buffer)",
+  "instrument": {
+    "evidence_class": "PROXY-INSTRUMENT",
+    "instrument": "catalogue_hide",
+    "split": "gems57.spatial.folds (label-blind quadrants, buffer 80 px)",
+    "folds": [
+      {
+        "fold": 0,
+        "split_version": "label-blind-quadrants-v2",
+        "evaluation_region_label_blind": true,
+        "truth_px": 29319,
+        "evaluation_px": 2449030,
+        "training_domain_px": 2508386,
+        "held_components": 1830,
+        "shared_train_truth_components": 0,
+        "buffer_px": 80,
+        "nearest_training_to_region_px": 80.00624975587844,
+        "held_pixels_without_feature_support": 0,
+        "held_positive_pixels_outside_this_evaluation_region": 244
+      },
+      {
+        "fold": 1,
+        "split_version": "label-blind-quadrants-v2",
+        "evaluation_region_label_blind": true,
+        "truth_px": 12596,
+        "evaluation_px": 1366431,
+        "training_domain_px": 3636842,
+        "held_components": 687,
+        "shared_train_truth_components": 0,
+        "buffer_px": 80,
+        "nearest_training_to_region_px": 80.00624975587844,
+        "held_pixels_without_feature_support": 0,
+        "held_positive_pixels_outside_this_evaluation_region": 82
+      },
+      {
+        "fold": 2,
+        "split_version": "label-blind-quadrants-v2",
+        "evaluation_region_label_blind": true,
+        "truth_px": 9473,
+        "evaluation_px": 564135,
+        "training_domain_px": 4383314,
+        "held_components": 382,
+        "shared_train_truth_components": 0,
+        "buffer_px": 80,
+        "nearest_training_to_region_px": 80.00624975587844,
+        "held_pixels_without_feature_support": 0,
+        "held_positive_pixels_outside_this_evaluation_region": 483
+      },
+      {
+        "fold": 3,
+        "split_version": "label-blind-quadrants-v2",
+        "evaluation_region_label_blind": true,
+        "truth_px": 9600,
+        "evaluation_px": 787777,
+        "training_domain_px": 4263431,
+        "held_components": 329,
+        "shared_train_truth_components": 0,
+        "buffer_px": 80,
+        "nearest_training_to_region_px": 80.00624975587844,
+        "held_pixels_without_feature_support": 0,
+        "held_positive_pixels_outside_this_evaluation_region": 368
+      }
+    ],
+    "note": "the catalogue is masked at scoring, so this instrument cannot promote off-catalogue arms; it is a no-harm / sensitivity check"
+  },
+  "candidate": {
+    "dots": 37654,
+    "spacing_px": 1.5,
+    "surface": "amp_snr",
+    "placement": "rebuilt per fold from the visible catalogue only"
+  },
+  "pooled": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v3-se",
+    "alpha": 0.2,
+    "beta": 0.8,
+    "triangular_radius_m": 300.0,
+    "pooled": true,
+    "scores": {
+      "lane_candidate": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v3-se",
+        "dti": 0.061826732414187284,
+        "ci95": [
+          0.04957393074785343,
+          0.07344241740701517
+        ],
+        "withheld_positive_pixels": 60988,
+        "tpw": 3535.9020925096847,
+        "fpw": 38464.62640455722,
+        "fnw": 57452.09790749033
+      },
+      "random_mass_matched": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v3-se",
+        "dti": 0.07548347815969579,
+        "ci95": [
+          0.06885237018576242,
+          0.08141813288838314
+        ],
+        "withheld_positive_pixels": 60988,
+        "tpw": 4324.147760615007,
+        "fpw": 38153.93376442221,
+        "fnw": 56663.852239385
+      },
+      "terrain_matched": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v3-se",
+        "dti": 0.06298518138804803,
+        "ci95": [
+          0.05354986373307868,
+          0.07229610105972907
+        ],
+        "withheld_positive_pixels": 60988,
+        "tpw": 3607.8554933665123,
+        "fpw": 38845.24915646582,
+        "fnw": 57380.14450663348
+      },
+      "champion_h33_2_b2": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v3-se",
+        "dti": 0.006697041784474405,
+        "ci95": [
+          0.005969120964122151,
+          0.007449522541025754
+        ],
+        "withheld_positive_pixels": 60988,
+        "tpw": 377.3190358808101,
+        "fpw": 37376.43107272676,
+        "fnw": 60610.68096411921
+      }
+    },
+    "best_comparable_control": "random_mass_matched",
+    "paired_differences": {
+      "random_mass_matched": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v3-se",
+        "delta": -0.013656745745508507,
+        "ci95": [
+          -0.025005764888781774,
+          -0.002001948918988282
+        ],
+        "bootstrap_se": 0.006150633712804938,
+        "beats_two_se": false,
+        "withheld_positive_pixels": 60988
+      },
+      "terrain_matched": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v3-se",
+        "delta": -0.0011584489738607415,
+        "ci95": [
+          -0.0075704902365178305,
+          0.006170848062505218
+        ],
+        "bootstrap_se": 0.0034947600185479856,
+        "beats_two_se": false,
+        "withheld_positive_pixels": 60988
+      },
+      "champion_h33_2_b2": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v3-se",
+        "delta": 0.05512969062971288,
+        "ci95": [
+          0.042749394261661244,
+          0.06658180777076868
+        ],
+        "bootstrap_se": 0.00600818993357876,
+        "beats_two_se": true,
+        "withheld_positive_pixels": 60988
+      }
+    },
+    "bootstrap": {
+      "method": "paired physical spatial-cluster percentile",
+      "clusters": 161,
+      "draws": 1000,
+      "seed": 520810,
+      "confidence": 0.95,
+      "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+    },
+    "implementation_sha256": {
+      "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
+      "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
+      "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
+      "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+    }
+  },
+  "per_fold": {
+    "fold0": {
+      "receipt": {
+        "fold": 0,
+        "split_version": "label-blind-quadrants-v2",
+        "evaluation_region_label_blind": true,
+        "truth_px": 29319,
+        "evaluation_px": 2449030,
+        "training_domain_px": 2508386,
+        "held_components": 1830,
+        "shared_train_truth_components": 0,
+        "buffer_px": 80,
+        "nearest_training_to_region_px": 80.00624975587844,
+        "held_pixels_without_feature_support": 0,
+        "held_positive_pixels_outside_this_evaluation_region": 244
+      },
+      "eligible_cells": 3111123,
+      "lane_candidate": {
+        "dti": 0.042948795462027546,
+        "tp": 1131.989910239518,
+        "fp": 13375.672246286837,
+        "fn": 28187.01008976048,
+        "n_truth": 29319,
+        "n_dots": 37654
+      },
+      "random_mass_matched": {
+        "dti": 0.07227359949624874,
+        "tp": 1991.9410087633405,
+        "fp": 18537.635484401977,
+        "fn": 27327.058991236663,
+        "n_truth": 29319,
+        "n_dots": 37654
+      },
+      "terrain_matched": {
+        "dti": 0.048924003557911044,
+        "tp": 1306.5938894238468,
+        "fp": 14950.415922134136,
+        "fn": 28012.406110576158,
+        "n_truth": 29319,
+        "n_dots": 37654
+      },
+      "champion_h33_2_b2": {
+        "dti": 0.006132145639580956,
+        "tp": 165.99429195293152,
+        "fp": 17905.648857203258,
+        "fn": 29153.00570804707,
+        "n_truth": 29319,
+        "n_dots": 37654
+      }
+    },
+    "fold1": {
+      "receipt": {
+        "fold": 1,
+        "split_version": "label-blind-quadrants-v2",
+        "evaluation_region_label_blind": true,
+        "truth_px": 12596,
+        "evaluation_px": 1366431,
+        "training_domain_px": 3636842,
+        "held_components": 687,
+        "shared_train_truth_components": 0,
+        "buffer_px": 80,
+        "nearest_training_to_region_px": 80.00624975587844,
+        "held_pixels_without_feature_support": 0,
+        "held_positive_pixels_outside_this_evaluation_region": 82
+      },
+      "eligible_cells": 3013372,
+      "lane_candidate": {
+        "dti": 0.040819981792964234,
+        "tp": 476.63604189264174,
+        "fp": 7522.050691053795,
+        "fn": 12119.363958107358,
+        "n_truth": 12596,
+        "n_dots": 37654
+      },
+      "random_mass_matched": {
+        "dti": 0.05743218960278005,
+        "tp": 668.7423189188636,
+        "fp": 7167.423370749754,
+        "fn": 11927.257681081133,
+        "n_truth": 12596,
+        "n_dots": 37654
+      },
+      "terrain_matched": {
+        "dti": 0.04677805394306779,
+        "tp": 558.5318967483056,
+        "fp": 8757.674681755187,
+        "fn": 12037.468103251696,
+        "n_truth": 12596,
+        "n_dots": 37654
+      },
+      "champion_h33_2_b2": {
+        "dti": 0.008543890092317609,
+        "tp": 102.52149387630048,
+        "fp": 9510.4428681094,
+        "fn": 12493.4785061237,
+        "n_truth": 12596,
+        "n_dots": 37654
+      }
+    },
+    "fold2": {
+      "receipt": {
+        "fold": 2,
+        "split_version": "label-blind-quadrants-v2",
+        "evaluation_region_label_blind": true,
+        "truth_px": 9473,
+        "evaluation_px": 564135,
+        "training_domain_px": 4383314,
+        "held_components": 382,
+        "shared_train_truth_components": 0,
+        "buffer_px": 80,
+        "nearest_training_to_region_px": 80.00624975587844,
+        "held_pixels_without_feature_support": 0,
+        "held_positive_pixels_outside_this_evaluation_region": 483
+      },
+      "eligible_cells": 3023870,
+      "lane_candidate": {
+        "dti": 0.09217786907732523,
+        "tp": 839.7419082542149,
+        "fp": 6818.340593098713,
+        "fn": 8633.258091745785,
+        "n_truth": 9473,
+        "n_dots": 37654
+      },
+      "random_mass_matched": {
+        "dti": 0.09924453776449359,
+        "tp": 871.3658023546797,
+        "fp": 5136.571765112383,
+        "fn": 8601.634197645324,
+        "n_truth": 9473,
+        "n_dots": 37654
+      },
+      "terrain_matched": {
+        "dti": 0.10527119000204867,
+        "tp": 960.3422199762451,
+        "fp": 6760.432745213928,
+        "fn": 8512.657780023757,
+        "n_truth": 9473,
+        "n_dots": 37654
+      },
+      "champion_h33_2_b2": {
+        "dti": 0.007531856293318552,
+        "tp": 64.33066245290009,
+        "fp": 4749.3848661129405,
+        "fn": 9408.669337547099,
+        "n_truth": 9473,
+        "n_dots": 37654
+      }
+    },
+    "fold3": {
+      "receipt": {
+        "fold": 3,
+        "split_version": "label-blind-quadrants-v2",
+        "evaluation_region_label_blind": true,
+        "truth_px": 9600,
+        "evaluation_px": 787777,
+        "training_domain_px": 4263431,
+        "held_components": 329,
+        "shared_train_truth_components": 0,
+        "buffer_px": 80,
+        "nearest_training_to_region_px": 80.00624975587844,
+        "held_pixels_without_feature_support": 0,
+        "held_positive_pixels_outside_this_evaluation_region": 368
+      },
+      "eligible_cells": 3019031,
+      "lane_candidate": {
+        "dti": 0.10824230929239491,
+        "tp": 1087.534232123309,
+        "fp": 10748.562874117857,
+        "fn": 8512.465767876696,
+        "n_truth": 9600,
+        "n_dots": 37654
+      },
+      "random_mass_matched": {
+        "dti": 0.08516383399736975,
+        "tp": 792.0986305781248,
+        "fp": 7312.303144158087,
+        "fn": 8807.901369421877,
+        "n_truth": 9600,
+        "n_dots": 37654
+      },
+      "terrain_matched": {
+        "dti": 0.08225421302243535,
+        "tp": 782.3874872181156,
+        "fp": 8376.725807362564,
+        "fn": 8817.612512781885,
+        "n_truth": 9600,
+        "n_dots": 37654
+      },
+      "champion_h33_2_b2": {
+        "dti": 0.005093592089763346,
+        "tp": 44.472587598677784,
+        "fp": 5210.954481301146,
+        "fn": 9555.527412401325,
+        "n_truth": 9600,
+        "n_dots": 37654
+      }
+    },
+    "published_artifact_as_is": {
+      "fold0": 0.0,
+      "fold1": 0.0,
+      "fold2": 0.0,
+      "fold3": 0.0,
+      "pooled": 0.0,
+      "note": "the published artifact is placed with the full catalogue ring excluded, so it cannot earn credit on withheld traces by construction; this is a structural diagnostic, not a harm measurement"
+    }
+  },
+  "note": "the scored catalogue is masked, so this instrument cannot rank off-catalogue arms; it is the protocol-mandated no-harm and faint-scarp sensitivity check"
+}
