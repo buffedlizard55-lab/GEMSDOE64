@@ -45,6 +45,8 @@ class ExpectedDTI:
     Storage is O(candidates * sum of truth pixels across draws). Fail rather
     than silently truncate candidates when this reference budget is exceeded.
     Truths and candidates must already have visible catalogue cells removed.
+    At least 32 distinct binary truth rasters are required; repeated copies do
+    not count toward the configured draw minimum.
     """
 
     def __init__(self, truths, candidates, *, allowed=None, min_draws=32,
@@ -53,15 +55,25 @@ class ExpectedDTI:
         candidate = np.asarray(candidates)
         if truth.ndim != 3 or candidate.ndim != 2 or truth.shape[1:] != candidate.shape:
             raise ValueError("truth draws must be (draw, row, col), candidates (row, col)")
+        if not isinstance(min_draws, (int, np.integer)) or min_draws < 32:
+            raise ValueError("min_draws must be an integer of at least 32")
         if truth.shape[0] < min_draws:
             raise ValueError(f"at least {min_draws} plausible truth rasters required")
         if not np.all((truth == 0) | (truth == 1)) or not np.all((candidate == 0) | (candidate == 1)):
             raise ValueError("binary truth draws/candidate mask required; probabilities are not truth")
+        truth_bool = truth.astype(bool, copy=False)
+        packed_draws = np.packbits(truth_bool.reshape(truth.shape[0], -1), axis=1)
+        distinct_draws = np.unique(packed_draws, axis=0).shape[0]
+        if distinct_draws < min_draws:
+            raise ValueError(
+                f"at least {min_draws} distinct plausible truth rasters required; "
+                f"received {distinct_draws}"
+            )
         if allowed is not None:
             allowed = np.asarray(allowed, bool)
             if allowed.shape != candidate.shape or np.any(truth[:, ~allowed]) or np.any(candidate[~allowed]):
                 raise ValueError("truth/candidate outside allowed footprint or on visible catalogue")
-        self.truth = truth.astype(bool)
+        self.truth = truth_bool
         self.shape = candidate.shape
         self.coords = np.argwhere(candidate)
         self.counts = self.truth.sum(axis=(1, 2)).astype(float)

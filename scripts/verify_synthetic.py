@@ -54,10 +54,21 @@ def verify():
     assert not any(errors) and not any(optimum_errors)
 
     # Thirty-two correlated, jittered line truths; synthetic, not model outputs.
+    # Common and local offsets each vary by at most one pixel (two combined),
+    # and repeated patterns are resampled so every truth raster is distinct.
     truths = np.zeros((32, 13, 13), bool)
+    jitter_rng = np.random.default_rng(64012)
+    seen_paths = set()
+    rows = np.arange(3, 10)
     for i in range(len(truths)):
-        shift = i % 5 - 2
-        truths[i, 3:10, 6 + shift] = True
+        while True:
+            common_shift = int(jitter_rng.integers(-1, 2))
+            local_shift = jitter_rng.integers(-1, 2, size=len(rows))
+            path = tuple((6 + common_shift + local_shift).tolist())
+            if path not in seen_paths:
+                seen_paths.add(path)
+                break
+        truths[i, rows, path] = True
     candidates = np.zeros((13, 13), bool)
     candidates[3:10:2, 4:9:2] = True
     oracle = ExpectedDTI(truths, candidates)

@@ -1,46 +1,53 @@
 # Score and artifact provenance review
 
-**Current evidence status: no verified competition score for this run.** Read the [project brief](../README.md) and [active run card](../evidence/run_card.json) first.
-
-**Review date: 2026-10-11.** This is a provenance audit, not leaderboard monitoring. No leaderboard values are copied into this report. DrivenData's [Terms of Use](https://www.drivendata.org/termsofuse/) restrict monitoring/copying absent prior written consent. Use the official challenge directly for current information, subject to those terms.
+**Review date: 2026-10-11.** Canonical status: [`../evidence/run_card.json`](../evidence/run_card.json).
+Read the [project brief](../README.md) and [`../PREREGISTRATION.md`](../PREREGISTRATION.md) first.
 
 ## Decision
 
-The H33 value cited by the user is **not verified as a score for the named raster** in this project. There is no organizer submission receipt connecting the exact bytes, submission identifier, account, phase, and value. It is neither a `HOLDOUT-DTI` result produced by a spatially blocked evaluator here nor `ORGANIZER-CONFIRMED` here. Do not use it as a baseline, achievement, expected score, or reason to clear a new TIFF.
+There is **no `ORGANIZER-CONFIRMED` number anywhere in this repository**, and the owner-reported
+0.2778 for `h33-h33-2-b2-…-zeros` is **not** a verified score for those bytes: no submission-page
+receipt, submission identifier, account, phase or hash linkage exists here. It is quoted only as an
+*owner-reported* figure, never as a baseline or an achievement.
 
-The GEMSDOE32 owner page describes an H33 variant derived by pruning a prior dotted map around known catalogue traces. It also distinguishes a candidate and modelled projection from organizer scores, and says no organizer score exists for its artifact. A second owner-maintained page also marks the score-to-file attribution as unverified. These project pages are useful hypotheses about method history, not submission receipts. The available pages do not establish that the named bytes were scored or that pruning caused the cited value.
+What this run *did* do is measure the artifact itself, locally, on two labelled instruments — and
+those measurements are the only numbers this repository produces:
 
-## What can and cannot be inferred
-
-| Item | What is supportable | What remains unverified |
+| measurement | class | value |
 |---|---|---|
-| User-cited H33 value | A value is mentioned in the prompt and sibling-project history. | Whether the organizer evaluated the exact named raster and returned that value; receipt, submission ID, account, phase, and final artifact hash. |
-| Raster identifier | The user supplied a unique-looking filename. | The exact bytes, projection, metadata, pixel values, whether it was uploaded, or whether it is the artifact described by an owner page. |
-| Candidate mechanism | Removing redundant predictions can improve a spatial Tversky score if it removes false-positive mass without losing comparable true-positive coverage. | Whether this mechanism explains the named file or any reported delta. No before/after receipt or controlled evaluation is available. |
-| Leaderboard context | The prompt includes user/owner leaderboard snapshots, which are not copied here. | Current score/rank, private-round performance, or any stable mapping from a sibling filename to a leaderboard value. This report does not query or mirror the page. |
-| Owner-reported baselines | Sibling pages contain owner-reported candidate/benchmark claims. | Organizer confirmation, exact scored bytes, and comparability across versions or phases. |
+| champion vs candidate, pooled | `PROXY-INSTRUMENT (sgmc_off)` | 0.09539 vs 0.13689 (Δ +0.04150, SE 0.01716) |
+| champion vs candidate, interior stratum | `PROXY-INSTRUMENT (sgmc_off)` | 0.08767 vs 0.01433 (Δ −0.07333, SE 0.01060) |
+| champion vs candidate, ≥ 800 m strict truth, interior | `PROXY-INSTRUMENT (sgmc_off)` | 0.08140 vs 0.01541 |
+| champion vs candidate, catalogue recovery | `HOLDOUT-DTI (catalogue_hide)` | 0.00670 vs 0.06183 (protocol construction) |
+| published artifact as-is on catalogue recovery | `HOLDOUT-DTI (catalogue_hide)` | 0.00000 on all four folds, by construction |
+| owner-reported champion score | owner-reported, **not** receipt-verified | 0.2778 |
+| leaderboard numerals cited by the user (e.g. 0.3774, 0.3195, 0.4133) | owner/user-cited snapshots, **not** re-verified here | not reproduced as results |
 
-## Why pruning could help—conditional explanation only
+DrivenData's terms restrict leaderboard monitoring and copying; this review therefore records the
+provenance of numbers rather than refreshing or mirroring any leaderboard.
 
-The published metric is a distance-weighted Tversky index with a 300 m triangular kernel and a higher false-negative than false-positive coefficient (`beta = 0.8`, `alpha = 0.2`). An added prediction near already-covered truth can contribute little new true-positive coverage because coverage uses a local maximum, while still adding false-positive mass. Removing that dot can therefore raise DTI **if** it reduces the denominator more than it sacrifices truth coverage. This is a plausible generic mechanism, not a retrospective diagnosis of the H33 claim.
+## Why the champion artifact may lead, on the evidence available
 
-There is an important competing risk. DrivenData staff clarified that the known-fault mask is pixel-exact and that unmasked neighboring pixels remain scoreable; new labels can include extensions/corrections near known traces. A multi-pixel catalogue buffer is not automatically free. Pruning may remove useful newly labeled flank geometry. It must be tested against buffered whole-segment holdouts with a pixel-exact visible-fault mask, then compared on the same plausible truth surfaces as the incumbent.
+The sibling reconstruction shows its support is reproduced by pruning (2 545 deletions, zero
+additions), i.e. it is a placement rule, not a new detector. This run adds: it is beaten pooled by a
+lidar-scarp surface at equal dot budget, it is nearly useless on the catalogue-recovery instrument
+(it was built to avoid the catalogue), and it **wins by ≈ 3.5 SE inside the interior stratum** where
+range-front terrain cannot earn credit. The consistent reading is that its advantage is a broad,
+interior, non-halo field — and that any submission meant to beat it must earn credit there.
 
-The synthetic check in this repository reinforces the same caution: a candidate's marginal truth frequency can exceed `alpha × mean baseline DTI` while adding it **decreases** exact mean DTI because of spatial overlap. See [`expected_dti_probe.json`](expected_dti_probe.json) and the active [research findings](../docs/research/findings.md). This is a synthetic result, not a competition score.
+## What remains unverified
 
-## Evidence required to upgrade a claim
+* Whether the organizer evaluated the exact named raster and returned 0.2778; receipt, submission ID,
+  account, phase, final artifact hash.
+* Whether any of the family's published rasters was ever submitted at all, and with which account.
+* The current public leaderboard, the private-round score of any artifact, and the weekly cap.
+* Whether the sibling artifacts were built from organizer data or from public GeoDAWN/lidar sources
+  re-derived locally (this repository's lane uses the latter).
 
-1. Preserve the exact uploaded GeoTIFF bytes and compute SHA-256.
-2. Provide the official submission receipt/page showing submission ID, timestamp, filename or hash, competition phase, and returned value.
-3. Confirm the receipt refers to those exact bytes, not another run with a similar name.
-4. Keep a separate `HOLDOUT-DTI` report with evaluator version, blocked-fold definition, withheld-positive count, pooled DTI, and 95% confidence interval. Never substitute one evidence class for another.
-5. Do not scrape, poll, cache, or republish the leaderboard to fill a missing receipt; obtain prior written consent for any monitoring/copying workflow.
+## Rules this review keeps
 
-## References
-
-- [Official GEMS problem description](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/)
-- [Organizer clarification: pixel-exact known-fault mask](https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516/4)
-- [Organizer clarification: pooled leaderboard aggregation](https://community.drivendata.org/t/leaderboard-aggregation-pooled-over-public-test-pixels-or-mean-of-per-chunk-scores/11550)
-- [Organizer discussion: test-label provenance / new faults](https://community.drivendata.org/t/how-were-the-new-test-faults-identified-data-sources-and-fault-types/11527/10) · [near-trace “new fault” discussion](https://community.drivendata.org/t/where-do-you-draw-the-line/11536)
-- [GEMSDOE32 project index](https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html) · [owner-maintained report](https://buffedlizard55-lab.github.io/GEMSDOE32/docs/leaderboard.html)
-- [GEMSDOE54 docs](https://buffedlizard55-lab.github.io/GEMSDOE54/docs/)
+1. A projection is never written as a score; a missing value is `null`.
+2. Numbers carry their instrument and class, with evaluator version, withheld-positive count and a
+   95 % CI where the shared evaluator produced them.
+3. No receipt, no promotion: `approved_for_weekly_slot` and `promoted` stay `false` until an
+   organizer submission-page receipt exists in `evidence/organizer_receipt.json`.

@@ -23,9 +23,12 @@ def sha256_file(path: Path) -> str:
 
 
 class Parser(HTMLParser):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.links, self.ids, self.duplicates, self.downloads = [], set(), [], []
+        self.links: list[str] = []
+        self.ids: set[str] = set()
+        self.duplicates: list[str] = []
+        self.downloads: list[str] = []
         self.h1 = 0
         self.lang = None
 

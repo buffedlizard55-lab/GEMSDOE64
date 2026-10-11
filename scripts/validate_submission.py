@@ -3,17 +3,30 @@
 import argparse
 import json
 from pathlib import Path
+import sys
+from pathlib import Path as _Path
+
 import numpy as np
 import rasterio
-from gems57.gates import format_report
-from gems57.validate import validate
+
+sys.path.insert(0, str(_Path(__file__).resolve().parents[1] / "src"))
+
+from gems57.gates import format_report      # noqa: E402
+from gems57.validate import validate        # noqa: E402
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('submission', type=Path)
-    ap.add_argument('--sample', type=Path, default=Path('data/reference/sample_submission.tif'))
-    ap.add_argument('--catalogue', type=Path, default=Path('data/reference/existing_faults.tif'))
+    root = _Path(__file__).resolve().parents[1]
+    reference = root / 'data' / 'reference'
+    bridge = root / 'data' / 'bridge'
+    ap.add_argument('--sample', type=Path,
+                    default=reference / 'sample_submission.tif' if (reference / 'sample_submission.tif').exists()
+                    else bridge / 'sample_submission.tif')
+    ap.add_argument('--catalogue', type=Path,
+                    default=reference / 'existing_faults.tif' if (reference / 'existing_faults.tif').exists()
+                    else bridge / 'existing_faults.tif')
     args = ap.parse_args()
     with rasterio.open(args.sample) as src:
         footprint = np.isfinite(src.read(1))
