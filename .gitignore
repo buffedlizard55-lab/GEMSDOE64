@@ -1,10 +1,14 @@
-# Competition data is private/large and must not be committed.
+# Competition data, caches, and local-only model outputs are not committed.
 /data/*
 !/data/README.md
 
-# Local Python and build artifacts.
+# Local Python/test/build artifacts.
 .venv/
 __pycache__/
+.pytest_cache/
+.cache/
 *.py[cod]
+*.egg-info/
 build/
 dist/
+work/

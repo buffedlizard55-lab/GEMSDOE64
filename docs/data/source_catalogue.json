@@ -1,0 +1,458 @@
+{
+  "sibling_sites": [
+    {
+      "repository": "GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE2",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE2/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE3",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE3/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE4",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE4/"
+    },
+    {
+      "repository": "5GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/5GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "6GEMSDOE",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/6GEMSDOE/"
+    },
+    {
+      "repository": "7GEMSDOE",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/7GEMSDOE/"
+    },
+    {
+      "repository": "8GEMSDOE",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/8GEMSDOE/"
+    },
+    {
+      "repository": "GEMSDOE9",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE9/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE10",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE10/"
+    },
+    {
+      "repository": "11GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/11GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "12GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/12GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "13GEMSDOE",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/13GEMSDOE/"
+    },
+    {
+      "repository": "14GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/14GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "15GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/15GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "16GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/16GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "17GEMSDOE",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/17GEMSDOE/"
+    },
+    {
+      "repository": "18GEMSDOE",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/18GEMSDOE/"
+    },
+    {
+      "repository": "19GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/19GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "20GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/20GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE21",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE21/"
+    },
+    {
+      "repository": "GEMSDOE22",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE22/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE23",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE23/"
+    },
+    {
+      "repository": "GEMSDOE24",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE24/"
+    },
+    {
+      "repository": "GEMSDOE25",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE25/"
+    },
+    {
+      "repository": "GEMSDOE26",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE26/"
+    },
+    {
+      "repository": "GEMSDOE27",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE27/"
+    },
+    {
+      "repository": "GEMSDOE28",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE28/"
+    },
+    {
+      "repository": "GEMSDOE29",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE29/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE30",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE30/"
+    },
+    {
+      "repository": "GEMSDOE31",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE31/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE32",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE33",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE33/"
+    },
+    {
+      "repository": "GEMSDOE34",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE34/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE35",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE35/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE36",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE36/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE37",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE37/"
+    },
+    {
+      "repository": "GEMSDOE38",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE38/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE39",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE39/"
+    },
+    {
+      "repository": "GEMSDOE40",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE40/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE41",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE41/"
+    },
+    {
+      "repository": "GEMSDOE42",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE42/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE43",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE43/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE44",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE44/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE45",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE45/"
+    },
+    {
+      "repository": "GEMSDOE46",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE46/"
+    },
+    {
+      "repository": "GEMSDOE47",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE47/"
+    },
+    {
+      "repository": "GEMSDOE48",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE48/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE49",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE49/"
+    },
+    {
+      "repository": "GEMSDOE50",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE50/"
+    },
+    {
+      "repository": "GEMSDOE51",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE51/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE52",
+      "source_html": "index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE52/"
+    },
+    {
+      "repository": "GEMSDOE53",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE53/docs/index.html"
+    },
+    {
+      "repository": "GEMSDOE54",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/GEMSDOE54/docs/index.html"
+    },
+    {
+      "repository": "55GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/55GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "56GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/56GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "57GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/57GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "58GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/58GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "59GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/59GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "60GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/60GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "61GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/61GEMSDOE/docs/index.html"
+    },
+    {
+      "repository": "62GEMSDOE",
+      "source_html": "docs/index.html",
+      "requested_url": "https://buffedlizard55-lab.github.io/62GEMSDOE/docs/index.html"
+    }
+  ],
+  "official_and_background_sources": [
+    {
+      "name": "Competition overview",
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/",
+      "use": "Organizer rules and objective",
+      "status": "public-reference-reviewed",
+      "verified_claim": "Official challenge context is linked for entrant review. Current schedule, eligibility and account-specific submission rules were not verified."
+    },
+    {
+      "name": "Problem and metric",
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
+      "use": "Authoritative submission and scoring specification",
+      "status": "public-page-reviewed",
+      "verified_claim": "Official problem page reviewed; describes the distance-weighted Tversky challenge metric. The exact shared implementation is used locally; no organizer evaluator certification is claimed."
+    },
+    {
+      "name": "About and resources",
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/",
+      "use": "Additional official resources",
+      "status": "linked-not-rechecked-this-pass",
+      "verified_claim": "Reference link only; current eligibility, schedule and resource changes require entrant verification."
+    },
+    {
+      "name": "Data",
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
+      "use": "Authenticated original data and sample submission",
+      "status": "redirected-to-login",
+      "verified_claim": "Prior fetch redirected to login. No authenticated competition files or credentials were obtained."
+    },
+    {
+      "name": "Leaderboard",
+      "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+      "use": "Current leaderboard; prompt gives conflicting historic values",
+      "status": "not-queried",
+      "verified_claim": "No values copied, polled, or cached. The project does not mirror the leaderboard; use the official page subject to its terms."
+    },
+    {
+      "name": "Organizer reference solution",
+      "url": "https://github.com/drivendataorg/gems-prize-reference-solution",
+      "use": "Official CPU/GPU U-Net baseline, not exact DTI evaluator",
+      "status": "primary-source-read",
+      "verified_claim": "README supports CPU execution and recommends GPU for speed; its training loss is not the official spatial-DTI evaluation."
+    },
+    {
+      "name": "GeoDAWN magnetic/radiometric survey",
+      "url": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7",
+      "use": "Potential-field and radiometric inputs",
+      "status": "sciencebase-metadata-and-file-listing-reviewed",
+      "verified_claim": "USGS/DOE metadata describes magnetic/radiometric surveys and lists Area 1/Area 2 GeoTIFF grid archives and survey outlines. No bytes were downloaded or hashed; file terms and exact competition-polygon overlap remain unchecked."
+    },
+    {
+      "name": "INGENIOUS project",
+      "url": "https://gbcge.org/current-projects/ingenious/",
+      "use": "Research-project context, not a competition receipt",
+      "status": "not-fetched-network-policy",
+      "verified_claim": null
+    },
+    {
+      "name": "GDR INGENIOUS data",
+      "url": "https://gdr.openei.org/submissions/1391",
+      "use": "Free official data repository; acquisition blocked here",
+      "status": "record-checked-no-submission-found",
+      "verified_claim": "The GDR 1391 page returned “No submission found” on 2026-10-11. Do not treat this link as proof of obtainable files."
+    },
+    {
+      "name": "Competition PDF supplied by user",
+      "url": "https://docs.nlr.gov/docs/fy26osti/96647.pdf",
+      "use": "Rules/manual review link; not fetched in this runtime",
+      "status": "not-fetched-network-policy",
+      "verified_claim": null
+    },
+    {
+      "name": "CRS reference",
+      "url": "https://epsg.io/32611",
+      "use": "Secondary EPSG lookup, not the EPSG registry itself",
+      "status": "not-fetched-network-policy",
+      "verified_claim": null
+    },
+    {
+      "name": "Tversky background",
+      "url": "https://en.wikipedia.org/wiki/Tversky_index",
+      "use": "Secondary mathematical background, not official competition specification",
+      "status": "not-fetched-network-policy",
+      "verified_claim": null
+    },
+    {
+      "name": "Lipton et al. F1 thresholding",
+      "url": "https://arxiv.org/abs/1402.1892",
+      "use": "Primary-author preprint link; not retrieved in this runtime",
+      "status": "not-fetched-network-policy",
+      "verified_claim": null
+    },
+    {
+      "name": "Trugman (2024) relocated Nevada catalogue",
+      "url": "https://zenodo.org/records/11167510",
+      "use": "Potential 3-D hypocenter geometry screen; not the active method lane.",
+      "status": "zenodo-api-metadata-reviewed-open-cc-by-4.0",
+      "verified_claim": "Record lists nvreloc_catalog_newmag.txt and station_terms.txt for a Nevada/nearby 2008–2023 catalogue (about 13.8 MB combined). Files/schema and exact AOI event coverage were not checked."
+    },
+    {
+      "name": "USGS 3DEP 1-meter DEM index",
+      "url": "https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer/18/query?where=1%3D1&geometry=-120.0024%2C37.3641%2C-116.1415%2C40.7247&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnCountOnly=true&f=pjson",
+      "use": "Potential terrain/drainage screen; coarse footprint query only.",
+      "status": "official-index-query-returned-22-project-polygons",
+      "verified_claim": "The 1-meter project layer query against GeoDAWN’s record bounding rectangle returned 22 polygons, not 22 tiles and not an exact competition-polygon overlay. Tile availability, quality, nodata and local download were not checked."
+    },
+    {
+      "name": "USGS Great Basin heat-flow data release",
+      "url": "https://www.usgs.gov/data/heat-flow-maps-and-supporting-data-great-basin-usa",
+      "use": "Background geothermal context; optional future source, not an active lane feature.",
+      "status": "official-record-cc0-files-not-downloaded",
+      "verified_claim": "USGS record marks the work CC0 and describes gridded background-conductive heat flow plus point data/residuals. Files, resolution and exact competition coverage were not checked."
+    },
+    {
+      "name": "Copernicus Data Space Ecosystem",
+      "url": "https://dataspace.copernicus.eu/",
+      "use": "Potential Sentinel-1 acquisition source; not an active lane feature.",
+      "status": "official-portal-reviewed-free-access-aoi-not-queried",
+      "verified_claim": "The portal describes free access to Copernicus data. No Sentinel-1 AOI/date query, account test, processing, or download was performed; no repeatable target scene stack is established."
+    },
+    {
+      "name": "USGS lidar fault-geomorphology analogue",
+      "url": "https://www.usgs.gov/publications/airborne-lidar-analysis-and-geochronology-faulted-glacial-moraines-tahoe-sierra",
+      "use": "Mechanistic background only; Tahoe/Sierra study is not target-area validation.",
+      "status": "canonical-usgs-publications-record-reviewed",
+      "verified_claim": "The current USGS Publications Warehouse page resolves. A prior long-form URL returned 404 and was replaced; the study remains a regional analogue only."
+    },
+    {
+      "name": "USGS Gabbs Valley 3-D geologic surfaces",
+      "url": "https://www.usgs.gov/data/stratigraphic-and-fault-surfaces-three-dimensional-geologic-map-southeastern-gabbs-valley",
+      "use": "Local structural example; not full-footprint coverage.",
+      "status": "official-record-cc0-local-coverage",
+      "verified_claim": "USGS record identifies CC0 terms and local southeastern Gabbs Valley coverage; it does not establish complete GEMS-area coverage."
+    },
+    {
+      "name": "USGS ComCat event API",
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "use": "Potential seismicity quality-control context.",
+      "status": "official-api-not-queried",
+      "verified_claim": "Official API link recorded. No query or download was performed for this project."
+    }
+  ],
+  "reviewed_utc": "2026-10-11",
+  "evidence_note": "Public metadata/page checks only. No competition data or new external geological source files were downloaded, locally hashed, or integrated."
+}

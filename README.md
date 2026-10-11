@@ -1,101 +1,88 @@
-# GEMSDOE64 — evidence-gated GEMS Prize research
+# GEMSDOE64 — evidence-gated expected-DTI selection
 
-> **Session-start instruction:** read this entire README before changing the project. Then read the current [run card](research/run_card.json), [score review](research/score_review.md), [hypothesis register](hypotheses.html), and [limitations / next steps](research/limitations_and_next.md). Keep the run card and site status synchronized with the evidence.
+> **SESSION START:** Read this README and [`evidence/run_card.json`](evidence/run_card.json) before any work. The active Pages site is built in [`docs/`](docs/); scientific hypotheses and limitations are in [`docs/research/findings.md`](docs/research/findings.md) and [`research/limitations_and_next.md`](research/limitations_and_next.md).
 
-## Current decision: **NEGATIVE — no submission is cleared**
+## Current decision: **NEGATIVE — DO NOT SUBMIT**
 
-**There is no GEMSDOE64 submission TIFF in this repository. Do not download or submit a file from this project.** No unique prediction raster was generated because the checkout has no competition rasters, cached feature stack, shared holdout evaluator, submission writer, or registry of prior rasters. The requested holdout, lane-uniqueness, exact-file validation, and hash/pixel-agreement gates therefore cannot be run honestly. The negative result is recorded in [`research/run_card.json`](research/run_card.json).
+**No production TIFF was created, no download is approved, and no competition slot was used.** The run stopped before training or candidate placement because a pinned registry witness's three-pixel neighborhood covers every allowed off-catalogue cell. Under the inherited rule—every positive finite prediction pixel counts as a dot—every nonempty candidate would have 100% of its dots within three pixels of that prior, exceeding the 70% overlap limit. The stop certificate is [`evidence/registry_blocker.json`](evidence/registry_blocker.json); the machine-readable decision is [`evidence/run_card.json`](evidence/run_card.json).
 
-This is an evidence-gated stop, not a claim that an improved score is impossible. A synthetic mathematical probe passed; it is **not** a holdout result, organizer receipt, leaderboard score, or submission validation. There are no `HOLDOUT-DTI` or `ORGANIZER-CONFIRMED` scores for this checkout.
+This is a protocol/registry negative, not a failed or completed geology model. The witness comes from a public sibling-project artifact, not an organizer receipt. The full byte/pixel audit of every prior and the organizer's complete registry are **not** complete. No candidate surface or final dot set exists to compare. A different interpretation of dense priors requires an explicit protocol change; do not exempt one privately.
 
-## Standing project prompt (read every session)
+The official competition files, shared feature-cache bytes, buffered OOF predictions, ensemble/TTA/MC-dropout checkpoints, and their provenance are not present in this checkout. The upstream audit records include hashes/metadata for third-party bridge inputs, but those are not authenticated competition data and are not currently in `data/`. A feature-cache receipt is not the feature cache: see [`evidence/feature_cache_receipt.json`](evidence/feature_cache_receipt.json) and [`evidence/data_preflight.json`](evidence/data_preflight.json). The receipt/sample footprint difference is a **metadata warning**, not a diagnosis of the user's rejected TIFF.
 
-The following is the persistent, operational brief consolidated from the user's project request. Duplicated historical score lists are not treated as verified or current data; retain them only as explicitly labelled user/owner claims and verify any score-to-file attribution against an organizer receipt before repeating it.
+There are no `HOLDOUT-DTI` results (the holdout was not run), no `ORGANIZER-CONFIRMED` score, no candidate hash, no production validator result, and no download. User/owner leaderboard numerals without an organizer receipt are deliberately not reproduced as scores; see [`research/score_review.md`](research/score_review.md).
 
-### Objective and values
+## Objective and core values
 
-Build an auditable, scientifically grounded project for the DOE GEMS Prize Challenge that improves the probability of identifying previously unmapped faults relevant to geothermal resources. **Maximize P(Win):** choose evidence-based actions that improve the probability of success rather than spending scarce submissions on guesses. **Own the Outcome:** record failures, correct defects, and keep claims tied to reproducible evidence. Provide an easy-to-use GitHub Pages site with a front-and-center submission-readiness status and a dedicated executive-summary/how-to-submit page.
+Build an auditable research project to improve the chance of identifying previously unmapped faults relevant to geothermal resources. **Maximize P(Win)**: preserve scarce submissions and make choices from properly blocked evidence. **Own the Outcome:** record blockers and failures, correct defects, and never turn an owner claim, projection, or synthetic result into a competition score.
 
-### Competition facts to preserve
+The competition maps faults in the GeoDAWN region. It uses a distance-weighted Tversky metric with a triangular spatial kernel. The exact shared implementation is authoritative for local evaluation. Organizer clarifications say the known-fault exclusion is pixel-exact; nearby unmasked pixels remain scoreable, and new geometry can occur near known traces. A broad catalogue buffer is not automatically free.
 
-- The target is geological fault traces in the GeoDAWN region; the official competition describes faults as indicators relevant to geothermal resource exploration.
-- The published metric is distance-weighted Tversky, with false-positive weight `alpha = 0.2`, false-negative weight `beta = 0.8`, and a linear triangular kernel with `R = 300 m` on the `100 m` competition grid.
-- The official submission contract is a single-band float32 GeoTIFF on the competition grid: EPSG:32611, matching resolution, bounds, shape and geotransform; prediction values in `[0, 1]`; null/NaN only outside the valid footprint.
-- New-fault labels can include corrections or new geometry close to already mapped faults. DrivenData staff clarified that the known-fault exclusion is pixel-exact: predictions near, but not on, known-fault pixels are not automatically excluded. Do not treat a multi-pixel buffer as free or assume flank pruning is harmless.
-- The public leaderboard is time-varying and is not private-test performance. A score listed on a sibling project page is not proof that the corresponding bytes received that score. `ORGANIZER-CONFIRMED` requires a submission-page receipt; `HOLDOUT-DTI` requires evaluator/version, withheld-positive count and 95% CI.
+## Required method lane — expected-DTI-optimal selection
 
-### Required method lane — expected-DTI-optimal selection
+Stay in the assigned expected-DTI-optimal-selection lane; do not implement an outside-lane feature or private evaluator.
 
-Stay within the expected-DTI-optimal-selection lane. First verify the decision-rule intuition numerically on synthetic rasters. Calibrate out-of-fold probabilities by isotonic regression on spatially blocked, buffered folds. Treat the ensemble/TTA/MC-dropout outputs (with the specified small spatial jitter) as at least 32 plausible truth rasters. On each calibrated surface, greedily add the ridge-candidate pixel with the largest **mean exact DTI gain under the competition's kernel metric**, then prune backward while its exact marginal gain is non-positive. Adjacent picks are redundant; never threshold calibrated pixels independently as a substitute for marginal-gain selection.
+1. First verify the threshold intuition on synthetic rasters. The independent-pixel threshold is valid for a ratio-of-expected-counts surrogate or a nonredundant special case; it is **not** a general rule for the expectation of a finite spatial DTI ratio. The exhaustive synthetic evidence is in [`evidence/synthetic_verification.json`](evidence/synthetic_verification.json); the earlier compact probe is [`research/expected_dti_probe.json`](research/expected_dti_probe.json). Neither is a holdout result.
+2. Calibrate probabilities with isotonic regression on spatially blocked, buffered out-of-fold predictions. Preserve genuine ensemble/TTA/MC-dropout variation, including non-wrapping one-to-two-pixel jitter, as at least 32 plausible binary truth rasters. Duplicated jitter alone is not epistemic uncertainty.
+3. Greedily add ridge candidates by their **mean exact DTI marginal gain** over the plausible truth rasters, then backward-prune while marginal gain is nonpositive. Re-evaluate gains; do not assume finite-ratio DTI is submodular or substitute independent thresholding.
+4. Compare the result with the incumbent spacing/MCLP selection on the same surface and folds. Promote only if the gain is greater than two paired spatial block-bootstrap standard errors and a comparable prior best is beaten.
+5. Test every feature alone as a leakage canary; holdout AUC above 0.90 is leakage until explained. Hide whole fault components with a buffer, derive catalogue features from visible faults only, and mask visible faults pixel-exactly.
+6. Compare against every declared registry raster before placement and on final dots. Rank correlation above 0.90 or more than 70% of candidate dots within three pixels of a prior is a duplicate/lane-drift stop. Require a complete byte/hash and decoded-pixel check before any promotion.
 
-Compare against the incumbent spacing/MCLP placement on the *same surface*. Promotion requires a gain greater than two block-bootstrap standard errors, the leakage canary (test each feature alone; AUC above 0.90 is presumed leakage until disproved), registry correlation/overlap checks before placement and on final dots, and an exact-file validation. A candidate whose rank-correlation exceeds 0.90 with a registry raster or whose dots overlap more than 70% within 3 pixels is a lane duplicate: record it and stop.
+The shared metric/holdout/writer/validator implementation is in [`src/gems57/`](src/gems57/), imported from a pinned 60GEMSDOE commit; original hashes and corrections are recorded in [`evidence/template_import.json`](evidence/template_import.json) and [`docs/research/template-corrections.md`](docs/research/template-corrections.md). Lane-specific selection/calibration helpers are in [`src/gems64/`](src/gems64/). These tools are present; the real cached stack and model outputs are not. Do not fork the shared evaluator or writer.
 
-### Reuse, validation, and budget rules
+## Current evidence and limits
 
-- Reuse the template's cached feature stack, `evaluate_holdout.py`, and `submission_writer.py`; do not create private replacements or forks. If a shared tool is wrong, fix it in the shared template and record the correction. **Those files are absent from this checkout, so no holdout/evaluator/writer run is claimed here.**
-- Hide and recover whole fault segments with a buffer. Derive every catalogue-based feature from visible faults only, mask visible faults pixel-exactly, and score pooled DTI on withheld positives.
-- End each run with one machine-readable JSON card: hypothesis, mechanism, named non-fault mimic, `HOLDOUT-DTI` and CI, registry correlation/overlap, raster SHA-256, validator outcome, submission name/note, and verdict `promote` or `negative`.
-- Stop after at most three experiments or two hours. Do not use a weekly submission slot; promotion to a real slot is a separate selector decision. Never submit automatically.
-- Offer a TIFF download only when every gate passes. Otherwise publish the negative result and make it obvious that no file is cleared.
+- A single pinned registry witness's three-pixel neighborhood covers the entire allowed off-catalogue domain under the current literal positive-pixel/dot definition. That is enough to stop this run, but it is **not** a complete registry audit or a candidate correlation measurement.
+- The shared 35-channel feature-cache receipt points to an ephemeral path and its bytes are unavailable. Its declared footprint differs from the sample's measured finite footprint. Never use the narrower receipt mask to introduce NaNs inside a valid submission footprint.
+- The sample/catalogue/prior hashes in the input receipts came through public third-party GitHub bridges; they do not authenticate official DrivenData inputs. The DrivenData data page previously redirected to login; no gated files or credentials were obtained.
+- An H33 predecessor comparison reconstructed an owner's pruning rule from public raster artifacts. It is an artifact audit only; no organizer receipt links that raster to a score, and no score causality is inferred. See [`evidence/h33_forensics.json`](evidence/h33_forensics.json).
+- The active ranked hypotheses are the four **in-lane** cached-feature ideas in [`docs/research/findings.md`](docs/research/findings.md). They are not tested or globally novel. Source reconnaissance is kept separate from the active method lane.
+- No production model, feature-alone canary, buffered holdout, `HOLDOUT-DTI`, 95% CI, candidate TIFF, submission receipt, or `ORGANIZER-CONFIRMED` score exists for this run.
 
-### Geological research requirements
+## Source reconnaissance (checked 2026-10-11; no data downloaded)
 
-Before testing, register three to five hypotheses with the specific layers, physical signature/transform, why the signal could reveal a fault absent from the USGS/INGENIOUS catalogue, a named non-fault mimic, novelty relative to the code/registry, expected DTI potential and implementation cost. Use official/free/shareable sources; verify availability before calling an idea viable. A source listing is not the same as a successfully downloaded and spatially verified dataset. The current ranked proposals and obtainability caveats are in [`hypotheses.html`](hypotheses.html).
+These checks establish catalog/portal metadata only—not local file integrity, exact competition-polygon coverage, permission for a particular use, or holdout benefit.
 
-### Source verification snapshot (2026-10-11)
+- The Trugman/Zenodo relocated-earthquake record is open under CC-BY-4.0 and lists `nvreloc_catalog_newmag.txt` and `station_terms.txt`; neither file nor its schema was inspected locally. Exact competition-area event coverage remains unknown.
+- The USGS GeoDAWN ScienceBase record describes airborne magnetic/radiometric surveys and lists Area 1/Area 2 GeoTIFF grid archives and survey outlines. The files were not downloaded or hashed; exact competition-polygon overlap, raster metadata, and file-level usage terms remain unchecked.
+- The USGS 3DEP 1-meter index query using GeoDAWN's coarse bounding rectangle returned 22 project polygons. That is **not** a tile count or exact AOI overlay; complete lidar coverage is not established.
+- The USGS Great Basin heat-flow record is marked CC0, but its files and exact AOI coverage were not checked. Copernicus describes free Sentinel-data access, but no AOI acquisition query was performed. GDR 1391 returned “No submission found”; do not treat the linked INGENIOUS data as obtainable from that record.
+- The full source register and query/record links are in the active [`docs/sources.html`](docs/sources.html) and [`docs/data/source_catalogue.json`](docs/data/source_catalogue.json). The data checks above are not active model hypotheses and were not integrated.
 
-- The Trugman/Zenodo relocated-catalogue API record is open under CC-BY-4.0 and lists `nvreloc_catalog_newmag.txt` plus `station_terms.txt`; neither file was downloaded or schema-audited, and exact competition-area event coverage is unknown.
-- The official USGS GeoDAWN record describes airborne magnetic/radiometric surveys and lists Area 1/Area 2 GeoTIFF grid archives and outlines. No bytes were downloaded or locally hashed; file-level terms, raster metadata, and exact competition-polygon overlap remain unchecked.
-- The USGS National Map 1-meter elevation-index query, using the GeoDAWN record's coarse bounding rectangle, returned 22 project polygons. This is not a tile count or an exact competition-polygon coverage result; complete lidar coverage is not established.
-- The USGS Great Basin heat-flow release is marked CC0, but its files and exact AOI coverage have not been checked. Copernicus describes free Sentinel-data access, but no AOI scene search was performed. The GDR 1391 link returned “No submission found”; do not treat INGENIOUS data as obtainable from that page.
-- These are source-metadata checks only. No external data were downloaded, licensed for project use, integrated, or tested; no geological hypothesis is promoted as viable for an experiment yet. The auditable record is in [`sources.html`](sources.html), [`research/run_card.json`](research/run_card.json), and [`research/limitations_and_next.md`](research/limitations_and_next.md).
+## Run budget and artifact policy
 
-### Submission UX and quality bar
+Stop after at most three competition experiments or two hours. No experiment may spend a weekly submission slot. Promotion to a real slot is a separate authorized selector decision. The run card must record a named non-fault mimic, holdout DTI and 95% CI, evaluator version and withheld-positive count, registry correlation/overlap, raster SHA-256, validator output, a unique submission name and note (at most 140 characters), and a `promote` or `negative` verdict. Missing evidence is null, not zero or inferred.
 
-When and only when a candidate is cleared, the first screen of the site must show the direct `.tif` download, a unique non-reused submission name, a short note of at most 140 characters, SHA-256, and the exact validator result. The executive-summary page must explain the DrivenData upload steps and format contract. Do not offer a synthetic, all-zero, copied, or otherwise unvalidated raster as a competition prediction. The previous portal message `Predicted values must be in range [0, 1]` does not, by itself, establish whether the cause was an out-of-range value, a nodata sentinel, or another serialization issue; inspect the actual rejected file before diagnosing it.
+Only create/offer a TIFF if every holdout, uniqueness, provenance, and exact-file gate passes: single-band float32; values in [0,1]; EPSG:32611; 100 m; exact template grid/bounds/shape/transform; NaN only outside the footprint; shared validator passes; and file hash plus decoded pixels agree with the submitted registry comparison. The site must keep the negative status and offer **no TIFF** while any gate is unresolved.
 
-### Current-feed constraint
+## Reproduction and site
 
-The official DrivenData Terms of Use state that robots/spiders/automatic access for monitoring or copying are prohibited, and also restrict manual monitoring/copying without prior written consent. Therefore this project does **not** scrape, cache, or automatically refresh leaderboard rows. The site links directly to the official page and records no mirrored score table. An authorized feed/API or written permission would be needed before adding automation.
+```bash
+python -m venv .venv
+.venv/bin/pip install -r requirements-lock.txt
+.venv/bin/pip install --no-deps -e .
+.venv/bin/python -m pytest -q
+.venv/bin/python scripts/verify_synthetic.py
+.venv/bin/python scripts/run_preflight.py
+.venv/bin/python scripts/build_site.py
+.venv/bin/python scripts/check_site.py
+.venv/bin/python -m http.server 8000 --bind 0.0.0.0 --directory docs
+```
 
-## Answer to the score question (evidence status)
+`run_preflight.py` is expected to stop before training/placement while cache and OOF artifacts are missing. `scripts/download_competition_data.sh` restores only public audit inputs and then fails closed; it does not bypass authentication or fetch gated competition data. `scripts/validate_submission.py FILE.tif` is a local format preflight only; a local pass never authorizes upload.
 
-The user-cited H33 value is an **unverified user/owner claim**, not a `HOLDOUT-DTI` result or an `ORGANIZER-CONFIRMED` score in this repo. The GEMSDOE32 page describes a dotted-H19-5 / catalogue-flank-pruned raster and a *modelled projection*, but also says no organizer score exists for its artifacts; another sibling page explicitly flags the score-to-file link as unverified. A plausible mechanism is that a fixed-budget thinning or prune can improve DTI if it removes prediction mass with negligible marginal true-positive coverage. That mechanism is not proof that this specific file earned the quoted result.
+The active site is published from `docs/` through the existing Pages workflow. Its top page is the submission-readiness summary, with the executive upload guide, research findings, and source register one click away. The scheduled source refresh reads the public GitHub sibling inventory; it does not scrape/cache the DrivenData leaderboard, train a model, change a verdict, or submit a file.
 
-A critical correction from the organizer's forum: the known-fault mask is pixel-exact; adjacent predictions remain subject to the normal new-fault metric, and new-fault truth can itself lie near a known trace. Thus a 2-pixel catalogue buffer is not automatically free and may delete useful corrections. Read [`research/score_review.md`](research/score_review.md) before interpreting the claim. The historical leaderboard values listed in the prompt are not treated as current ranking data. Use the official page directly, without mirroring it here.
+## Next session — blockers first
 
-The expected-DTI rule `q > alpha × S` is correct in the isolated, nonredundant unit-count case. The shared synthetic probe also constructs an exact-kernel counterexample where a pixel's marginal truth frequency exceeds `alpha × mean DTI` but adding it reduces mean DTI due to local redundancy. Therefore the competition decision must use exact marginal gain averaged over plausible truth rasters, not the local threshold alone. See [`methodology.html`](methodology.html) and [`research/expected_dti_probe.json`](research/expected_dti_probe.json).
+1. Resolve dense-prior semantics explicitly in the shared protocol; until then retain the universal-overlap negative gate. No private exemption.
+2. Restore/authenticate the exact shared feature-cache bytes, buffered OOF predictions, checkpoints, and provenance; verify sample/feature footprints and preserve the official submission mask.
+3. Run the feature-alone leakage canaries, then one preregistered nested buffered component holdout using the shared evaluator. Keep at least 32 genuine plausible truth rasters.
+4. Compare exact-gain placement with spacing/MCLP on the same calibrated surfaces and folds; require the specified paired-bootstrap margin and complete registry/hash/pixel checks.
+5. Only after every gate passes may a unique TIFF be written and offered. Retain the negative site state otherwise.
 
-## What is actually present in this checkout
+## Core values
 
-- At session start, the tracked repository contained only this 11-byte README.
-- This session added a `.gitignore` rule and `data/README.md` placeholder; no competition TIFF, cached feature stack, prior raster, registry, training/holdout script, shared evaluator, submission writer, validator, or geospatial/ML dependencies (`numpy`, `scipy`, `rasterio`, `scikit-learn`, `pytest`) were present.
-- The DrivenData data URL redirected to login during review. No credentials were available or requested, and no authentication bypass was attempted.
-- The suggested `scripts/download_competition_data.sh` and `scripts/prepare_data.py` do not exist in this checkout. The earlier prompt's statement that those commands are ready is not true of this branch.
-- The shared standard-library-only synthetic probe is `scripts/verify_expected_dti_rule.py`. It is not an evaluator and must not be used to report holdout numbers.
-
-## Next steps (in order)
-
-1. Restore the shared template/tooling into the intended shared location or this branch: cached feature stack, exact `evaluate_holdout.py`, `submission_writer.py`, `validate_submission.py`, and the prior-raster registry. Do not fork the tools privately.
-2. Make the authorized competition files available in `data/` from an enrolled account, then record their filenames, hashes, CRS/grid metadata, and license/provenance. The agent cannot sign in or retrieve gated files from an unauthenticated redirect.
-3. Re-run the synthetic probe, then run feature-alone leakage canaries and the preregistered spatially blocked hide-and-recover test for the top-ranked hypothesis. Report only properly labelled `HOLDOUT-DTI` with evaluator version, withheld positives, and 95% CI.
-4. If the same-surface >2-SE and lane-uniqueness gates pass, build a new raster from the sample template, validate it with the shared writer/validator, hash it, and compare pixels/hashes against the complete registry.
-5. Only then enable a green “OK to download and submit” banner with the unique TIFF, ≤140-character note, and receipt/evidence links. Otherwise keep the current red “NOT CLEARED” status.
-
-## Core values in practice
-
-- **Maximize P(Win):** prioritize measured lift on the right holdout and preserve scarce competition submissions.
+- **Maximize P(Win)**: prioritize measured lift on the right holdout and preserve scarce submission opportunities.
 - **Own the Outcome:** preserve negative results, correct misleading provenance, and never promote a projection as a score.
-
-## Project map
-
-- [GitHub Pages landing page](index.html)
-- [Executive summary / how to submit](executive-summary.html)
-- [Ranked research hypotheses](hypotheses.html)
-- [Expected-DTI methodology](methodology.html)
-- [Verified source register](sources.html)
-- [Score/provenance review](research/score_review.md)
-- [Limitations and next steps](research/limitations_and_next.md)
-- [Multi-pass review log](research/review_log.md)
-- [Run card (machine-readable)](research/run_card.json)
-- [Synthetic decision-rule probe](scripts/verify_expected_dti_rule.py)

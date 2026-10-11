@@ -211,5 +211,8 @@
       "exact_aoi_scene_stack_checked": false,
       "record": "https://dataspace.copernicus.eu/"
     }
-  }
+  },
+  "historical_parallel_session": true,
+  "superseded_by": "evidence/run_card.json",
+  "integration_note": "Preserved as the earlier parallel-session card; current shared-tooling and registry evidence is in evidence/run_card.json."
 }

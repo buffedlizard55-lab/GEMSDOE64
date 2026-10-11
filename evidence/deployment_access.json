@@ -1,0 +1,29 @@
+{
+  "repository": "buffedlizard55-lab/GEMSDOE64",
+  "observed_pages_configuration": {
+    "build_type": "legacy",
+    "source_branch": "main",
+    "source_path": "/",
+    "html_url": "https://buffedlizard55-lab.github.io/GEMSDOE64/"
+  },
+  "configuration_update_attempt": {
+    "requested_build_type": "workflow",
+    "http_status": 403,
+    "message": "Resource not accessible by integration"
+  },
+  "fallback": "Root index.html redirects to docs/index.html, compatible with the existing main/root Pages configuration.",
+  "automatic_source_refresh_deployment": "Verified: source refresh, site build/publication checks, and deployment succeeded.",
+  "live_preview": "HTTP 200 on port 8000; server binds 0.0.0.0",
+  "legacy_deployment": {
+    "conclusion": "success",
+    "commit": "c3ef1b26e7b50432fec1b6e02e675cd1e6615828",
+    "url": "https://github.com/buffedlizard55-lab/GEMSDOE64/actions/runs/38171756129"
+  },
+  "workflow_configuration_step": "Administrative mode-change request removed. Standard configure/upload/deploy actions succeeded against existing Pages.",
+  "workflow_deployment": {
+    "conclusion": "success",
+    "commit": "4d073cb19d208a499eef5069b4ae0c455039adbd",
+    "url": "https://github.com/buffedlizard55-lab/GEMSDOE64/actions/runs/38171932984"
+  },
+  "direct_live_page_fetch": "Not performed: github.io is outside this runtime allowlist. Deployment confirmed by GitHub Actions/API; local preview HTTP 200."
+}

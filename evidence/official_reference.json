@@ -1,0 +1,27 @@
+{
+  "repository": "drivendataorg/gems-prize-reference-solution",
+  "commit": "aebe92f7c8a990f0e3443451b7a825d9afd6336b",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "cfa4d55559c9128313beb9417eae7e0a94c31677132afb1120f9e86222804239",
+      "bytes": 2367,
+      "url": "https://github.com/drivendataorg/gems-prize-reference-solution/blob/aebe92f7c8a990f0e3443451b7a825d9afd6336b/README.md"
+    },
+    {
+      "path": "unet-mc-cv-reference-solution.ipynb",
+      "sha256": "1a7622732ba00f67237058bc0efe79b45ba4e87c449fc9c1e5d6ea659de92ca0",
+      "bytes": 1578736,
+      "url": "https://github.com/drivendataorg/gems-prize-reference-solution/blob/aebe92f7c8a990f0e3443451b7a825d9afd6336b/unet-mc-cv-reference-solution.ipynb"
+    }
+  ],
+  "verified_claims": [
+    "README documents CPU-only operation and recommends GPU for speed.",
+    "Notebook uses alpha=0.2, beta=0.8 for TverskyLoss.",
+    "Notebook is a U-Net Monte Carlo cross-validation reference."
+  ],
+  "limitations": [
+    "Notebook training loss is not an independently verified implementation of the organizer spatial DTI.",
+    "Direct problem page and submission-page receipt were not fetched."
+  ]
+}

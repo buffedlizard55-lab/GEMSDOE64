@@ -1,5 +1,7 @@
 # Score and artifact provenance review
 
+**Current evidence status: no verified competition score for this run.** Read the [project brief](../README.md) and [active run card](../evidence/run_card.json) first.
+
 **Review date: 2026-10-11.** This is a provenance audit, not leaderboard monitoring. No leaderboard values are copied into this report. DrivenData's [Terms of Use](https://www.drivendata.org/termsofuse/) restrict monitoring/copying absent prior written consent. Use the official challenge directly for current information, subject to those terms.
 
 ## Decision
@@ -15,7 +17,7 @@ The GEMSDOE32 owner page describes an H33 variant derived by pruning a prior dot
 | User-cited H33 value | A value is mentioned in the prompt and sibling-project history. | Whether the organizer evaluated the exact named raster and returned that value; receipt, submission ID, account, phase, and final artifact hash. |
 | Raster identifier | The user supplied a unique-looking filename. | The exact bytes, projection, metadata, pixel values, whether it was uploaded, or whether it is the artifact described by an owner page. |
 | Candidate mechanism | Removing redundant predictions can improve a spatial Tversky score if it removes false-positive mass without losing comparable true-positive coverage. | Whether this mechanism explains the named file or any reported delta. No before/after receipt or controlled evaluation is available. |
-| Leaderboard context | The official public leaderboard is live, and the user-provided snapshot is no longer current. | Current score/rank, private-round performance, or any stable mapping from a sibling filename to a leaderboard value. This report does not mirror the live page. |
+| Leaderboard context | The prompt includes user/owner leaderboard snapshots, which are not copied here. | Current score/rank, private-round performance, or any stable mapping from a sibling filename to a leaderboard value. This report does not query or mirror the page. |
 | Owner-reported baselines | Sibling pages contain owner-reported candidate/benchmark claims. | Organizer confirmation, exact scored bytes, and comparability across versions or phases. |
 
 ## Why pruning could help—conditional explanation only
@@ -24,7 +26,7 @@ The published metric is a distance-weighted Tversky index with a 300 m triangula
 
 There is an important competing risk. DrivenData staff clarified that the known-fault mask is pixel-exact and that unmasked neighboring pixels remain scoreable; new labels can include extensions/corrections near known traces. A multi-pixel catalogue buffer is not automatically free. Pruning may remove useful newly labeled flank geometry. It must be tested against buffered whole-segment holdouts with a pixel-exact visible-fault mask, then compared on the same plausible truth surfaces as the incumbent.
 
-The synthetic check in this repository reinforces the same caution: a candidate's marginal truth frequency can exceed `alpha × mean baseline DTI` while adding it **decreases** exact mean DTI because of spatial overlap. See [`expected_dti_probe.json`](expected_dti_probe.json) and [`../methodology.html`](../methodology.html). This is a synthetic result, not a competition score.
+The synthetic check in this repository reinforces the same caution: a candidate's marginal truth frequency can exceed `alpha × mean baseline DTI` while adding it **decreases** exact mean DTI because of spatial overlap. See [`expected_dti_probe.json`](expected_dti_probe.json) and the active [research findings](../docs/research/findings.md). This is a synthetic result, not a competition score.
 
 ## Evidence required to upgrade a claim
 
