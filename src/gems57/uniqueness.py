@@ -356,3 +356,151 @@ def saturation_certificate(registry_path, footprint, catalogue=None, *, expected
         support_definition='finite prediction > 0 (inherited literal support rule)',
         overlap_radius_pixels=float(RADIUS_PX),
         implication=(f'Every nonempty candidate dot in the allowed domain is within {RADIUS_PX:g} pixels of a positive prior pixel; forward overlap is therefore 1.0, above the 0.70 gate.' if uncovered==0 else 'No universal blockage established.'))
+
+
+# --------------------------------------------------------------------------- #
+# Diagnostic certificate for the dense-prior case.
+#
+# The literal gate above is inherited protocol: positive finite pixels are dots,
+# and >70 % of my dots within 3 px of any single prior's dots is a stop. That
+# rule is only informative for priors that are *emission sets*. A prior that
+# carries positive mass at (almost) every footprint cell makes the forward
+# overlap ~1.0 for every non-empty candidate, so the criterion cannot separate a
+# copy from an original. This certificate measures that degeneracy with matched
+# random controls and reports it alongside -- never instead of -- the literal
+# verdict. No exemption is taken here; the caller keeps the literal gate
+# fail-closed and publishes both numbers.
+# --------------------------------------------------------------------------- #
+
+def dense_prior_certificate(mine, *, registry_index, footprint, radius_px=RADIUS_PX,
+                            control_draws=32, seed=64, allowed=None, subsample=300_000,
+                            file_sha256=None, expected_grid=None):
+    records = registry_index.get('rasters', registry_index) if isinstance(registry_index, dict) \
+        else registry_index
+    records = list(records)
+    mine = np.asarray(mine, dtype=np.float32)
+    footprint = np.asarray(footprint, bool)
+    if mine.shape != footprint.shape:
+        raise ValueError('candidate/footprint shape mismatch')
+    my_dots = _dots(mine) & footprint
+    n_mine = int(my_dots.sum())
+    if n_mine == 0:
+        raise ValueError('candidate carries no positive cells inside the footprint')
+    rng = np.random.default_rng(seed)
+    pool_mask = np.asarray(allowed, bool) & footprint if allowed is not None else footprint
+    pool = np.flatnonzero(pool_mask.ravel())
+    if pool.size == 0:
+        raise ValueError('empty control pool')
+    # Controls are kept as flat index arrays (n_mine x control_draws, ~10 MB)
+    # rather than full boolean masks (12 MB each): the overlap of a control set
+    # with a prior is a gather into that prior's dilated support.
+    control_idx = np.empty((int(control_draws), min(n_mine, pool.size)), dtype=np.int64)
+    for k in range(int(control_draws)):
+        control_idx[k] = pool[rng.choice(pool.size, size=min(n_mine, pool.size), replace=False)]
+    controls = [control_idx[k] for k in range(int(control_draws))]
+    sample_n = int(min(subsample, int(footprint.sum())))
+    sample_idx = rng.choice(np.flatnonzero(footprint.ravel()), size=sample_n, replace=False)
+    rows, errors = [], []
+    for record in records:
+        path = Path(str(record.get('cache_file', '')))
+        try:
+            with rasterio.open(path) as ds:
+                theirs = ds.read(1)
+                if expected_grid is not None:
+                    got = (ds.height, ds.width, ds.crs, ds.transform)
+                    want = (int(expected_grid[0]), int(expected_grid[1]),
+                            rasterio.crs.CRS.from_user_input(expected_grid[2]), expected_grid[3])
+                    if got != want and (got[0], got[1], str(got[2])) != (want[0], want[1], str(want[2])):
+                        raise ValueError('prior grid differs from the candidate grid')
+        except Exception as exc:                                     # noqa: BLE001
+            errors.append(dict(file=str(path), error=f'{type(exc).__name__}: {exc}'))
+            continue
+        if theirs.shape != mine.shape:
+            errors.append(dict(file=str(path), error='shape mismatch'))
+            continue
+        sup = _dots(theirs) & footprint
+        support_fraction = float(sup.sum() / max(int(footprint.sum()), 1))
+        fwd = dot_overlap(mine, theirs, radius_px)
+        rev = dot_overlap(theirs, mine, radius_px) if sup.any() else 0.0
+        jac = _jaccard(my_dots, sup)
+        try:
+            t = theirs.ravel()[sample_idx].astype(float)
+            m = mine.ravel()[sample_idx].astype(float)
+            ok = np.isfinite(t)
+            rho = float(spearmanr(m[ok], t[ok]).statistic) if ok.sum() > 10 and np.unique(t[ok]).size > 1 else 0.0
+        except Exception:                                            # noqa: BLE001
+            rho = None
+        near_coverage = 0.0
+        if sup.any():
+            near_mask = _near(sup, radius_px)
+            near_coverage = float(near_mask[footprint].mean())
+            near_t = near_mask.ravel()
+            ctrl = [float(near_t[idx].mean()) for idx in controls]
+            del near_t, near_mask
+        else:
+            ctrl = [0.0] * int(control_draws)
+        dense = support_fraction > 0.5
+        row = dict(
+            file=str(path), repo=record.get('repo_first'), submission=record.get('submission'),
+            prior_sha256=record.get('sha256'), prior_bytes=record.get('bytes'),
+            positive_pixels=int(sup.sum()), support_fraction=support_fraction,
+            dense_prior=bool(dense),
+            my_dots_within_3px_of_theirs=fwd, their_dots_within_3px_of_mine=rev,
+            jaccard_dot_sets=jac, spearman_subsample=rho, spearman_subsample_n=int(sample_n),
+            identical_bytes=bool(file_sha256 and record.get('sha256') == file_sha256),
+            near_coverage_within_radius=float(near_coverage),
+            control_overlap_min=float(np.min(ctrl)), control_overlap_median=float(np.median(ctrl)),
+            control_overlap_max=float(np.max(ctrl)),
+            # The criterion can only separate a copy from an original if matched
+            # random controls do NOT already exceed the limit. Saturation is
+            # therefore measured (controls), never assumed from support size.
+            criterion_unsatisfiable=bool(np.min(ctrl) >= OVERLAP_LIMIT),
+            duplicate_by_overlap=bool(fwd > OVERLAP_LIMIT),
+            duplicate_by_reverse_overlap=bool(rev > OVERLAP_LIMIT),
+            duplicate_by_rho=bool(rho is not None and abs(rho) > RHO_LIMIT),
+        )
+        rows.append(row)
+    checked = [r for r in rows]
+    informative = [r for r in rows if not r['criterion_unsatisfiable']]
+    worst_ov = max(informative, key=lambda r: r['my_dots_within_3px_of_theirs'], default=None)
+    worst_rho = max([r for r in rows if r['spearman_subsample'] is not None],
+                    key=lambda r: abs(r['spearman_subsample']), default=None)
+    literal_unique = bool(not [r for r in rows if r['identical_bytes'] or r['duplicate_by_overlap']
+                               or r['duplicate_by_rho']])
+    identity_flags = [r for r in rows if r['identical_bytes'] or r['duplicate_by_rho']]
+    diagnostic_flags = identity_flags + [
+        r for r in informative if r['duplicate_by_overlap'] or r['duplicate_by_reverse_overlap']]
+    return dict(
+        schema='gems64-dense-prior-certificate-v1',
+        evidence_class='REGISTRY-MEASUREMENT',
+        candidate_file_sha256=file_sha256, my_dots=n_mine,
+        radius_px=float(radius_px), rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT,
+        registry_rasters_checked=len(checked), errors=errors,
+        control_draws=int(control_draws), control_pool_cells=int(pool.size),
+        dense_priors=[dict(file=Path(r['file']).name, support_fraction=r['support_fraction'],
+                           positive_pixels=r['positive_pixels'],
+                           near_coverage_within_radius=r['near_coverage_within_radius'],
+                           my_dots_within_3px_of_theirs=r['my_dots_within_3px_of_theirs'],
+                           control_overlap_min=r['control_overlap_min'],
+                           control_overlap_median=r['control_overlap_median'])
+                      for r in rows if r['dense_prior']],
+        saturating_priors=[dict(file=Path(r['file']).name, support_fraction=r['support_fraction'],
+                                positive_pixels=r['positive_pixels'],
+                                near_coverage_within_radius=r['near_coverage_within_radius'],
+                                my_dots_within_3px_of_theirs=r['my_dots_within_3px_of_theirs'],
+                                control_overlap_min=r['control_overlap_min'])
+                           for r in rows if r['criterion_unsatisfiable']],
+        informative_priors=len(informative),
+        worst_overlap_informative=(worst_ov['my_dots_within_3px_of_theirs'] if worst_ov else None),
+        worst_overlap_informative_file=(Path(worst_ov['file']).name if worst_ov else None),
+        worst_abs_spearman=(abs(worst_rho['spearman_subsample']) if worst_rho else None),
+        worst_abs_spearman_file=(Path(worst_rho['file']).name if worst_rho else None),
+        byte_and_pixel_unique=bool(not any(r['identical_bytes'] for r in rows)),
+        literal_verdict_unique=literal_unique,
+        diagnostic_verdict_unique=bool(not diagnostic_flags),
+        unsatisfiable_criteria=[Path(r['file']).name for r in rows if r['criterion_unsatisfiable']],
+        unsatisfiable_reason=("matched random controls in the same emission domain already exceed "
+                              "the 70 % forward-overlap limit, so the criterion cannot separate a "
+                              "copy from an original for these priors"),
+        rows=rows,
+        scope=registry_index.get('scope') if isinstance(registry_index, dict) else None)

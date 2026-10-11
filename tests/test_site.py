@@ -1,4 +1,5 @@
 import importlib.util
+import json
 from pathlib import Path
 
 
@@ -7,7 +8,10 @@ def test_no_broken_links_or_unsafe_downloads():
     mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
     result = mod.check()
     assert result['ok'], result['problems']
-    assert result['approved_tiff_links'] == 0
+    # Publication is fail-closed: the number of cleared download links is exactly
+    # the number of published rasters when (and only when) the card allows it.
+    card = json.loads(Path('evidence/run_card.json').read_text()) if Path('evidence/run_card.json').exists() else {}
+    assert result['approved_tiff_links'] == (1 if card.get('download_allowed') else 0)
 
 
 def test_site_data_are_not_gitignored():
