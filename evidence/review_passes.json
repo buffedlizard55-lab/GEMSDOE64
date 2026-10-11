@@ -1,0 +1,47 @@
+{
+  "pass_1": {
+    "scope": "Repository/source inventory, pinned data/prior audit, exact H33 reconstruction, synthetic theorem/selector tests, shared tools, negative run card and site",
+    "result": "Implemented a negative-result deliverable; production run stopped at the literal registry gate.",
+    "not_met": [
+      "No unique competition TIFF",
+      "No real calibrated model/holdout",
+      "No organizer-verified score"
+    ]
+  },
+  "pass_2": {
+    "scope": "Failure paths, shared-tool arithmetic/integrity, calibration isolation, mask/grid/range edge cases, static site links and publication guards",
+    "fixes": [
+      "Do not allow a missing holdout point estimate to promote",
+      "Reject empty feature canary input",
+      "Verify per-block TP + FN consistency",
+      "Do not exempt a prior merely because its basename matches",
+      "Validate actual candidate file grid in registry comparison",
+      "Require registry pins and reject invalid interior raster values",
+      "Require nonempty TIFF support and no masked interior pixels",
+      "Preserve a legacy Pages root redirect after API configuration returned 403"
+    ]
+  },
+  "pass_3": {
+    "scope": "Final requirement audit, rerun tests and artifact audits, deterministic site rebuild, PR checks and merge",
+    "status": "local re-check complete; remote CI and deployment to be checked during PR/merge",
+    "nonnegotiable": "Do not convert the negative run into a downloadable raster or claim a score.",
+    "tests_passed": 39,
+    "known_warnings": "7 upstream rasterio/affine PendingDeprecationWarnings; no test failures",
+    "checks": [
+      "H33 reconstruction repeated from restored pinned inputs: zero support disagreements",
+      "Synthetic threshold verification repeated deterministically",
+      "Backward-prune case removes an initially useful but later redundant dot",
+      "Selector time/size limits fail rather than emit incomplete candidates",
+      "Four site pages pass local file/fragment checks",
+      "No production TIFF or ZIP in docs",
+      "Python compilation and git whitespace checks pass",
+      "Narrowed root data ignore rule so deployed JSON evidence is tracked; regression test added"
+    ],
+    "unmet_requirements": [
+      "No eligible unique production TIFF: mandatory stop gate makes that impossible under the current literal protocol",
+      "No real-data feature canary, OOF model, or HOLDOUT-DTI comparison",
+      "No complete all-prior pixel audit; only the decisive universal witness needed for the stop",
+      "No organizer receipt, live leaderboard/cap verification, or direct third-party source acquisition"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "repository": "buffedlizard55-lab/GEMSDOE64",
+  "observed_pages_configuration": {
+    "build_type": "legacy",
+    "source_branch": "main",
+    "source_path": "/",
+    "html_url": "https://buffedlizard55-lab.github.io/GEMSDOE64/"
+  },
+  "configuration_update_attempt": {
+    "requested_build_type": "workflow",
+    "http_status": 403,
+    "message": "Resource not accessible by integration"
+  },
+  "fallback": "Root index.html redirects to docs/index.html, compatible with the existing main/root Pages configuration.",
+  "automatic_source_refresh_deployment": "not yet verified; workflow deployment will be checked after merge",
+  "live_preview": "HTTP 200 on port 8000; server binds 0.0.0.0"
+}

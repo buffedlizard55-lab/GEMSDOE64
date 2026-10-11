@@ -1,0 +1,33 @@
+{
+  "evidence_class": "PRIOR-ARTIFACT-MEASUREMENT-NOT-A-SCORE",
+  "candidate_sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+  "base_sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+  "grid": {
+    "shape": [
+      3730,
+      3292
+    ],
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ]
+  },
+  "candidate_dots": 37654,
+  "base_dots": 40199,
+  "deleted_dots": 2545,
+  "new_dots": 0,
+  "dots_on_catalogue": 0,
+  "dots_within_200m": 0,
+  "rule": "base positive support AND distance_to_mapped_catalogue > 2 pixels",
+  "rule_pixel_disagreement": 0,
+  "candidate_matches_documented_rule": true,
+  "organizer_receipt": null,
+  "organizer_confirmed_score": null,
+  "causal_explanation": "Unproven. Pruning can reduce FP/redundant coverage; hidden truth is unavailable.",
+  "copied_candidate_written": false
+}

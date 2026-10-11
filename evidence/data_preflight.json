@@ -1,0 +1,47 @@
+{
+  "ready": false,
+  "missing": [
+    "data/cache/feature_stack.npy",
+    "data/cache/feature_stack.manifest.json",
+    "data/oof/predictions.npz",
+    "data/oof/provenance.json"
+  ],
+  "rebuilt_features": false,
+  "official_origin_authenticated": false,
+  "data/reference/sample_submission.tif": {
+    "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "shape": [
+      3730,
+      3292
+    ],
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "count": 1,
+    "finite_cells": 5167373
+  },
+  "data/reference/existing_faults.tif": {
+    "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "shape": [
+      3730,
+      3292
+    ],
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "count": 1,
+    "finite_cells": 12279160
+  }
+}
