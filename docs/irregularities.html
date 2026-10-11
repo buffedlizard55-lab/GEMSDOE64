@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Irregularities · GEMSDOE64</title>
+<link rel="stylesheet" href="styles.css"></head>
+<body><header class="site"><div class="wrap"><nav><a href="index.html">Overview &amp; download</a><a href="executive-summary.html">Submit</a>
+<a href="answer.html">Why 0.2778 won</a><a href="hypotheses.html">Hypotheses</a>
+<a href="sources.html">Sources</a><a href="irregularities.html">Irregularities</a></nav></div></header>
+<main class="wrap">
+<section class="hero"><p class="kicker">Irregularities</p>
+<h1>What does not add up — flagged, not smoothed</h1></section>
+<section>
+<ol>
+<li><strong>Two different “current high scores” in the task brief.</strong> The brief quotes the
+GEMSDOE site at 0.3774 and later says 0.3195 is the highest. A leaderboard snapshot verified
+2026-10-11 (rows read from the public leaderboard and stored in
+<code>docs/data/leaderboard_snapshot.json</code>) shows #1 = 0.4133, #8 = 0.3195. Treat any
+site-local “high score” as stale unless it carries a date and a row.</li>
+<li><strong>0.2778 vs 0.2747 for the same file.</strong> The h33 repository's own README marks that
+artifact <em>UNSCORED</em> with a projected live value of 0.2747; the brief reports 0.2778. Both are
+owner-reported. No organizer receipt exists in any repository checked; the discrepancy is preserved
+here rather than averaged.</li>
+<li><strong>The dense prior and the literal uniqueness rule.</strong> A pinned prior in the registry
+(the 17GEMSDOE probability raster, sha256 ab0a0a62…, re-downloaded and hash-verified here) carries
+positive mass at essentially every cell of the footprint. The sibling protocol defines dots as
+“finite positive pixels”, so the 3-pixel forward-overlap statistic against that prior is ~1.0 for
+<em>any</em> non-empty candidate. That is a rule-meets-dense-prior degeneracy, not evidence about this
+candidate. It is reported, the literal verdict is left failing, and no exemption is taken.</li>
+<li><strong>Egress limitation, honestly stated.</strong> The lane requires 1 m DEM processing. The
+sandbox can reach GitHub, PyPI and npm only; <code>prd-tnm.s3.amazonaws.com</code>,
+<code>portal.opentopography.org</code>, <code>www.sciencebase.gov</code>, <code>data.source.coop</code>
+and Dropbox all fail to resolve or connect (tested 2026-10-11). The published candidate therefore
+runs the same lane code on the finest <em>reachable</em> lidar-derived grid: the owner-CI 100 m
+aggregate of 706 USGS 3DEP 1 m tiles. The native-resolution path is implemented and unit-tested
+(<code>tests/test_lidar_scarp.py</code>), and switches on the moment a 1 m DEM is placed at
+<code>--dem</code>.</li>
+<li><strong>Surrogate truth everywhere.</strong> No publication here contains a hidden-test score.
+Where a number looks like a score, the label says HOLDOUT-DTI (surrogate), MEASURED (bytes), or
+OWNER-REPORTED. Anything else would be a hallucination.</li>
+</ol>
+</section>
+</main>
+<footer class="wrap"><p class="verdict">NOT CLEARED FOR SUBMISSION — audit artifact only — audit artefact: accepted by the portal's format rules, not cleared by the repository's promotion policy. See the front page for the two verdicts.</p>
+<p>GEMSDOE64 — lane: native-resolution lidar scarp channels.
+No number here is a leaderboard score unless it is labelled ORGANIZER-CONFIRMED, and none is.
+Negative results are deliverables.</p>
+<p><a href="data/run_card.json">run card</a> · <a href="data/registry_index.json">registry index</a>
+· <a href="https://github.com/buffedlizard55-lab/GEMSDOE64">repository</a></p></footer></body></html>
