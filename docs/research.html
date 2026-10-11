@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Evidence-graded analysis of the DOE GEMS DTI objective, the expected-score threshold, and the missing validation gates.">
+  <title>Research notes — GEMSDOE64</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">GEMSDOE64 · DOE GEMS</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Overview</a>
+      <a href="executive-summary.html">How to submit</a>
+      <a href="research.html" aria-current="page">Research</a>
+      <a href="hypotheses.html">Hypotheses</a>
+      <a href="sources.html">Sources</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero" aria-labelledby="page-title">
+    <span class="badge badge-warn">EVIDENCE REVIEW · NO COMPETITION HOLDOUT RUN</span>
+    <h1 id="page-title">What the metric rewards—and what it does not prove</h1>
+    <p>The challenge evaluates predicted faults against new expert labels. A promising emission rule is not a validated geological discovery, and a public score is not a private-round result.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Official target and metric</h2>
+    <p>The official problem description states that known public fault labels are incomplete and that the initial prize test contains newly identified expert-labeled faults. The task is fault prediction throughout the GeoDAWN region, not direct prediction of geothermal vents or temperature.</p>
+    <p>For this competition, the distance-weighted Tversky index uses <code>alpha = 0.2</code>, <code>beta = 0.8</code>, and a triangular distance kernel with <code>R = 300 m</code>. In the official definition, a prediction receives distance-dependent credit near a truth pixel; false-positive and false-negative contributions are also distance weighted. In compact form:</p>
+    <blockquote><strong>DTI = TP<sub>w</sub> / (TP<sub>w</sub> + 0.2 × FP<sub>w</sub> + 0.8 × FN<sub>w</sub> + epsilon)</strong></blockquote>
+    <p>This makes recall important, but does not make arbitrary dense predictions safe. A long line far from the new labels can add false-positive mass; nearby predictions can receive partial credit; and neighboring predictions compete for overlapping coverage. The exact per-pixel gain therefore depends on the local truth draw, kernel, and all existing picks.</p>
+    <p><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/#performance-metric">Official metric definition and worked example ↗</a></p>
+  </section>
+
+  <section class="panel">
+    <h2>The alpha-times-optimal-score rule: derivation and scope</h2>
+    <p>For a simple unweighted binary selection set <code>A</code>, independent calibrated per-pixel probabilities <code>qᵢ</code>, and <code>alpha + beta = 1</code>, let <code>T = Σ(i∈A) qᵢ</code> and <code>P = Σ(all i) qᵢ</code>. The <em>ratio of expected confusion counts</em> is:</p>
+    <blockquote><strong>S<sub>plug-in</sub>(A) = T / (alpha·|A| + beta·P).</strong></blockquote>
+    <p>Adding one unweighted hard prediction with calibrated probability <code>q</code> changes the numerator to <code>T + q</code> and denominator to <code>D + alpha</code>. The ratio improves exactly when <code>q &gt; alpha·S<sub>plug-in</sub>(A)</code>. This is the algebraic version of the familiar calibrated F1 threshold result; the cited Lipton–Elkan–Narayanaswamy paper is linked in the source register. As a purely illustrative plug-in calculation, if <code>S<sub>plug-in</sub> = 0.30</code>, then <code>alpha·S = 0.06</code>. That cutoff is a theoretical quantity, not a HOLDOUT-DTI, not an ORGANIZER-CONFIRMED score, and not an observed competition result.</p>
+    <p><strong>Scope correction:</strong> that derivation compares ratios of expected counts. It does not establish the same cutoff as a universal rule for the <em>mean of per-raster ratios</em>, especially with a spatial max/triangular kernel. In general, <code>E[TP / denominator]</code> is not <code>E[TP] / E[denominator]</code>. We tested that distinction before designing a placement algorithm.</p>
+  </section>
+
+  <section class="panel panel-warn">
+    <h2>Reproducible synthetic counterexample — not a competition score</h2>
+    <p>The standard-library script <a href="https://github.com/buffedlizard55-lab/GEMSDOE64/blob/main/scripts/synthetic_expected_dti_check.py"><code>scripts/synthetic_expected_dti_check.py</code></a> enumerates all <strong>32</strong> binary truth maps for a synthetic one-row, five-cell raster with calibrated probabilities <code>[0.90, 0.60, 0.20, 0.08, 0.05]</code>. It calculates two distinct objectives; it has no 300 m kernel and uses no competition labels.</p>
+    <ul>
+      <li><strong>SYNTHETIC mean-per-map utility only:</strong> the globally optimal selected set contains the first two cells, with mean unweighted DTI utility <code>0.7972702684</code>.</li>
+      <li><strong>SYNTHETIC candidate test only:</strong> the third cell has probability <code>0.20</code>, above <code>alpha × exact-mean optimum = 0.1594540537</code>, yet adding it changes the mean per-map utility by <code>−0.0048653377</code>.</li>
+      <li><strong>SYNTHETIC ratio-of-expected-counts only:</strong> the same third cell improves the plug-in objective by <code>+0.0189223808</code>, and the plug-in optimum includes it.</li>
+    </ul>
+    <p>These are mathematical toy utilities, <strong>not HOLDOUT-DTI, not ORGANIZER-CONFIRMED, and not competition scores</strong>. The test verifies that the shortcut can be correct for the plug-in objective while failing for finite-ensemble mean DTI. The full competition kernel may further change each marginal gain.</p>
+    <p><strong>Implementation decision:</strong> do not independently threshold pixels at <code>alpha × S*</code>. Use it, at most, as an algebraic diagnostic. Actual acceptance/pruning must use the exact evaluator's mean marginal DTI gain across the required uncertainty realizations.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Why a dotted candidate could outperform a dense field (plausible, not established)</h2>
+    <p>The prior GEMSDOE pages supplied in the prompt describe several sparsified, dotted, spacing, and max-coverage experiments. A scientifically plausible mechanism is that a sparse arrangement removes redundant predicted mass while retaining predictions close enough to truth to receive triangular-kernel credit. In metric terms, this could reduce weighted false-positive contribution without losing as much weighted true-positive coverage. It is not possible to infer causality from the final public value alone: different masks, pixel budgets, label distributions, and submission dates can all change results.</p>
+    <p>There is a source inconsistency that prevents a stronger claim: the GEMSDOE32 owner site describes its H33-2-B2 artifact as a candidate formed by pruning a prior sparse/dotted map around known catalogue traces, and explicitly states that the artifact has no organizer score; the prompt describes an H33 entry as scored. Its own documentation separates proxy/Monte-Carlo analyses and model projections from organizer scores. Sparse pruning is a plausible mechanism for reducing redundant false-positive mass while retaining kernel-near credit, but neither the precise submitted file nor the cause of the reported result is established. Without a DrivenData submission-page receipt and the exact submitted file hash, the attribution cannot be resolved. This site does not copy that artifact.</p>
+    <p>The public leaderboard is live and has moved since the snapshot quoted in the prompt. It is not the private holdout or an organizer receipt. No promise that this project can beat any particular public result is made.</p>
+    <p><a href="https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html">Owner-maintained GEMSDOE32 page (context only) ↗</a> · <a href="https://buffedlizard55-lab.github.io/GEMSDOE24/">Owner-maintained GEMSDOE24 page (context only) ↗</a> · <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Official live public leaderboard ↗</a></p>
+  </section>
+
+  <section class="panel">
+    <h2>What the proposed holdout can validate</h2>
+    <p>With the shared tools and authorized data, whole segments of visible catalogue faults can be hidden with a spatial buffer. Catalogue-based features must be rebuilt only from visible traces, and visible traces must be masked pixel-exactly. Pool the held-out truth and predictions through the competition evaluator, then report the evaluator version, withheld-positive count, and a 95% block-bootstrap confidence interval.</p>
+    <p>This is a hide-and-recover proxy. It measures whether the pipeline recovers spatially withheld examples from the known catalogue; it cannot directly show performance on genuinely new faults that were never in the catalogue. The holdout is a promotion gate, not a guarantee of leaderboard rank.</p>
+    <p>Before trusting a feature, run the specified single-feature canary. An unusually high AUC (&gt;0.90 under the requested protocol) is a leakage alarm, not an achievement, until its provenance is explained.</p>
+  </section>
+
+  <section class="panel panel-danger">
+    <h2>Current scientific conclusion</h2>
+    <p>The expected-DTI placement method is a reasonable, metric-aligned hypothesis, but it is <strong>not validated on this checkout</strong>. There is no spatial holdout result, confidence interval, leakage test, ensemble/TTA/MC-dropout surface, registry comparison, exact scorer run, written raster, or validator output. The only verified experiment is the synthetic threshold-scope check above. The verdict remains negative and no submission file is offered.</p>
+  </section>
+</main>
+<footer class="site-footer"><div class="footer-inner"><a href="index.html">Overview</a> · <a href="hypotheses.html">Ranked hypotheses</a> · <a href="sources.html">Sources</a></div></footer>
+</body>
+</html>

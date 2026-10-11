@@ -1,0 +1,10 @@
+# Competition data is private/large and must not be committed.
+/data/*
+!/data/README.md
+
+# Local Python and build artifacts.
+.venv/
+__pycache__/
+*.py[cod]
+build/
+dist/

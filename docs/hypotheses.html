@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ranked, evidence-graded hypotheses for finding unmapped faults in the DOE GEMS region. No hypothesis is validated on this checkout.">
+  <title>Hypotheses — GEMSDOE64</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">GEMSDOE64 · DOE GEMS</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Overview</a>
+      <a href="executive-summary.html">How to submit</a>
+      <a href="research.html">Research</a>
+      <a href="hypotheses.html" aria-current="page">Hypotheses</a>
+      <a href="sources.html">Sources</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero" aria-labelledby="page-title">
+    <span class="badge badge-warn">RANKED EXPERT PRIORS · NONE VALIDATED</span>
+    <h1 id="page-title">Candidate hypotheses before any submission decision</h1>
+    <p>Expected improvement and cost are qualitative priors, not score projections. The checkout contains no feature data or spatial holdout. Only the top, lane-consistent hypothesis may be tested in this run; the others are parked research leads.</p>
+  </section>
+
+  <section class="panel panel-danger">
+    <h2>Scope and novelty caveat</h2>
+    <p>This repository has no model or feature engineering, so all hypotheses below are new relative to this checkout. That does <strong>not</strong> prove novelty across the many sibling GEMSDOE sites. The user-supplied registry already names independent DTI-optimal emission, topography/geophysics, lidar-scarp, and dotted/spacing work. Before placement, the mandated registry correlation and within-3-pixel overlap checks must run on the actual surfaces/files. No claim of duplicate-free novelty is made here.</p>
+    <p>The session's fixed lane is the calibrated-surface, exact-kernel expected-DTI decision rule. Alternative feature hypotheses are documented for later prioritization, not implemented as a parallel model branch.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Priority ranking</h2>
+    <p class="small">The ranking is by qualitative plausibility of improving the competition's fault DTI, balanced against implementation cost and risk. It is not a numeric estimate of performance. The official feature list in the challenge describes detrended elevation/slope, strain-rate quantities, gravity, magnetic products and earthquake density; the actual local band order and cache are absent here.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Priority</th><th>Hypothesis, layers, physical signature</th><th>Why it could find a fault missing from the catalogue</th><th>Difference / confound / status</th><th>Expected DTI potential · cost</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>First · active lane</strong></td>
+            <td><strong>Calibrated structural-posterior ridges, emitted by exact-kernel marginal gain.</strong><br>Layers: the shared cached feature stack only through spatially buffered out-of-fold ensemble/TTA/MC-dropout predictions; use isotonic-calibrated probabilities and ridge candidates. The physical signal is a coherent fault-likelihood ridge in the existing multimodal surface—not a newly asserted raw band.</td>
+            <td>A linearly coherent ridge inferred from geophysical/terrain context may continue a structure beyond its mapped trace. Buffered hide-and-recover can test generalization to whole unseen catalogue segments. It remains only a proxy for genuinely new expert faults.</td>
+            <td>Different decision rule from independent thresholding or heuristic spacing/MCLP: greedily maximize mean marginal gain under the exact 300 m metric across the uncertainty realizations, then prune. It is in the same broad family as earlier DTI-emission experiments, so uniqueness is unproved until the registry check. <strong>Blocked:</strong> no OOF surface, candidate list, evaluator, or registry is present.</td>
+            <td><strong>High qualitative potential</strong> because it optimizes the target metric directly; <strong>medium cost</strong> once shared tools exist. Unvalidated.</td>
+          </tr>
+          <tr>
+            <td><strong>Second · parked</strong></td>
+            <td><strong>Cross-modal magnetic/gravity edge coincidence.</strong><br>Layers: reduced-to-pole magnetic anomaly, total-field vertical/horizontal slopes, top-of-crustal magnetic source depth, isostatic gravity anomaly and its slope. Target a persistent, aligned ridge/edge intersection across independent potential-field contrasts rather than a thresholded raw anomaly.</td>
+            <td>Fault juxtaposition or offset of magnetic/density contrasts can reveal a concealed structural boundary under basin cover where surface mapping is weak; independent modality agreement may prioritize a previously unmapped segment.</td>
+            <td>Non-fault mimics include lithologic contacts, intrusive-body margins, basin-fill thickness changes and processing/flight-line artifacts. This checkout has no implementation; user-listed topo-geophysics and multiphysics runs may overlap, so global novelty is uncertain. Outside the active lane.</td>
+            <td><strong>Medium–high qualitative potential</strong>; <strong>medium cost</strong>. Not tested.</td>
+          </tr>
+          <tr>
+            <td><strong>Third · parked</strong></td>
+            <td><strong>Persistent lidar curvature/slope-break lineaments.</strong><br>Layers: competition-linked 1 m USGS DEM tiles plus the provided detrended elevation and slope. Target multi-scale profile/plan curvature ridges and slope breaks that persist across scales; suppress drainage-aligned edges using local channel geometry.</td>
+            <td>High-resolution topography can expose subtle scarps or linear breaks omitted from regional 100 m mapping, especially where a trace is not visible in lower-resolution feature layers.</td>
+            <td>Non-fault mimics include stream incision, resistant lithologic boundaries, alluvial-fan margins, roads and grading. Prior site names explicitly include lidar-scarp/scarp methods, so this is not demonstrably new across sibling sites. DEM URLs and raster are absent from this checkout. Outside the active lane.</td>
+            <td><strong>Medium qualitative potential</strong>; <strong>high cost</strong> due to tile acquisition, mosaicking, multiscale transforms and edge artifacts. Not tested.</td>
+          </tr>
+          <tr>
+            <td><strong>Fourth · parked</strong></td>
+            <td><strong>Heat-flow residuals aligned with conductance boundaries.</strong><br>Layers: USGS Great Basin heat-flow maps/well residuals, combined with challenge surface conductivity and depth-to-conductive-base products. Target a local thermal residual or conductance boundary that spatially coincides with an existing structural ridge—not simply high background heat flow.</td>
+            <td>Hydrothermal circulation can perturb local heat-flow residuals and conductive structure around fluid pathways; these signals are independent of a surface fault catalogue and could flag blind structures relevant to geothermal systems.</td>
+            <td>Non-fault mimics include groundwater advection, well-quality/coverage bias, lateral thermal-conductivity contrasts and non-fault alteration. A USGS ScienceBase item lists the heat-flow ZIP for download, so source availability was checked; it was not downloaded. Its license/reuse conditions and competition-rule permission to share with the sponsor still need confirmation before use. Target mismatch is material: heat-flow anomalies are not fault labels.</td>
+            <td><strong>Low–medium qualitative potential</strong> for fault-only DTI; <strong>high cost</strong> for provenance, licensing, alignment and validation. Not tested.</td>
+          </tr>
+          <tr>
+            <td><strong>Fifth · parked</strong></td>
+            <td><strong>Strain-tensor direction and earthquake-density coherence.</strong><br>Layers: dilatation, shear strain rate, second invariant of strain rate, and earthquake density from the provided stack. Target a spatially coherent directional strain ridge with a local earthquake-density contrast, not broad high strain alone.</td>
+            <td>Spatially organized deformation and seismicity may indicate an active structure whose surface trace is not in the public catalogue.</td>
+            <td>Non-fault mimics include distributed regional deformation, swarm-like seismicity, catalog completeness changes and earthquake clusters unrelated to a surface fault trace. Inputs are already among the official feature families and may be present in existing baselines; per-feature AUC and provenance checks are mandatory. Outside the active lane.</td>
+            <td><strong>Low–medium qualitative potential</strong>; <strong>low–medium cost</strong>, but high leakage/confounding risk. Not tested.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel panel-warn">
+    <h2>Top candidate validation: blocked, not skipped silently</h2>
+    <p>The top candidate cannot be validated in this checkout. Required shared files, feature stack, labels/sample grid, calibrated OOF outputs, and spatially held-out segment metadata are absent. The official competition data page redirects to login. A synthetic threshold-scope check was run, but it is not the requested spatial holdout and is not evidence that the geological hypothesis works.</p>
+    <p>When authorized files and the shared template are present, test single features for leakage first, then run the segment-buffer holdout and compare the exact-kernel greedy placement to incumbent spacing/MCLP using paired block bootstrap. No weekly slot should be spent until that gate passes.</p>
+  </section>
+</main>
+<footer class="site-footer"><div class="footer-inner"><a href="index.html">Overview</a> · <a href="research.html">Research notes</a> · <a href="sources.html">Sources</a></div></footer>
+</body>
+</html>

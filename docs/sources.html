@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Source register for official GEMS Prize rules, data, metric, geology, and decision theory, with evidence status and limitations.">
+  <title>Sources — GEMSDOE64</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">GEMSDOE64 · DOE GEMS</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Overview</a>
+      <a href="executive-summary.html">How to submit</a>
+      <a href="research.html">Research</a>
+      <a href="hypotheses.html">Hypotheses</a>
+      <a href="sources.html" aria-current="page">Sources</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero" aria-labelledby="page-title">
+    <span class="badge badge-ok">SOURCE AUDIT · DIRECTLY CHECKED</span>
+    <h1 id="page-title">Official sources and evidence limits</h1>
+    <p>Claims in this project should be traceable to the source below. “Read” means the source page or document was fetched during this review; it does not imply that source data were downloaded or that an experiment was performed.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Competition requirements and status</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Source</th><th>What was checked</th><th>Evidence status / limitation</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">DrivenData — problem description</a></td>
+            <td>Target is geological fault prediction; the problem page lists surface conductivity, detrended elevation/slope, strain-rate quantities, gravity, magnetic products and earthquake density. The About/GeoDAWN pages describe airborne magnetic/radiometric surveys and coordinated lidar. Public faults are training labels; test labels are newly expert-identified faults. DTI definition, 300 m triangular kernel, alpha/beta, and submission format were read directly.</td>
+            <td><strong>Official competition source, read directly.</strong> Does not reveal the hidden labels or predict a public score.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/">DrivenData — About</a></td>
+            <td>GeoDAWN survey context, lidar/airborne geophysics, fault/trace definitions, and the role of gravity, magnetics, remote sensing and elevation in fault mapping.</td>
+            <td><strong>Official competition source, read directly.</strong> Context is not proof that any particular layer improves holdout performance.</td>
+          </tr>
+          <tr>
+            <td><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">DOE/NLR — GEMS Prize Official Rules (PDF)</a></td>
+            <td>Prize phases, one final solution selected for both phases, public/private distinction, data access for registered participants, three-per-week feedback limit described in the rules, and narrative disclosure of generative-AI use when applicable.</td>
+            <td><strong>Official rules, relevant sections read directly.</strong> This is not a legal review of every appendix. Check the current version and deadline on the competition site before any entry; this repository does not establish competitor eligibility.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">DrivenData — data page</a></td>
+            <td>Direct request redirects to the DrivenData login form. The form asks for account credentials.</td>
+            <td><strong>Access barrier confirmed.</strong> No account session or data download is present; no credentials were solicited or used.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">DrivenData — live leaderboard</a></td>
+            <td>The page is a changing public leaderboard. It no longer matches the snapshot stated in the prompt.</td>
+            <td><strong>Live organizer page, not a submission-page receipt.</strong> No value is frozen on this static site; public ranking is not a private-round result.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.drivendata.org/termsofuse/">DrivenData — Terms of Use</a></td>
+            <td>The prohibited-uses section says not to use robots/spiders or other automatic processes to access, monitor, or copy the site without permission.</td>
+            <td><strong>Official terms, read directly.</strong> No automatic leaderboard polling or competition-data scraping is implemented.</td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/drivendataorg/gems-prize-reference-solution">DrivenData reference solution</a></td>
+            <td>Public repository page and described baseline setup were read.</td>
+            <td><strong>Official reference code, public.</strong> It is not cloned into this checkout; requested shared holdout/writer/validator files are absent here.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Geoscience and external-data sources</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Source</th><th>Verified description</th><th>Access/reuse status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">USGS — GeoDAWN survey data release</a> · <a href="https://doi.org/10.5066/P93LGLVQ">DOI 10.5066/P93LGLVQ</a></td>
+            <td>Official USGS page describes airborne magnetic and radiometric data, survey methods, airborne lidar coordination, and downloadable data products.</td>
+            <td><strong>Official; CC0 1.0 is stated on the USGS page.</strong> The complete GeoTIFF/model stack was not downloaded in this review.</td>
+          </tr>
+          <tr>
+            <td><a href="https://gbcge.org/current-projects/ingenious/">Great Basin Center for Geothermal Energy — INGENIOUS</a></td>
+            <td>Official project page describes the geothermal-discovery program and links its regional dataset and USGS releases, including heat flow, regional geophysics, conductance, and fault slip/dilation tendency.</td>
+            <td><strong>Project source, read directly.</strong> Individual linked data licenses and competition-sharing permissions must be checked before integration.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.sciencebase.gov/catalog/item/6297d2fad34ec53d276c5b28">USGS ScienceBase — Heat flow maps and supporting data for the Great Basin</a> · <a href="https://doi.org/10.5066/P9BZPVUC">DOI 10.5066/P9BZPVUC</a></td>
+            <td>The item describes background conductive heat-flow maps, quality-weighted versions, and well residuals that may indicate hydrothermal or groundwater influence. ScienceBase lists a ZIP attachment and a direct download URI.</td>
+            <td><strong>Official download listing verified; data not downloaded.</strong> Reuse/license terms for the competition have not been confirmed; do not treat this as cleared for submission.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.sciencebase.gov/catalog/item/628d4fabd34ef70cdba3c4a4">USGS ScienceBase — Regional geophysical maps of the Great Basin</a> · <a href="https://doi.org/10.5066/P9Z6SA1Z">DOI 10.5066/P9Z6SA1Z</a></td>
+            <td>The item describes regional gravity, magnetic, and depth-to-basement grids and lists a downloadable grid ZIP.</td>
+            <td><strong>Official download listing verified; data not downloaded.</strong> It may overlap challenge inputs; projection/resolution, provenance, license and incremental value require audit.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.sciencebase.gov/catalog/item/62979746d34ec53d276c113b">USGS ScienceBase — Electrical Conductance Maps of the Great Basin</a> · <a href="https://doi.org/10.5066/P9TWT2LU">DOI 10.5066/P9TWT2LU</a></td>
+            <td>The page describes five conductance depth ranges from 2–200 km and lists TIFF/ZIP products.</td>
+            <td><strong>Official download listing verified; data not downloaded.</strong> These broad-scale products are not assumed to add information beyond the competition's supplied conductivity features.</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/#provided-features">DrivenData — provided features and 1 m DEM links</a></td>
+            <td>The competition describes the multiband training GeoTIFF and links for 1 m DEM acquisition.</td>
+            <td><strong>Official description read; participant files unavailable here.</strong> The required CSV, tiles, grid, and metadata are absent in this clone.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Decision-theory reference</h2>
+    <p><a href="https://doi.org/10.1007/978-3-662-44851-9_15">Lipton, Elkan &amp; Narayanaswamy (2014), “Optimal Thresholding of Classifiers to Maximize F1 Measure”</a>, ECML-PKDD. The paper's calibrated F1 threshold result motivates a ratio-of-expected-counts derivation; this project's synthetic counterexample demonstrates why it must not be generalized to finite-ensemble mean DTI or the spatial distance-weighted kernel without direct testing.</p>
+    <p><a href="https://arxiv.org/abs/1402.1892">Author preprint, arXiv:1402.1892 ↗</a></p>
+  </section>
+
+  <section class="panel panel-warn">
+    <h2>Source-audit boundary</h2>
+    <p>Official page text was read through the web tools in this session. That verifies the claims explicitly summarized above, not every attachment or every one of the many sibling experiment pages supplied in the prompt. Owner-maintained GitHub Pages are contextual research reports, not organizer receipts. The supplied result list also contains blank entries and at least one future-dated run tag relative to this review date; treat those rows as unverified until supported by a receipt. No external raster was fetched or incorporated. The competition sample grid and labels still have to be obtained through authorized participant access.</p>
+  </section>
+</main>
+<footer class="site-footer"><div class="footer-inner"><a href="index.html">Overview</a> · <a href="research.html">Research</a> · <a href="hypotheses.html">Hypotheses</a></div></footer>
+</body>
+</html>

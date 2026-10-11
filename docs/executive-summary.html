@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Step-by-step instructions for submitting a GEMS Prize GeoTIFF, with explicit validation and current no-file status.">
+  <title>How to submit — GEMSDOE64</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">GEMSDOE64 · DOE GEMS</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Overview</a>
+      <a href="executive-summary.html" aria-current="page">How to submit</a>
+      <a href="research.html">Research</a>
+      <a href="hypotheses.html">Hypotheses</a>
+      <a href="sources.html">Sources</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero" aria-labelledby="page-title">
+    <span class="badge badge-danger">STOP · NO DOWNLOAD IN THIS RUN</span>
+    <h1 id="page-title">Submission guide</h1>
+    <p>This page explains the safe upload steps. It does not certify or provide a prediction file. The current run card is negative and there is no TIFF to submit.</p>
+    <div class="button-row">
+      <span class="button-disabled" aria-disabled="true">No validated file to download</span>
+      <a class="button" href="run-card.json">Read the run card</a>
+    </div>
+  </section>
+
+  <section class="panel panel-danger">
+    <h2>First check: is the file approved?</h2>
+    <p><strong>Not yet.</strong> The overview must show a green, downloadable candidate and a passing run card before you select any file for submission. Right now it shows a red stop state. Do not substitute an old sibling-site TIFF or a synthetic/all-zero raster.</p>
+  </section>
+
+  <section class="panel">
+    <h2>When a validated candidate exists: upload it manually</h2>
+    <ol class="checklist">
+      <li><strong>Sign into the official DrivenData competition account and review the current rules.</strong> The competition data tab redirects to login. This project will not store credentials, log in automatically, or bypass the access gate.</li>
+      <li><strong>Check the candidate receipt before upload.</strong> Confirm the file's SHA-256, unique filename, note, and validator output against the green status shown on this site. No such candidate is currently available.</li>
+      <li><strong>Open DrivenData's New submission form.</strong> In “File to submit,” choose the approved single-band <code>.tif</code>, or a <code>.zip</code> containing exactly one GeoTIFF if required by the portal.</li>
+      <li><strong>Enter the unique run name and short note.</strong> Use the exact name and note shown beside the approved download. The note should identify the method and evidence status; never call a projection an organizer score.</li>
+      <li><strong>Submit and retain the platform receipt.</strong> Record the submission identifier, the file hash, the displayed result, and the receipt date. Only a receipt supports an <em>ORGANIZER-CONFIRMED</em> result in this project's run card.</li>
+    </ol>
+  </section>
+
+  <section class="panel">
+    <h2>Required GeoTIFF format</h2>
+    <p>The official problem description requires all of the following:</p>
+    <ul class="checklist">
+      <li>One raster band, datatype <code>float32</code>.</li>
+      <li>Prediction/confidence values in the closed interval <code>[0, 1]</code>.</li>
+      <li>Projected CRS EPSG:32611 (UTM zone 11N), matching the training/template data.</li>
+      <li>100 m resolution and the exact training/sample-submission bounds, shape, and geotransform.</li>
+      <li>Null/NaN outside the required bounds/footprint. The valid footprint must contain no NaN, nodata sentinel, or value outside range.</li>
+    </ul>
+    <p><strong>Do not guess the raster dimensions or transform.</strong> Copy them from the official sample/template and compare every field. The sample GeoTIFF and training files are not in this checkout, so no dimensions or transform are claimed here.</p>
+    <p><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/#submission-format">Official format requirements ↗</a> · <a href="https://epsg.io/32611">EPSG:32611 reference ↗</a></p>
+  </section>
+
+  <section class="panel panel-warn">
+    <h2>If the portal says “Predicted values must be in range [0, 1]”</h2>
+    <p>The reported error is a format/range failure, not evidence that a method scored poorly. Re-open the exact written TIFF and check the minimum and maximum across every in-footprint pixel, then inspect nodata metadata and sentinel values. Confirm finite in-footprint values are within range and that null/NaN values occur only outside the footprint. Re-check that the writer used the official sample grid.</p>
+    <p>This checkout has no rejected TIFF to inspect, so its cause is <strong>not diagnosed here</strong>. No claim is made that the rejection was specifically caused by NaN or any particular nodata sentinel.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Rules and score expectations</h2>
+    <p>The current official rules explain that public leaderboard results are not the private prize-round result and that only one final submission is selected for both prize rounds. They also require a narrative disclosure of generative-AI use where applicable. Check the current rules and competition page immediately before any real submission.</p>
+    <p><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">Read the official rules PDF ↗</a> · <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Open the live public leaderboard ↗</a></p>
+    <p class="small">Automated leaderboard polling is deliberately disabled: DrivenData's published Terms of Use prohibit robots/spiders and automatic monitoring/copying without consent.</p>
+  </section>
+</main>
+<footer class="site-footer"><div class="footer-inner"><a href="index.html">Back to the submission-readiness dashboard</a> · no file is being uploaded by this site.</div></footer>
+</body>
+</html>
