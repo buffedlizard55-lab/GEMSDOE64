@@ -1,0 +1,798 @@
+{
+  "reviewed_utc": "2026-10-11T22:32:50.284543+00:00",
+  "elapsed_seconds": 272.51,
+  "experiments_used": 3,
+  "experiments_budget": 3,
+  "leakage_canary": {
+    "passed": true,
+    "max_auc_or_complement": 0.761601,
+    "threshold": 0.9,
+    "features": [
+      {
+        "feature": "scarp_pixel_fraction",
+        "auc": 0.566007,
+        "max_auc_or_complement": 0.566007,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "snr_weighted_amplitude",
+        "auc": 0.595289,
+        "max_auc_or_complement": 0.595289,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "structure_tensor_coherence",
+        "auc": 0.571865,
+        "max_auc_or_complement": 0.571865,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "dominant_strike_geol_align",
+        "auc": 0.520657,
+        "max_auc_or_complement": 0.520657,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "frangi_steger_sharpness",
+        "auc": 0.595564,
+        "max_auc_or_complement": 0.595564,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "scarplet_youthfulness",
+        "auc": 0.579704,
+        "max_auc_or_complement": 0.579704,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "downface_max_synthetic",
+        "auc": 0.599548,
+        "max_auc_or_complement": 0.599548,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "upface_max_antithetic",
+        "auc": 0.60586,
+        "max_auc_or_complement": 0.60586,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "step_max_2m",
+        "auc": 0.588505,
+        "max_auc_or_complement": 0.588505,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "relief_100m",
+        "auc": 0.585001,
+        "max_auc_or_complement": 0.585001,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "tiger_road_distance_m",
+        "auc": 0.514417,
+        "max_auc_or_complement": 0.514417,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "blm_claim_distance_m",
+        "auc": 0.470167,
+        "max_auc_or_complement": 0.529833,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "fold_visible_exp_neg_dvis",
+        "auc": 0.742815,
+        "max_auc_or_complement": 0.742815,
+        "threshold": 0.9,
+        "passed": true
+      },
+      {
+        "feature": "fold_visible_exp_neg_daniso",
+        "auc": 0.761601,
+        "max_auc_or_complement": 0.761601,
+        "threshold": 0.9,
+        "passed": true
+      }
+    ]
+  },
+  "E1_label_blind_quadrant_spatial_cv": {
+    "description": "4-fold label-blind spatial CV (spatial.folds, 8 km buffer, 48,441 withheld fault pixels, pure detector without d_vis)",
+    "overall": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "alpha": 0.2,
+      "beta": 0.8,
+      "triangular_radius_m": 300.0,
+      "pooled": true,
+      "scores": {
+        "base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.10918221582577974,
+          "ci95": [
+            0.0977591309085753,
+            0.12012018106755358
+          ],
+          "withheld_positive_pixels": 48441,
+          "tpw": 5121.406392947368,
+          "fpw": 35649.419366566006,
+          "fnw": 43319.59360705264
+        },
+        "lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.13681551889517943,
+          "ci95": [
+            0.12386783453088783,
+            0.14920691823766563
+          ],
+          "withheld_positive_pixels": 48441,
+          "tpw": 6440.154139077579,
+          "fpw": 35154.89690584341,
+          "fnw": 42000.84586092243
+        },
+        "lidar_culturally_masked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.13700341185638226,
+          "ci95": [
+            0.12404904464235318,
+            0.14929041047192862
+          ],
+          "withheld_positive_pixels": 48441,
+          "tpw": 6449.155598546577,
+          "fpw": 35151.625145274906,
+          "fnw": 41991.84440145342
+        }
+      },
+      "best_comparable_control": "lidar_unmasked",
+      "paired_differences": {
+        "base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.027821196030602527,
+          "ci95": [
+            0.02124447216282821,
+            0.034917787009458405
+          ],
+          "bootstrap_se": 0.003499553710282977,
+          "beats_two_se": true,
+          "withheld_positive_pixels": 48441
+        },
+        "lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.0001878929612028346,
+          "ci95": [
+            -0.00012977925938570945,
+            0.0005195945527342177
+          ],
+          "bootstrap_se": 0.0001702640066558329,
+          "beats_two_se": false,
+          "withheld_positive_pixels": 48441
+        }
+      },
+      "bootstrap": {
+        "method": "paired physical spatial-cluster percentile",
+        "clusters": 137,
+        "draws": 1000,
+        "seed": 520810,
+        "confidence": 0.95,
+        "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+      },
+      "implementation_sha256": {
+        "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
+        "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
+        "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
+        "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+      }
+    },
+    "range_front_blocks": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "alpha": 0.2,
+      "beta": 0.8,
+      "triangular_radius_m": 300.0,
+      "pooled": true,
+      "scores": {
+        "base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.12902676453285608,
+          "ci95": [
+            0.1148599879899275,
+            0.14239889101857675
+          ],
+          "withheld_positive_pixels": 23317,
+          "tpw": 3041.05390637005,
+          "fpw": 21536.802237517823,
+          "fnw": 20275.946093629944
+        },
+        "lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.15929902429761417,
+          "ci95": [
+            0.14380278710921943,
+            0.17468490471959267
+          ],
+          "withheld_positive_pixels": 23317,
+          "tpw": 3740.6953720746187,
+          "fpw": 20402.42464476792,
+          "fnw": 19576.304627925383
+        },
+        "lidar_culturally_masked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.1594205013183537,
+          "ci95": [
+            0.1440957599102673,
+            0.1748110941656133
+          ],
+          "withheld_positive_pixels": 23317,
+          "tpw": 3743.6968315436175,
+          "fpw": 20404.0935023378,
+          "fnw": 19573.303168456387
+        }
+      },
+      "best_comparable_control": "lidar_unmasked",
+      "paired_differences": {
+        "base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.030393736785497616,
+          "ci95": [
+            0.019494807016783133,
+            0.0410009915398014
+          ],
+          "bootstrap_se": 0.005536381539515185,
+          "beats_two_se": true,
+          "withheld_positive_pixels": 23317
+        },
+        "lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.00012147702073952993,
+          "ci95": [
+            -0.00036789593541269037,
+            0.0006279587061430544
+          ],
+          "bootstrap_se": 0.0002495604020555389,
+          "beats_two_se": false,
+          "withheld_positive_pixels": 23317
+        }
+      },
+      "bootstrap": {
+        "method": "paired physical spatial-cluster percentile",
+        "clusters": 64,
+        "draws": 1000,
+        "seed": 520810,
+        "confidence": 0.95,
+        "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+      },
+      "implementation_sha256": {
+        "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
+        "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
+        "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
+        "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+      }
+    },
+    "off_range_front_blocks": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "alpha": 0.2,
+      "beta": 0.8,
+      "triangular_radius_m": 300.0,
+      "pooled": true,
+      "scores": {
+        "base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.08941755338167098,
+          "ci95": [
+            0.07354851223919077,
+            0.10622564745207928
+          ],
+          "withheld_positive_pixels": 25124,
+          "tpw": 2080.352486577319,
+          "fpw": 13751.617129048176,
+          "fnw": 23043.64751342269
+        },
+        "lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.11478859157882483,
+          "ci95": [
+            0.09689802552680851,
+            0.1334817117828375
+          ],
+          "withheld_positive_pixels": 25124,
+          "tpw": 2699.4587670029614,
+          "fpw": 14388.472261075474,
+          "fnw": 22424.541232997042
+        },
+        "lidar_culturally_masked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.11504269199541706,
+          "ci95": [
+            0.09734668232465458,
+            0.13390260209999194
+          ],
+          "withheld_positive_pixels": 25124,
+          "tpw": 2705.4587670029614,
+          "fpw": 14383.531642937101,
+          "fnw": 22418.541232997046
+        }
+      },
+      "best_comparable_control": "lidar_unmasked",
+      "paired_differences": {
+        "base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.025625138613746073,
+          "ci95": [
+            0.01775871212623724,
+            0.033769156037168034
+          ],
+          "bootstrap_se": 0.003990579323399978,
+          "beats_two_se": true,
+          "withheld_positive_pixels": 25124
+        },
+        "lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.00025410041659222615,
+          "ci95": [
+            -0.0002132715122307758,
+            0.0007803254136391268
+          ],
+          "bootstrap_se": 0.0002471556922308684,
+          "beats_two_se": false,
+          "withheld_positive_pixels": 25124
+        }
+      },
+      "bootstrap": {
+        "method": "paired physical spatial-cluster percentile",
+        "clusters": 64,
+        "draws": 1000,
+        "seed": 520810,
+        "confidence": 0.95,
+        "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+      },
+      "implementation_sha256": {
+        "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
+        "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
+        "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
+        "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+      }
+    }
+  },
+  "E2_buffered_whole_component_spatial_cv": {
+    "description": "4-fold buffered whole-component spatial CV (holdout.buffered_component_draw, 300 m visible-catalogue collar, 9,274 withheld lidar fault pixels)",
+    "overall": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "alpha": 0.2,
+      "beta": 0.8,
+      "triangular_radius_m": 300.0,
+      "pooled": true,
+      "scores": {
+        "vis_base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.11352165921605001,
+          "ci95": [
+            0.1032016837817752,
+            0.12371018413048049
+          ],
+          "withheld_positive_pixels": 9274,
+          "tpw": 1333.7804778519876,
+          "fpw": 20315.858330755822,
+          "fnw": 7940.219522148011
+        },
+        "vis_lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.12997480885172213,
+          "ci95": [
+            0.11682354206587296,
+            0.14274594030587331
+          ],
+          "withheld_positive_pixels": 9274,
+          "tpw": 1529.9097752283612,
+          "fpw": 20228.178518669905,
+          "fnw": 7744.090224771638
+        },
+        "vis_lidar_culturally_masked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.13052155365428053,
+          "ci95": [
+            0.11739671749706274,
+            0.14310260763294708
+          ],
+          "withheld_positive_pixels": 9274,
+          "tpw": 1536.460600509194,
+          "fpw": 20226.04044748245,
+          "fnw": 7737.5393994908045
+        }
+      },
+      "best_comparable_control": "vis_lidar_unmasked",
+      "paired_differences": {
+        "vis_base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.016999894438230523,
+          "ci95": [
+            0.009202353523317077,
+            0.02547298155089177
+          ],
+          "bootstrap_se": 0.0041199717824788665,
+          "beats_two_se": true,
+          "withheld_positive_pixels": 9274
+        },
+        "vis_lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.0005467448025583965,
+          "ci95": [
+            -0.00038252053484321596,
+            0.0015609586727668874
+          ],
+          "bootstrap_se": 0.00048759776206942903,
+          "beats_two_se": false,
+          "withheld_positive_pixels": 9274
+        }
+      },
+      "bootstrap": {
+        "method": "paired physical spatial-cluster percentile",
+        "clusters": 130,
+        "draws": 1000,
+        "seed": 520810,
+        "confidence": 0.95,
+        "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+      },
+      "implementation_sha256": {
+        "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
+        "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
+        "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
+        "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+      }
+    },
+    "range_front_blocks": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "alpha": 0.2,
+      "beta": 0.8,
+      "triangular_radius_m": 300.0,
+      "pooled": true,
+      "scores": {
+        "vis_base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.12616033032189405,
+          "ci95": [
+            0.11042645003750967,
+            0.14255811584105224
+          ],
+          "withheld_positive_pixels": 4432,
+          "tpw": 739.5026972630885,
+          "fpw": 10840.54902455276,
+          "fnw": 3692.497302736909
+        },
+        "vis_lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.14444773771461075,
+          "ci95": [
+            0.12681411212875526,
+            0.1623475993412099
+          ],
+          "withheld_positive_pixels": 4432,
+          "tpw": 850.6829302584013,
+          "fpw": 10867.362529419135,
+          "fnw": 3581.317069741597
+        },
+        "vis_lidar_culturally_masked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.14503753708924536,
+          "ci95": [
+            0.1272893227040279,
+            0.16270844448263946
+          ],
+          "withheld_positive_pixels": 4432,
+          "tpw": 854.1142603817767,
+          "fpw": 10862.479102239175,
+          "fnw": 3577.885739618221
+        }
+      },
+      "best_comparable_control": "vis_lidar_unmasked",
+      "paired_differences": {
+        "vis_base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.0188772067673513,
+          "ci95": [
+            0.008722605330827837,
+            0.029419153473656846
+          ],
+          "bootstrap_se": 0.005493793297703924,
+          "beats_two_se": true,
+          "withheld_positive_pixels": 4432
+        },
+        "vis_lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.0005897993746346031,
+          "ci95": [
+            -0.0004818553661157327,
+            0.0019267064478252676
+          ],
+          "bootstrap_se": 0.0006122408812883783,
+          "beats_two_se": false,
+          "withheld_positive_pixels": 4432
+        }
+      },
+      "bootstrap": {
+        "method": "paired physical spatial-cluster percentile",
+        "clusters": 52,
+        "draws": 1000,
+        "seed": 520810,
+        "confidence": 0.95,
+        "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+      },
+      "implementation_sha256": {
+        "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
+        "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
+        "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
+        "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+      }
+    },
+    "off_range_front_blocks": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "alpha": 0.2,
+      "beta": 0.8,
+      "triangular_radius_m": 300.0,
+      "pooled": true,
+      "scores": {
+        "vis_base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.10641322898042771,
+          "ci95": [
+            0.0924193372838215,
+            0.11984703559302066
+          ],
+          "withheld_positive_pixels": 4842,
+          "tpw": 594.2777805888987,
+          "fpw": 7960.837901682267,
+          "fnw": 4247.722219411101
+        },
+        "vis_lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.1214421249050963,
+          "ci95": [
+            0.10285817188471019,
+            0.1416372579641929
+          ],
+          "withheld_positive_pixels": 4842,
+          "tpw": 679.2268449699608,
+          "fpw": 7917.815989250782,
+          "fnw": 4162.773155030039
+        },
+        "vis_lidar_culturally_masked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "dti": 0.12196121253453976,
+          "ci95": [
+            0.10375378241898493,
+            0.14176839740735958
+          ],
+          "withheld_positive_pixels": 4842,
+          "tpw": 682.3463401274182,
+          "fpw": 7923.561345243281,
+          "fnw": 4159.653659872582
+        }
+      },
+      "best_comparable_control": "vis_lidar_unmasked",
+      "paired_differences": {
+        "vis_base_100m_topo": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.01554798355411205,
+          "ci95": [
+            0.004440822740590968,
+            0.027563524646782023
+          ],
+          "bootstrap_se": 0.006041997443537496,
+          "beats_two_se": true,
+          "withheld_positive_pixels": 4842
+        },
+        "vis_lidar_unmasked": {
+          "evidence_class": "HOLDOUT-DTI",
+          "evaluator_version": "gems57-pooled-hide-v3-se",
+          "delta": 0.0005190876294434571,
+          "ci95": [
+            -0.0009740461200201295,
+            0.0021006726630878143
+          ],
+          "bootstrap_se": 0.0007876388513991247,
+          "beats_two_se": false,
+          "withheld_positive_pixels": 4842
+        }
+      },
+      "bootstrap": {
+        "method": "paired physical spatial-cluster percentile",
+        "clusters": 52,
+        "draws": 1000,
+        "seed": 520810,
+        "confidence": 0.95,
+        "caveat": "Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval."
+      },
+      "implementation_sha256": {
+        "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
+        "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
+        "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
+        "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+      }
+    }
+  },
+  "E3_pilot_3m_and_offcatalogue_sgmc_and_emission": {
+    "pilot_tile_x42y425_3m": {
+      "window": [
+        2585,
+        1766,
+        101,
+        101
+      ],
+      "catalogue_positive_cells": 385,
+      "roc_auc": 0.578535
+    },
+    "off_catalogue_sgmc_fault_recovery": {
+      "unmasked_dti": 0.18528,
+      "culturally_masked_dti": 0.185399,
+      "delta_dti": 0.000119,
+      "cultural_mask_cells": 5393
+    },
+    "submission_receipt": {
+      "file": "gems64-h64-lidar-scarp-cv-20261011T220000Z.tif",
+      "sha256": "346d57f0eca0ff36f7648f8b5a3ba8764054ab9e42e1677873791b83f460f45e",
+      "bytes": 146634,
+      "submission_name": "gems64-h64-lidar-scarp-cv-20261011T220000Z",
+      "note": "GEMSDOE64 native lidar scarp channels (Scarplet+Steger+Frangi) + cultural mask + 4-fold spatial CV; 37654 NMS peaks.",
+      "note_chars": 116,
+      "validator": {
+        "file": "/home/user/GEMSDOE64/submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z.tif",
+        "bytes": 146634,
+        "sha256": "346d57f0eca0ff36f7648f8b5a3ba8764054ab9e42e1677873791b83f460f45e",
+        "meta": {
+          "crs": "EPSG:32611",
+          "shape": [
+            3730,
+            3292
+          ],
+          "dtype": "float32",
+          "count": 1,
+          "nodata": null,
+          "transform": [
+            100.0,
+            0.0,
+            243350.0,
+            0.0,
+            -100.0,
+            4508550.0
+          ],
+          "profile_compress": "deflate"
+        },
+        "band_description": [
+          null
+        ],
+        "n_finite": 12279160,
+        "n_nan": 0,
+        "n_infinite": 0,
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.0030664964579045773,
+        "emitted_positive_pixels": 37654,
+        "checks": {
+          "single_band": true,
+          "nonempty_positive_support": true,
+          "nodata_tag_absent": true,
+          "dtype_float32": true,
+          "dimensions_3730x3292": true,
+          "crs_epsg_32611": true,
+          "transform_matches_sample_submission": true,
+          "no_nan_anywhere": true,
+          "no_inf_anywhere": true,
+          "no_sentinel_values": true,
+          "range_0_1_guaranteed": true,
+          "min_ge_0": true,
+          "max_le_1": true,
+          "no_masked_pixels_inside_footprint": true,
+          "in_footprint_all_finite": true,
+          "in_footprint_range_0_1": true,
+          "outside_footprint_zero": true,
+          "zero_dots_on_mapped_catalogue": true
+        },
+        "all_checks_passed": true,
+        "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance",
+        "on_catalogue_positive_pixels": 0,
+        "in_footprint_positive_pixels": 37654,
+        "footprint_fraction": 0.007286874781441169
+      },
+      "template_report": {
+        "path": "/home/user/GEMSDOE64/submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z.tif",
+        "bytes": 146634,
+        "sha256": "346d57f0eca0ff36f7648f8b5a3ba8764054ab9e42e1677873791b83f460f45e",
+        "bands": 1,
+        "dtype": "float32",
+        "crs": "EPSG:32611",
+        "width": 3292,
+        "height": 3730,
+        "bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "ref_bounds": [
+          243350.0,
+          4135550.0,
+          572550.0,
+          4508550.0
+        ],
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "nodata": null,
+        "blocksize": [
+          256,
+          256
+        ],
+        "fixture_grid": false,
+        "has_validity_mask": false,
+        "nan_pixels": 0,
+        "infinity_pixels": 0,
+        "n_nan": 0,
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.0030664964579045773,
+        "n_nonzero": 37654,
+        "mass": 37654.0,
+        "mass_outside_footprint": 0,
+        "problems": [],
+        "ok": true,
+        "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+      },
+      "zip_file": "gems64-h64-lidar-scarp-cv-20261011T220000Z.zip",
+      "zip_sha256": "e2ee6466f9f1654e63e166123db35325e4a7beca101e27548c6a1c5152212d38",
+      "approved_for_weekly_slot": false,
+      "promoted": false,
+      "submission_slots_used": 0,
+      "status": "locally validated within separately recorded inventory scope; not organizer acceptance or slot approval",
+      "metadata": {}
+    }
+  }
+}

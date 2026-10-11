@@ -5,7 +5,7 @@ import pytest
 import rasterio
 from rasterio.transform import from_origin
 from gems57.uniqueness import saturation_certificate, dot_overlap, summarize_registry_rows
-from gems64.promotion import promotion_decision
+from gems64.promotion import promotion_decision, lane64_promotion_decision
 
 
 def test_missing_evidence_cannot_promote():
@@ -59,14 +59,23 @@ def test_universal_witness_and_shifted_grid(tmp_path):
         saturation_certificate(path, fp, expected_grid=wrong_grid)
 
 
-def test_real_negative_card_never_has_download():
+def test_real_run_card_matches_promotion_policy():
     path = Path('evidence/run_card.json')
     if path.exists():
         c = json.loads(path.read_text())
-        assert c['verdict'] == 'negative'
-        assert c['raster_sha256'] is None
-        assert c['download_allowed'] is False
-        assert not list(Path('docs').rglob('*.tif'))
+        decision = lane64_promotion_decision(c)
+        assert c['verdict'] == decision['verdict'], decision
+        assert c['download_allowed'] == decision['download_allowed'], decision
+        if c['verdict'] == 'negative':
+            assert c['raster_sha256'] is None
+            assert c['download_allowed'] is False
+            assert not list(Path('docs').rglob('*.tif'))
+        else:
+            assert c['verdict'] == 'promote'
+            assert c['download_allowed'] is True
+            assert isinstance(c['raster_sha256'], str) and len(c['raster_sha256']) == 64
+            assert 1 <= len(c['note']) <= 140
+            assert Path(c['submission_file']).exists()
 
 
 def test_missing_score_and_null_evidence_cannot_promote():

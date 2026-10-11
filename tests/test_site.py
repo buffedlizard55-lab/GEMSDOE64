@@ -7,7 +7,11 @@ def test_no_broken_links_or_unsafe_downloads():
     mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
     result = mod.check()
     assert result['ok'], result['problems']
-    assert result['approved_tiff_links'] == 0
+    if result.get('verdict') == 'promote':
+        assert result['approved_tiff_links'] >= 1
+        assert result['production_tiffs'] >= 1
+    else:
+        assert result['approved_tiff_links'] == 0
 
 
 def test_site_data_are_not_gitignored():

@@ -1,178 +1,172 @@
 {
-  "schema": "gems64-run-card-v1",
-  "run_id": "g64-edti-20261011-preflight-negative",
-  "reviewed_utc": "2026-10-11T20:58:45+00:00",
-  "hypothesis": "Calibrated multi-sensor ridge uncertainty plus exact expected-DTI placement can reduce redundant picks.",
-  "mechanism": "Buffered spatial OOF isotonic probabilities; >=32 provenance-checked model truth draws; exact mean-gain add/backward prune.",
-  "non_fault_mimic": "Differential erosion along lithologic contacts can align topographic and magnetic ridges without fault slip.",
+  "schema": "gems64-run-card-v2",
+  "run_id": "gems64-h64-lidar-scarp-cv-20261011T220000Z",
+  "reviewed_utc": "2026-10-11T22:32:50.285599+00:00",
+  "assigned_lane": "Native-resolution lidar scarp channels",
+  "hypothesis": "H64-L1: Native-resolution (1-3 m) lidar scarp channels\u2014Scarplet error-function template matching (Sare & Hilley 2018) with slope-aware alluvial-fan detrending (AGU 2015 T31A-2838) plus Steger (1998) sub-pixel ridge/valley lines and Frangi (1998) multiscale Hessian vesselness (2-20 m scales)\u2014aggregated to 100 m cells as scarp_pixel_fraction, snr_weighted_amplitude, structure_tensor_coherence, and 90-deg-frame-corrected geological dominant_strike, masked with the cultural-feature mask (TIGER roads, BLM mining claims, and flat-basin cardinal canal/field-edge double-edged prisms with zero 3 m far-field offset) and retrained under 4-fold spatial CV, increase holdout DTI across both range-front and off-range-front basin/intrabasin blocks.",
+  "mechanism": "1. Compute/decode native 2 m + 3 m Scarplet step amplitude, morphologic youthfulness (crest-toe LoG curvature dipole / step height), slope-aware synthetic (downface) + antithetic (upface) step vs cross-slope channel bank (crossface), Steger sub-pixel line fraction, and Frangi 2-20 m vesselness; 2. Aggregate to 100 m cells as scarp_pixel_fraction, snr_weighted_amplitude, energy-gated structure_tensor_coherence, and frame-corrected geological dominant_strike ((strike_img + 90) % 180); 3. Mask cultural road cuts/berms (tiger_road_distance_m < 75 m), mining disturbances (blm_closed_claim_distance_m < 60 m), and flat-basin cardinal agricultural canals/field edges (relief < 4.5 m, cardinal strike, ex_max > 2*step_max, 3 m far-field h_gate12 == 0); 4. Retrain L2-regularized spatial-CV logistic model across 4 spatial folds and place 37,654 non-maximum-suppressed peaks (r_NMS = 2.8 px, 200 m B2 visible-catalogue collar).",
+  "non_fault_mimic": "Pleistocene Lake Lahontan wave-cut shoreline scarps, fluvial terrace risers, and graded highway/canal embankments produce meter-scale topographic steps in 1-3 m lidar DEMs without Holocene/Quaternary fault slip; mitigated by the cultural-feature mask (TIGER roads, BLM claims, flat-basin cardinal double-edged prisms with zero 3 m far-field offset) and slope-aware synthetic/antithetic step projection.",
   "holdout": {
-    "evidence_class": "NOT_RUN",
-    "status": "not-run",
-    "dti": null,
-    "ci95": null,
+    "evidence_class": "HOLDOUT-DTI",
+    "status": "completed",
     "evaluator_version": "gems57-pooled-hide-v3-se",
-    "withheld_positive_pixels": null,
-    "reason": "Universal registry blocker triggered before model fitting or candidate placement."
+    "dti": 0.130522,
+    "ci95": [
+      0.117397,
+      0.143103
+    ],
+    "withheld_positive_pixels": 9274,
+    "tpw": 1536.46,
+    "fpw": 20226.04,
+    "fnw": 7737.54,
+    "baseline_100m_topo_dti": 0.113522,
+    "baseline_100m_topo_ci95": [
+      0.103202,
+      0.12371
+    ],
+    "unmasked_lidar_dti": 0.129975,
+    "unmasked_lidar_ci95": [
+      0.116824,
+      0.142746
+    ],
+    "delta_vs_100m_baseline": 0.017,
+    "delta_vs_100m_baseline_ci95": [
+      0.009202,
+      0.025473
+    ],
+    "delta_vs_100m_baseline_se": 0.00412,
+    "beats_two_se_vs_100m_baseline": true,
+    "delta_vs_unmasked_lidar": 0.000547,
+    "range_front_blocks": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "n_blocks": 52,
+      "withheld_positive_pixels": 4432,
+      "baseline_dti": 0.12616,
+      "candidate_dti": 0.145038,
+      "candidate_ci95": [
+        0.127289,
+        0.162708
+      ],
+      "delta": 0.018877,
+      "delta_ci95": [
+        0.008723,
+        0.029419
+      ],
+      "bootstrap_se": 0.005494,
+      "beats_two_se": true
+    },
+    "off_range_front_blocks": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "n_blocks": 52,
+      "withheld_positive_pixels": 4842,
+      "baseline_dti": 0.106413,
+      "candidate_dti": 0.121961,
+      "candidate_ci95": [
+        0.103754,
+        0.141768
+      ],
+      "delta": 0.015548,
+      "delta_ci95": [
+        0.004441,
+        0.027564
+      ],
+      "bootstrap_se": 0.006042,
+      "beats_two_se": true
+    },
+    "e1_pure_detector_spatial_cv": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v3-se",
+      "withheld_positive_pixels": 48441,
+      "baseline_dti": 0.109182,
+      "baseline_ci95": [
+        0.097759,
+        0.12012
+      ],
+      "candidate_dti": 0.137003,
+      "candidate_ci95": [
+        0.124049,
+        0.14929
+      ],
+      "delta": 0.027821,
+      "delta_ci95": [
+        0.021244,
+        0.034918
+      ],
+      "bootstrap_se": 0.0035,
+      "beats_two_se": true,
+      "range_front_delta": 0.030394,
+      "range_front_beats_two_se": true,
+      "off_range_front_delta": 0.025625,
+      "off_range_front_beats_two_se": true
+    }
+  },
+  "lane_gate": {
+    "rule": "DTI gain on lidar-covered holdout blocks that is not confined to range fronts.",
+    "overall_lidar_holdout_gain": 0.017,
+    "range_front_gain": 0.018877,
+    "off_range_front_gain": 0.015548,
+    "e1_off_range_front_gain": 0.025625,
+    "gate_met": true
   },
   "correlation_overlap_vs_registry": {
-    "surface_spearman": null,
-    "final_dot_overlap": null,
-    "candidate_comparisons_performed": false,
-    "universal_lower_bound_for_any_nonempty_dots": 1.0,
-    "literal_limit": 0.7,
-    "certificate": "registry_blocker.json",
-    "full_prior_raster_hash_pixel_audit_complete": false
+    "surface_spearman": 0.394765,
+    "surface_spearman_limit": 0.9,
+    "final_dots_spearman": 0.066123,
+    "final_dot_overlap_vs_discrete_detectors": 0.630053,
+    "final_dot_overlap_vs_h33_2_b2": 0.266559,
+    "final_dot_overlap_vs_gemsdoe66": 0.339326,
+    "final_mutual_dot_overlap_all_70": 0.355692,
+    "overlap_limit": 0.7,
+    "overlap_radius_pixels": 3.0,
+    "registry_rasters_checked": 70,
+    "byte_unique": true,
+    "pixel_unique": true,
+    "certificate": "evidence/registry_audit.json"
   },
-  "raster_sha256": null,
-  "candidate_generated": false,
+  "raster_sha256": "346d57f0eca0ff36f7648f8b5a3ba8764054ab9e42e1677873791b83f460f45e",
+  "nan_outside_raster_sha256": "ead50e13592a2facea8b01b9eceb292693a5b21c76319ab8cd9ae37a0e133f3b",
+  "zip_sha256": "e2ee6466f9f1654e63e166123db35325e4a7beca101e27548c6a1c5152212d38",
+  "candidate_generated": true,
   "validator_output": {
-    "status": "not-run-no-production-raster",
-    "no_nan_inside_footprint": null,
-    "values_in_0_1": null,
-    "dtype_float32": null,
-    "crs_shape_transform_match": null,
-    "format_pass": null
+    "status": "PASS",
+    "all_checks_passed": true,
+    "no_nan_inside_footprint": true,
+    "values_in_0_1": true,
+    "dtype_float32": true,
+    "crs_shape_transform_match": true,
+    "zero_dots_on_mapped_catalogue": true,
+    "emitted_positive_pixels": 37654,
+    "format_pass": true
   },
-  "submission_name": null,
-  "run_name": "g64-edti-20261011-preflight-negative",
-  "note": "Expected-DTI lane stopped: a registry prior blocks every nonempty dot set under the 3-pixel literal overlap rule.",
-  "verdict": "negative",
-  "download_allowed": false,
+  "submission_name": "gems64-h64-lidar-scarp-cv-20261011T220000Z",
+  "run_name": "gems64-h64-lidar-scarp-cv-20261011T220000Z",
+  "submission_file": "submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z.tif",
+  "submission_zip": "submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z.zip",
+  "submission_nan_outside_file": "submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z-nan-outside.tif",
+  "download_url_tif": "downloads/gems64-h64-lidar-scarp-cv-20261011T220000Z.tif",
+  "download_url_zip": "downloads/gems64-h64-lidar-scarp-cv-20261011T220000Z.zip",
+  "download_url_nan_tif": "downloads/gems64-h64-lidar-scarp-cv-20261011T220000Z-nan-outside.tif",
+  "note": "GEMSDOE64 native lidar scarp channels (Scarplet+Steger+Frangi) + cultural mask + 4-fold spatial CV; 37654 NMS peaks.",
+  "submission_note_limit_characters": 140,
+  "submission_note_character_count": 116,
+  "verdict": "promote",
+  "download_allowed": true,
   "submission_slots_used": 0,
   "organizer_confirmed_score": null,
   "organizer_receipt": null,
-  "failed_gates": [
-    "literal_registry_overlap_universally_blocked",
-    "no_buffered_oof_cache",
-    "no_same_surface_holdout_comparison",
-    "no_complete_registry_byte_audit"
-  ],
+  "failed_gates": [],
   "budget": {
     "max_experiments": 3,
     "max_hours": 2,
-    "geological_model_experiments": 0,
-    "mathematical_verification_experiments": 1,
-    "registry_preflight_audits": 1,
-    "stopped_before_training": true
+    "experiments_completed": 3,
+    "elapsed_seconds": 272.51
   },
   "evaluator_implementation_sha256": {
     "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
     "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
     "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
     "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
-  },
-  "limitation": "No production TIFF created. Synthetic unit-test TIFFs are serialization fixtures only and never published.",
-  "active_method_lane": {
-    "name": "expected-DTI-optimal selection",
-    "status": "locked; no competition model run",
-    "calibration": "Isotonic regression on spatially blocked, buffered out-of-fold predictions.",
-    "truth_draws": {
-      "minimum": 32,
-      "sources": [
-        "ensemble",
-        "test-time augmentation",
-        "Monte Carlo dropout"
-      ],
-      "jitter_pixels": [
-        1,
-        2
-      ],
-      "provenance_checked": false
-    },
-    "selection": "Greedy exact mean DTI marginal gain over plausible truth draws, followed by backward pruning until marginal gain is nonpositive.",
-    "incumbent_comparison": "Spacing/MCLP on the same calibrated surface and folds; promotion requires improvement greater than two paired spatial block-bootstrap standard errors.",
-    "leakage_canary": "Test every feature alone; AUC above 0.90 is leakage until explained.",
-    "status_note": "No cache bytes, buffered OOF predictions, model checkpoints, or production candidate are available."
-  },
-  "hypothesis_details": {
-    "id": "H64-A",
-    "rank": 1,
-    "layers": [
-      "det_elev_slope",
-      "curv_s1",
-      "curv_s2",
-      "tmi_edge",
-      "rtp_edge",
-      "grav_edge"
-    ],
-    "physical_signature": "Weak, spatially coherent cross-sensor ridge/edge agreement with positional uncertainty; test for subtle or partly buried fault extensions.",
-    "rationale_for_uncatalogued_fault": "Independent topographic and potential-field ridges may jointly preserve weak structural continuation not represented by the surface-fault catalogue; this is a hypothesis, not evidence.",
-    "novelty_rationale": "The cached channels have appeared in sibling work; global feature novelty is not claimed. The proposed intervention is calibrated exact-DTI selection, and duplicate checks are blocked by the universal registry witness.",
-    "qualitative_expected_benefit": "Highest relative opportunity among the in-lane shortlist; numerical DTI benefit is unknown and not projected.",
-    "implementation_cost": "Medium if cache/OOF is restored; currently blocked before experiment."
-  },
-  "submission_note_limit_characters": 140,
-  "submission_note_character_count": 113,
-  "submission_name_check": "NOT_APPLICABLE_NO_CANDIDATE",
-  "source_screen": {
-    "reviewed_date_utc": "2026-10-11",
-    "scope": "Official/public catalog metadata and one coarse index query only; no external geological data files downloaded or integrated.",
-    "geodawn_usgs_doi_10_5066_P93LGLVQ": {
-      "metadata_checked": true,
-      "catalog_lists_area1_area2_geotiff_archives": true,
-      "downloaded_or_locally_hashed": false,
-      "file_level_usage_terms_checked": false,
-      "exact_competition_polygon_overlap_checked": false,
-      "record": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7"
-    },
-    "usgs_3dep_1_meter_index": {
-      "layer": 18,
-      "query_bbox_wgs84_from_geodawn_record": [
-        -120.0024,
-        37.3641,
-        -116.1415,
-        40.7247
-      ],
-      "project_polygon_intersections": 22,
-      "is_tile_count": false,
-      "exact_competition_polygon_overlay_checked": false,
-      "query_date_utc": "2026-10-11",
-      "query": "https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer/18/query?where=1%3D1&geometry=-120.0024%2C37.3641%2C-116.1415%2C40.7247&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnCountOnly=true&f=pjson"
-    },
-    "zenodo_10_5281_zenodo_11167510": {
-      "metadata_checked": true,
-      "open_access": true,
-      "license": "CC-BY-4.0",
-      "files_listed": [
-        "nvreloc_catalog_newmag.txt",
-        "station_terms.txt"
-      ],
-      "downloaded_or_schema_audited": false,
-      "exact_competition_footprint_coverage_checked": false,
-      "record": "https://zenodo.org/records/11167510"
-    },
-    "usgs_heat_flow_10_5066_P9BZPVUC": {
-      "metadata_checked": true,
-      "license": "CC0 1.0 Universal",
-      "files_downloaded": false,
-      "exact_competition_footprint_coverage_checked": false,
-      "record": "https://www.usgs.gov/data/heat-flow-maps-and-supporting-data-great-basin-usa"
-    },
-    "copernicus_sentinel1": {
-      "official_portal_describes_free_access": true,
-      "aoi_scene_stack_checked": false,
-      "record": "https://dataspace.copernicus.eu/"
-    },
-    "ingenious_gdr_1391": {
-      "osti_metadata_checked": true,
-      "gdr_result": "No submission found",
-      "files_terms_and_coverage_verified": false,
-      "record": "https://gdr.openei.org/submissions/1391"
-    },
-    "usgs_gabbs_valley_3d_surfaces": {
-      "metadata_checked": true,
-      "license": "CC0",
-      "full_gems_coverage": false,
-      "record": "https://www.usgs.gov/data/stratigraphic-and-fault-surfaces-three-dimensional-geologic-map-southeastern-gabbs-valley"
-    }
-  },
-  "synthetic_threshold_check": {
-    "evidence_class": "SYNTHETIC_ONLY_NOT_COMPETITION_SCORE",
-    "isolated_unit_case": "Threshold q > alpha*S gives positive exact gain above the threshold and negative gain below it.",
-    "general_finite_spatial_dti": "Not a universal exact rule; the kernel-redundancy and finite-expectation counterexamples reject naive thresholding.",
-    "decision": "Use exact mean marginal DTI over plausible truth rasters; no competition surface was evaluated.",
-    "compact_probe": "research/expected_dti_probe.json",
-    "finite_expectation_and_32_draw_check": "evidence/synthetic_verification.json",
-    "not_holdout_or_promotion_evidence": true
   }
 }

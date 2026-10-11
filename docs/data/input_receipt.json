@@ -1,47 +1,414 @@
 {
-  "inputs": [
-    {
-      "path": "data/reference/sample_submission.tif",
+  "status": "verified",
+  "core_inputs": {
+    "reference/sample_submission.tif": {
       "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
-      "bytes": 1599597,
-      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/data/bridge/sample_submission.tif",
-      "provenance": "third-party bridge / prior artifact; official identity not authenticated"
+      "bytes": 1599597
     },
-    {
-      "path": "data/reference/existing_faults.tif",
+    "reference/existing_faults.tif": {
       "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
-      "bytes": 425830,
-      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/data/bridge/existing_faults.tif",
-      "provenance": "third-party bridge / prior artifact; official identity not authenticated"
+      "bytes": 425830
     },
-    {
-      "path": "data/registry/17GEMSDOE_E-proba-multiscale.tif",
-      "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
-      "bytes": 25065181,
-      "url": "https://github.com/buffedlizard55-lab/17GEMSDOE/blob/6fc71d19d49dca4960d5434bd81b6dd06fcc030a/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
-      "provenance": "third-party bridge / prior artifact; official identity not authenticated"
+    "reference/training_features.tif": {
+      "sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+      "bytes": 418912844
     },
-    {
-      "path": "data/registry/g28-base.tif",
-      "sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
-      "bytes": 830036,
-      "url": "https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/registry/rasters/GEMSDOE28__h27-4-r1-solo-d2-8.tif",
-      "provenance": "third-party bridge / prior artifact; official identity not authenticated"
+    "external/lidar_scarp_features_u8.tif": {
+      "sha256": "d580bb8bdcdb941e32fefb8b38044bc5bf04e199bf2e83498c3576e6fc465568",
+      "bytes": 36943606
     },
-    {
-      "path": "data/registry/g32-h33.tif",
-      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
-      "bytes": 219065,
-      "url": "https://github.com/buffedlizard55-lab/GEMSDOE32/blob/b39e16ee85f83e3291951f56b615d657a071bb2b/docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif",
-      "provenance": "third-party bridge / prior artifact; official identity not authenticated"
+    "external/lidar_scarp_features.json": {
+      "sha256": "9ef0df6e87598a8b0cd52fe821661e5fdb3a00568c5d9b1c5d61fd6b242dcd41",
+      "bytes": 3531
+    },
+    "external/h52_scarp3m_100m.tif": {
+      "sha256": "b5e53d67c3a7d3d1ca44ae04ae1e84d8574857da3fcd5e34ba47276d6c04b923",
+      "bytes": 43839078
+    },
+    "external/topo_10m_derived_100m_u8.tif": {
+      "sha256": "a6398d9950965dec6aae6ccecdaa6ced48645d133eab222cbdd11def9bdabfa4",
+      "bytes": 32523329
+    },
+    "external/topo_10m_derived_100m_u8.manifest.json": {
+      "sha256": "181d5527ba7ed2990031918a8b6c9d5d94e3998b2daf656de0c33322ca94120a",
+      "bytes": 2720
+    },
+    "external/derived_sgmc_faults_100m_u8.tif": {
+      "sha256": "643cbe992ef4ba37588fb469163ed8291e3ceb23d6c1f78a3cfaa462430c2da0",
+      "bytes": 198602
+    },
+    "external/tiger_road_distance_m.tif": {
+      "sha256": "e5350423508968fa2d32b0a6ae0d3fb4ae3ea645e3b8736f0c8e7ad9ff2f2988",
+      "bytes": 10492276
+    },
+    "external/blm_closed_claim_distance_m.tif": {
+      "sha256": "a88356423c03fc8b6510a84f77cee2b1d38c4ccbd7761bc95c1ca8332a2e166a",
+      "bytes": 5752587
+    },
+    "external/dem_tiles.json": {
+      "sha256": "c23e17246dfceb12ccc3e7fbcd4d2da7fa738df322ad00d65a22304a7b21d506",
+      "bytes": 318456
+    },
+    "pilot/dem3m/x40y427_3m.tif": {
+      "sha256": "3a14850f2d33bb8b7ae077951c589ad9866f1978e0722691f2ef6ffcffeee718",
+      "bytes": 5677887
+    },
+    "pilot/dem3m/x42y425_3m.tif": {
+      "sha256": "927c36c88debcaa65e9de9fbd0f3adf02b338614fbaed86e3e321111084735de",
+      "bytes": 4156097
     }
-  ],
-  "complete_training_data": false,
-  "purpose": "audit only",
-  "missing": [
-    "shared 35-channel cached feature stack",
-    "buffered OOF model predictions",
-    "ensemble/TTA/MC-dropout checkpoints and provenance"
-  ],
-  "no_prior_copied_as_new_submission": true
+  },
+  "registry_rasters_count": 70,
+  "registry_rasters": [
+    {
+      "file": "data/registry/12GEMSDOE__r7-nms3-dem10-scarp-allfinite.tif",
+      "sha256": "ce3f70fa2e1e7bbea60c8c62a2f805c22d15b8a8905ebec757259617ceb02fbc",
+      "bytes": 412700
+    },
+    {
+      "file": "data/registry/17GEMSDOE__E-proba-multiscale.tif",
+      "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+      "bytes": 25065181
+    },
+    {
+      "file": "data/registry/19GEMSDOE__h19-4-multiline-corroborated.tif",
+      "sha256": "ad52f4c2704f2a8721f74b736dc139b6b9e11cbf6130c3b971b91cfb3661ac84",
+      "bytes": 941772
+    },
+    {
+      "file": "data/registry/19GEMSDOE__h19-5-powerlaw-budget-multiline.tif",
+      "sha256": "ef2ae808eb7179861b9f1ff753fd3ded625ace7b7c158e29cec45bbd8fa3cfaa",
+      "bytes": 937342
+    },
+    {
+      "file": "data/registry/57GEMSDOE__faultzone-anatomy-60000px-prev.tif",
+      "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+      "bytes": 154835
+    },
+    {
+      "file": "data/registry/57GEMSDOE__h57-anatomy-enechelon-zeros.tif",
+      "sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
+      "bytes": 808408
+    },
+    {
+      "file": "data/registry/57GEMSDOE__h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+      "sha256": "9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47",
+      "bytes": 818144
+    },
+    {
+      "file": "data/registry/57GEMSDOE__parallel-12000dots-zeros.tif",
+      "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
+      "bytes": 75896
+    },
+    {
+      "file": "data/registry/7GEMSDOE__lidarscarp-ridge-top2pct.tif",
+      "sha256": "36c3a3f341c8306dfb5610f61acfec635a7cb8a3ef6ef00380ca083d2f9745fe",
+      "bytes": 548401
+    },
+    {
+      "file": "data/registry/GEMSDOE24__h25-1-dotted-h19-5-d1-5.tif",
+      "sha256": "3e0730e8d4f7db095dd80246a98cba3bc0fc9a28f436b91db27ca34df4d0d1ce",
+      "bytes": 863902
+    },
+    {
+      "file": "data/registry/GEMSDOE25__dotted-h19-5-d2-8.tif",
+      "sha256": "3e78737f0da8dd2ca66cc6caac0ce8eeefcd6715707f8d1bd3091845cd9bcc30",
+      "bytes": 836982
+    },
+    {
+      "file": "data/registry/GEMSDOE27__topo-gap-closure-t-v2-on-d1-5.tif",
+      "sha256": "a9bf76b57453a5b3af74c8eef837df53c29a0931162aa540b8763220b36ba3bb",
+      "bytes": 866160
+    },
+    {
+      "file": "data/registry/GEMSDOE28__h27-4-r1-solo-d2-8.tif",
+      "sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+      "bytes": 830036
+    },
+    {
+      "file": "data/registry/GEMSDOE28__h32-1-prethin-tip-euler-d2-8.tif",
+      "sha256": "26748e4b4721277b093c776f7ca72920023d0ee6e9514ee38e677c8010f4068e",
+      "bytes": 833784
+    },
+    {
+      "file": "data/registry/GEMSDOE28__h36-1-rung30-blind-r1.tif",
+      "sha256": "7c74270ad48fa0b865163853046a6d3815967c5bf37bbda5b74ca7fa22583a32",
+      "bytes": 825430
+    },
+    {
+      "file": "data/registry/GEMSDOE28__h38-1-hf-euler-r30-r1.tif",
+      "sha256": "529d9e1bd80b54957ca16398e47bfc51b1e32eaee8fc89d6dfbddbd7036c5ffc",
+      "bytes": 825790
+    },
+    {
+      "file": "data/registry/GEMSDOE29__wormrank-d28.tif",
+      "sha256": "3ea61e719af4c0d0df9f8d279560ae4a6b5063cca0a43991c8f66a56cb63c51f",
+      "bytes": 801710
+    },
+    {
+      "file": "data/registry/GEMSDOE30__d28-poisson300m-offcat-44090.tif",
+      "sha256": "8cf893ead5667df21d3288a9968c35fd5385c425b029d82ee71d311715b129fd",
+      "bytes": 806758
+    },
+    {
+      "file": "data/registry/GEMSDOE32__h33-2-b2-zeros.tif",
+      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "bytes": 219065
+    },
+    {
+      "file": "data/registry/GEMSDOE33__h33d-analog-tip-stepover-r30.tif",
+      "sha256": "87f857d505e23247e991ccfab2cbe9f49a04df4f9c8028dce7ea261554690757",
+      "bytes": 917544
+    },
+    {
+      "file": "data/registry/GEMSDOE36__anderson-geothermal-pinn-38854.tif",
+      "sha256": "e15891020b9c57056ac7fa874a5e506fbd6ed9314a4ea8e73af0753887a3708a",
+      "bytes": 318190
+    },
+    {
+      "file": "data/registry/GEMSDOE47__h60-lidarscarp-s2p0-allfinite.tif",
+      "sha256": "4ee074230a305fce6768012fc33380bf196c89170e70050a77cf4a44d74ef14c",
+      "bytes": 298994
+    },
+    {
+      "file": "data/registry/GEMSDOE47__h71-scarpconsensus-s2p0-allfinite.tif",
+      "sha256": "cbae340361811abb7e7f6d0a1712d9adad087562c24479cb98439d5561225a17",
+      "bytes": 298948
+    },
+    {
+      "file": "data/registry/GEMSDOE47__h74-lidar-8ch-s2p8-allfinite.tif",
+      "sha256": "a0e82ce0e2f8cfa11b9759d47ec36ec259923d8137b0057a557e4701d245c50c",
+      "bytes": 307486
+    },
+    {
+      "file": "data/registry/GEMSDOE48__H52-lidar-scarp-additions-zeros.tif",
+      "sha256": "018ca3065cedf8f0fbda6cde429c759dacfdd8c6214c4814788d3bbf3e760a2f",
+      "bytes": 290094
+    },
+    {
+      "file": "data/registry/GEMSDOE49__gate_ortho_w0.25-40k.tif",
+      "sha256": "3722e26fbf9129874be1fb8c687825803952c57ef1154ed0a21029596bc412f1",
+      "bytes": 230827
+    },
+    {
+      "file": "data/registry/GEMSDOE66__h66-1-scarplet-veto-37654-allfinite.tif",
+      "sha256": "44d6dccbc27ce2e6dbe42794ed24c0f34c86aadb942c9b913afec08fb39953e1",
+      "bytes": 144541
+    },
+    {
+      "file": "data/registry/calib_d15_02477.tif",
+      "sha256": "68d0e2e4fcc594f9a23f56c44b885fee733d026d39be55e18ad2a07289525310",
+      "bytes": 1632732
+    },
+    {
+      "file": "data/registry/calib_h161_01855.tif",
+      "sha256": "055309694ed499ca3d87e76b3f5e81c292aef6e39c418d33ff5a817aa1309bea",
+      "bytes": 1718028
+    },
+    {
+      "file": "data/registry/calib_h194_01894.tif",
+      "sha256": "89109a3bd2cd3b12e7a0f388113c519843acfc9c4f46825affefc3e63dd99b22",
+      "bytes": 1716768
+    },
+    {
+      "file": "data/registry/calib_h195_01922.tif",
+      "sha256": "ec1f9b56b83ce33cad781ceb9f104b18fb4f2ff785263a4e89616af4aabdee8d",
+      "bytes": 1712322
+    },
+    {
+      "file": "data/registry/calib_h25ctx_01280.tif",
+      "sha256": "1381e784fb8b8340beffd0e735ac9eea89ad35d1a807f8a9bab5506e3fc8275e",
+      "bytes": 1772935
+    },
+    {
+      "file": "data/registry/calib_h28ridge_01839.tif",
+      "sha256": "7637b72d4c6c3e10226bf46bd72a20272d62ccbe29743062632d10b158b49c58",
+      "bytes": 1620739
+    },
+    {
+      "file": "data/registry/calib_hedgev2_01563_sample.tif",
+      "sha256": "052688eafbc7a55d90caab72252a50304fe5caa8ecf973f8e791b4ae910f0792",
+      "bytes": 736494
+    },
+    {
+      "file": "data/registry/calib_r13lattice_00904.tif",
+      "sha256": "b4570b406efec198eb2f4d142ad8d0d6184b14b66f2f52b5c4d697f0647dc9b2",
+      "bytes": 1706456
+    },
+    {
+      "file": "data/registry/dotted_b2_prune_02778.tif",
+      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "bytes": 219065
+    },
+    {
+      "file": "data/registry/dotted_d2_8_02600.tif",
+      "sha256": "3e78737f0da8dd2ca66cc6caac0ce8eeefcd6715707f8d1bd3091845cd9bcc30",
+      "bytes": 836982
+    },
+    {
+      "file": "data/registry/dotted_d2_8_02708.tif",
+      "sha256": "ab02300152248fdda04e988e2cd2a0c13f35eec42fcf670a15e8b76b19e24a73",
+      "bytes": 1595850
+    },
+    {
+      "file": "data/registry/gems25-dotted-h19-5-d2-8-20261002-e56ea318af89-nan.tif",
+      "sha256": "91eae1ca42ec845eaa8c2ba32da49806e24751743459b8a10017c479bbe639b8",
+      "bytes": 1603424
+    },
+    {
+      "file": "data/registry/gems25-dotted-h19-5-d2-8-20261002-e56ea318af89-zeros.tif",
+      "sha256": "3e78737f0da8dd2ca66cc6caac0ce8eeefcd6715707f8d1bd3091845cd9bcc30",
+      "bytes": 836982
+    },
+    {
+      "file": "data/registry/gems32-bayesopt-dilation-scarp-d28-20261004-nan.tif",
+      "sha256": "1e404763feb330b9f9735767bd8bfd96ee50d5c0185ace5c40fef34a5c70306a",
+      "bytes": 355310
+    },
+    {
+      "file": "data/registry/gems32-bayesopt-dilation-scarp-d28-20261004-zeros.tif",
+      "sha256": "2c1861f1dbf5bfe7e594db93cf2fedb5708e345b150c4ab58538a1fd1391047d",
+      "bytes": 302357
+    },
+    {
+      "file": "data/registry/gems32-lazygreedy-maxcov-44090-supconfined-zeros.tif",
+      "sha256": "f43ea85e2b7f20101d719277ccfe24c22a01b65effb9ea4ad39ea193fb843fe5",
+      "bytes": 806599
+    },
+    {
+      "file": "data/registry/gems32-probe-S1-ANCHOR-identical-to-live-02600.tif",
+      "sha256": "4dc4cc54b061cb4567a5500c8fa2bfe750a39340b02c8cdbb4308916f36cbcc3",
+      "bytes": 806758
+    },
+    {
+      "file": "data/registry/gems32-probe-S2-SCALE-lambda-0.5.tif",
+      "sha256": "d6462b76bce1a54920bd4e9d61700f3a1cc2f8dedf89d93651f74d10144c0243",
+      "bytes": 799095
+    },
+    {
+      "file": "data/registry/gems32-probe-S3-NULLADD-2000px.tif",
+      "sha256": "da4193e3a2e0470908b5bd1e28de97f25ee1ce15c57c959d0b623414d200692a",
+      "bytes": 810344
+    },
+    {
+      "file": "data/registry/gemsdoe32-d28-ref02600-repro-44090-20261004T183200Z-426073b6-nan.tif",
+      "sha256": "fe01ebd3961d6911bfa731111d4d3de75923e642c2276e1d7f6109de9236fd85",
+      "bytes": 379333
+    },
+    {
+      "file": "data/registry/gemsdoe32-d28-ref02600-repro-44090-20261004T183200Z-426073b6-zeros.tif",
+      "sha256": "e4985b78c4d99e185686de639dffb16084a71cf5b673b1e7474f7c898493c2c3",
+      "bytes": 243828
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32a-dip-projected-step-46090-20261004T183200Z-838fcd84-nan.tif",
+      "sha256": "564d569b8500e3c615457d0325f063c25f827ebb0703f249d7a043b2b25cdba9",
+      "bytes": 385762
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32a-dip-projected-step-46090-20261004T183200Z-838fcd84-zeros.tif",
+      "sha256": "dee5c5c6bc390ed39638f1638819c10d4e1ae52537c4a900930651dfd19754b7",
+      "bytes": 250381
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32b-transtensional-swarm-45890-20261004T183200Z-27b7c9e6-nan.tif",
+      "sha256": "1a3b1d63e1759ac71b7a187b893bad93abe09273178c8e64dcbb327c37f2a035",
+      "bytes": 384916
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32b-transtensional-swarm-45890-20261004T183200Z-27b7c9e6-zeros.tif",
+      "sha256": "fe0b511435cf80eb55a78b36555a0650fa9d626822f08a3d3221615a9bf12a68",
+      "bytes": 249551
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32c-mt-claycap-breach-45890-20261004T183200Z-a5963d0a-nan.tif",
+      "sha256": "c09ebb73c49ef8553bf4834ef93856c870cdea72551e4268769299c2a4d31d4d",
+      "bytes": 385772
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32c-mt-claycap-breach-45890-20261004T183200Z-a5963d0a-zeros.tif",
+      "sha256": "fe96521c3ef3b9cb728792ebe943717976680d9511239aac601f632946bdce9a",
+      "bytes": 250718
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32d-equalbudget-44090-20261004T183200Z-350cdc3f-nan.tif",
+      "sha256": "cc03eb8472e3c08dc7eea3e67a1d943191be78561fa850e7a0fd4225843f77be",
+      "bytes": 379319
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32d-equalbudget-44090-20261004T183200Z-350cdc3f-zeros.tif",
+      "sha256": "133bacd0031f865a9df2888de71abeba863118458d37d61ab08c388f415b3b96",
+      "bytes": 243967
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32d-submodular-multipysics-46090-20261004T183200Z-4de30601-nan.tif",
+      "sha256": "c3a0cbb14ca60f66934223e4455b970481d0229d2b8095afb3f023233e607621",
+      "bytes": 385688
+    },
+    {
+      "file": "data/registry/gemsdoe32-h32d-submodular-multipysics-46090-20261004T183200Z-4de30601-zeros.tif",
+      "sha256": "f81e26d7712d1a4a9d3d5393037b09849400c3976d1ebd40e2760a586f2adc2f",
+      "bytes": 250577
+    },
+    {
+      "file": "data/registry/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-nan.tif",
+      "sha256": "baeae3219bba6a19bc8cfe79224e28555c50184b7c1ca65c2a822f54807c77dd",
+      "bytes": 355443
+    },
+    {
+      "file": "data/registry/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif",
+      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "bytes": 219065
+    },
+    {
+      "file": "data/registry/gemsdoe32-h33-h33-2b2-plus-h33-1-20261004T220000Z-31588dc7-nan.tif",
+      "sha256": "a99f68ea3de6a8e464a73a819429486ac619d9b94d725a393d2e0e5d911ab60d",
+      "bytes": 358154
+    },
+    {
+      "file": "data/registry/gemsdoe32-h33-h33-2b2-plus-h33-1-20261004T220000Z-31588dc7-zeros.tif",
+      "sha256": "91c2e7764beada782e1f2d8f0d5c940f078d0e328de6f5868e6d552dbc50832e",
+      "bytes": 221921
+    },
+    {
+      "file": "data/registry/h52_coincidence8_80k.tif",
+      "sha256": "a2ed87fac9fdb4b9604ab2850b5f750eefe51fa9795caa6a503fc4739de6475d",
+      "bytes": 376448
+    },
+    {
+      "file": "data/registry/h60_officialstack_50k.tif",
+      "sha256": "7d5a83a326f9e3a951b88dbcf3db74228cfab0ab13271babbbf79f5679b69f5a",
+      "bytes": 338302
+    },
+    {
+      "file": "data/registry/h60_union_d2_75308.tif",
+      "sha256": "772cf4502bfc00f9265560b001cd307c8bc699ab2b0bac2c17528020d779fd19",
+      "bytes": 396677
+    },
+    {
+      "file": "data/registry/hedge_v2_01563.tif",
+      "sha256": "052688eafbc7a55d90caab72252a50304fe5caa8ecf973f8e791b4ae910f0792",
+      "bytes": 736494
+    },
+    {
+      "file": "data/registry/r11_greedy_mp.tif",
+      "sha256": "033df94ceef16350030a69d5cfdec0afe7bc605bb155d8f3b98b203aabf80abd",
+      "bytes": 1954898
+    },
+    {
+      "file": "data/registry/r13_lattice_s5_00904.tif",
+      "sha256": "b4570b406efec198eb2f4d142ad8d0d6184b14b66f2f52b5c4d697f0647dc9b2",
+      "bytes": 1706456
+    },
+    {
+      "file": "data/registry/r14_union_tips10_lat6.tif",
+      "sha256": "c9d1398e464603350e464fff7213a8a5e380f1ccf505e263a685607970ae28ef",
+      "bytes": 1748864
+    },
+    {
+      "file": "data/registry/tip_stepover_r30_02632.tif",
+      "sha256": "87f857d505e23247e991ccfab2cbe9f49a04df4f9c8028dce7ea261554690757",
+      "bytes": 917544
+    }
+  ]
 }
