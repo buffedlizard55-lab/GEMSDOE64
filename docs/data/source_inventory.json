@@ -8294,5 +8294,6 @@
       "raster_bytes_audited": false
     }
   ],
-  "source_html_fetched": 62
+  "source_html_fetched": 62,
+  "filename_note": "Raster paths and filename numerals are literal source metadata, not reported competition scores or verified score-to-file links. No score values are ingested."
 }

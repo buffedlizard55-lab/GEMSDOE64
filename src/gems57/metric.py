@@ -52,9 +52,10 @@ For a non-redundant dot (``dT == k``) this reduces to the simple bar
    (dT + 1 - k)``, which is the same inequality multiplied through by ``D`` on
    the wrong side only.  Because ``D`` is of order ``beta*K`` (tens of
    thousands), that form makes the bar smaller by a factor of ``D`` and the
-   greedy allocation never terminates -- it ran to its hard cap and emitted
-   960,000 dots for a HOLDOUT-DTI of 0.0797.  Caught by the DTI-vs-brute-force
-   test suite; see irregularity ``IR-57-BAR-01``.
+   greedy allocation never terminates naturally and can hit its hard cap with
+   an invalid candidate. The experimental output is not a validation result and
+   is not reported as a score. Caught by the DTI-vs-brute-force test suite; see
+   irregularity ``IR-57-BAR-01``.
 :func:`gems57.emit.greedy_allocate` uses the **exact** two-sided test above,
 tracking both ``T`` and ``M``.  All of it is verified against
 :func:`dti_bruteforce` by ``tests/test_metric.py``.

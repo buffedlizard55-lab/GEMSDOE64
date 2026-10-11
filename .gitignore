@@ -1,7 +1,14 @@
+# Competition data, caches, and local-only model outputs are not committed.
+/data/*
+!/data/README.md
+
+# Local Python/test/build artifacts.
 .venv/
 __pycache__/
 .pytest_cache/
 .cache/
-/data/
-work/
+*.py[cod]
 *.egg-info/
+build/
+dist/
+work/

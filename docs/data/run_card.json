@@ -1,12 +1,12 @@
 {
   "schema": "gems64-run-card-v1",
   "run_id": "g64-edti-20261011-preflight-negative",
-  "reviewed_utc": "2026-10-11T20:15:59.700749+00:00",
+  "reviewed_utc": "2026-10-11T20:58:45+00:00",
   "hypothesis": "Calibrated multi-sensor ridge uncertainty plus exact expected-DTI placement can reduce redundant picks.",
   "mechanism": "Buffered spatial OOF isotonic probabilities; >=32 provenance-checked model truth draws; exact mean-gain add/backward prune.",
   "non_fault_mimic": "Differential erosion along lithologic contacts can align topographic and magnetic ridges without fault slip.",
   "holdout": {
-    "evidence_class": "HOLDOUT-DTI",
+    "evidence_class": "NOT_RUN",
     "status": "not-run",
     "dti": null,
     "ci95": null,
@@ -35,7 +35,7 @@
   },
   "submission_name": null,
   "run_name": "g64-edti-20261011-preflight-negative",
-  "note": "Expected-DTI lane stopped: a dense registry prior blocks every nonempty dot set under the literal overlap rule.",
+  "note": "Expected-DTI lane stopped: a registry prior blocks every nonempty dot set under the 3-pixel literal overlap rule.",
   "verdict": "negative",
   "download_allowed": false,
   "submission_slots_used": 0,
@@ -58,8 +58,121 @@
   "evaluator_implementation_sha256": {
     "evaluate_holdout.py": "69cec0d377ef5e29dde1bdc593079e89a92912dfe64341ffbd2db5544ab68ff9",
     "holdout.py": "98ed0e1e662a92837cd6815b5f5875e68eda7ed7bdacb50a363e6ca0e9c17e54",
-    "metric.py": "7e841764ff0de2a6b93caebe3d7b9a9d53968522cc105bd0b2b375c30a06f395",
+    "metric.py": "267246d89dbb39e98f5779b0dbe941b3db57f98449d19eda351dd5e4c851d8ef",
     "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
   },
-  "limitation": "No production TIFF created. Synthetic unit-test TIFFs are serialization fixtures only and never published."
+  "limitation": "No production TIFF created. Synthetic unit-test TIFFs are serialization fixtures only and never published.",
+  "active_method_lane": {
+    "name": "expected-DTI-optimal selection",
+    "status": "locked; no competition model run",
+    "calibration": "Isotonic regression on spatially blocked, buffered out-of-fold predictions.",
+    "truth_draws": {
+      "minimum": 32,
+      "sources": [
+        "ensemble",
+        "test-time augmentation",
+        "Monte Carlo dropout"
+      ],
+      "jitter_pixels": [
+        1,
+        2
+      ],
+      "provenance_checked": false
+    },
+    "selection": "Greedy exact mean DTI marginal gain over plausible truth draws, followed by backward pruning until marginal gain is nonpositive.",
+    "incumbent_comparison": "Spacing/MCLP on the same calibrated surface and folds; promotion requires improvement greater than two paired spatial block-bootstrap standard errors.",
+    "leakage_canary": "Test every feature alone; AUC above 0.90 is leakage until explained.",
+    "status_note": "No cache bytes, buffered OOF predictions, model checkpoints, or production candidate are available."
+  },
+  "hypothesis_details": {
+    "id": "H64-A",
+    "rank": 1,
+    "layers": [
+      "det_elev_slope",
+      "curv_s1",
+      "curv_s2",
+      "tmi_edge",
+      "rtp_edge",
+      "grav_edge"
+    ],
+    "physical_signature": "Weak, spatially coherent cross-sensor ridge/edge agreement with positional uncertainty; test for subtle or partly buried fault extensions.",
+    "rationale_for_uncatalogued_fault": "Independent topographic and potential-field ridges may jointly preserve weak structural continuation not represented by the surface-fault catalogue; this is a hypothesis, not evidence.",
+    "novelty_rationale": "The cached channels have appeared in sibling work; global feature novelty is not claimed. The proposed intervention is calibrated exact-DTI selection, and duplicate checks are blocked by the universal registry witness.",
+    "qualitative_expected_benefit": "Highest relative opportunity among the in-lane shortlist; numerical DTI benefit is unknown and not projected.",
+    "implementation_cost": "Medium if cache/OOF is restored; currently blocked before experiment."
+  },
+  "submission_note_limit_characters": 140,
+  "submission_note_character_count": 113,
+  "submission_name_check": "NOT_APPLICABLE_NO_CANDIDATE",
+  "source_screen": {
+    "reviewed_date_utc": "2026-10-11",
+    "scope": "Official/public catalog metadata and one coarse index query only; no external geological data files downloaded or integrated.",
+    "geodawn_usgs_doi_10_5066_P93LGLVQ": {
+      "metadata_checked": true,
+      "catalog_lists_area1_area2_geotiff_archives": true,
+      "downloaded_or_locally_hashed": false,
+      "file_level_usage_terms_checked": false,
+      "exact_competition_polygon_overlap_checked": false,
+      "record": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7"
+    },
+    "usgs_3dep_1_meter_index": {
+      "layer": 18,
+      "query_bbox_wgs84_from_geodawn_record": [
+        -120.0024,
+        37.3641,
+        -116.1415,
+        40.7247
+      ],
+      "project_polygon_intersections": 22,
+      "is_tile_count": false,
+      "exact_competition_polygon_overlay_checked": false,
+      "query_date_utc": "2026-10-11",
+      "query": "https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer/18/query?where=1%3D1&geometry=-120.0024%2C37.3641%2C-116.1415%2C40.7247&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnCountOnly=true&f=pjson"
+    },
+    "zenodo_10_5281_zenodo_11167510": {
+      "metadata_checked": true,
+      "open_access": true,
+      "license": "CC-BY-4.0",
+      "files_listed": [
+        "nvreloc_catalog_newmag.txt",
+        "station_terms.txt"
+      ],
+      "downloaded_or_schema_audited": false,
+      "exact_competition_footprint_coverage_checked": false,
+      "record": "https://zenodo.org/records/11167510"
+    },
+    "usgs_heat_flow_10_5066_P9BZPVUC": {
+      "metadata_checked": true,
+      "license": "CC0 1.0 Universal",
+      "files_downloaded": false,
+      "exact_competition_footprint_coverage_checked": false,
+      "record": "https://www.usgs.gov/data/heat-flow-maps-and-supporting-data-great-basin-usa"
+    },
+    "copernicus_sentinel1": {
+      "official_portal_describes_free_access": true,
+      "aoi_scene_stack_checked": false,
+      "record": "https://dataspace.copernicus.eu/"
+    },
+    "ingenious_gdr_1391": {
+      "osti_metadata_checked": true,
+      "gdr_result": "No submission found",
+      "files_terms_and_coverage_verified": false,
+      "record": "https://gdr.openei.org/submissions/1391"
+    },
+    "usgs_gabbs_valley_3d_surfaces": {
+      "metadata_checked": true,
+      "license": "CC0",
+      "full_gems_coverage": false,
+      "record": "https://www.usgs.gov/data/stratigraphic-and-fault-surfaces-three-dimensional-geologic-map-southeastern-gabbs-valley"
+    }
+  },
+  "synthetic_threshold_check": {
+    "evidence_class": "SYNTHETIC_ONLY_NOT_COMPETITION_SCORE",
+    "isolated_unit_case": "Threshold q > alpha*S gives positive exact gain above the threshold and negative gain below it.",
+    "general_finite_spatial_dti": "Not a universal exact rule; the kernel-redundancy and finite-expectation counterexamples reject naive thresholding.",
+    "decision": "Use exact mean marginal DTI over plausible truth rasters; no competition surface was evaluated.",
+    "compact_probe": "research/expected_dti_probe.json",
+    "finite_expectation_and_32_draw_check": "evidence/synthetic_verification.json",
+    "not_holdout_or_promotion_evidence": true
+  }
 }

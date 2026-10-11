@@ -33,9 +33,10 @@ sample footprint. This does not establish the cause of the user's rejected file.
 Pinned sample/catalogue TIFFs were recovered through GitHub bridges. They have
 the expected grid, but a matching third-party hash is not independent proof of
 official origin. `labels.tif` in the inspected sibling is the same catalogue,
-not independent hidden-fault truth. Direct DrivenData, USGS, NLR, Dropbox, and
-paper hosts are outside this runtime's egress policy. No login attempt, current
-leaderboard verification, or weekly-cap observation was made here.
+not independent hidden-fault truth. Public source metadata were subsequently
+checked through official catalog pages; no external data bytes were acquired.
+No authenticated DrivenData login, leaderboard query, or weekly-cap observation
+was made.
 
 ## Why the GEMSDOE32 artifact could be effective
 
@@ -65,13 +66,7 @@ not proof that an unseen splay is absent. The 200 m pruning rule can also delete
 real hidden continuations. We cannot attribute an organizer score to any of
 these mechanisms without hidden truth or a defensible independent experiment.
 
-The prompt's reported result **0.2778** is an **UNVERIFIED USER REPORT**, not
-ORGANIZER-CONFIRMED. The pinned source page says no organizer score existed there;
-its audit includes a projected value and inconsistent aggregate/per-quadrant
-surrogate fields. None is imported as this lane's HOLDOUT-DTI. The prompt also
-quotes **0.3195** and **0.3774** as highest leaderboard figures; their dates and
-receipts are missing. We do not choose one as current. No improvement above any
-of those reports is established or promised.
+The H33 score-to-file claim and the prompt's leaderboard snapshots are **unverified**: no organizer receipt connects a value to the exact artifact, account, and competition phase. The pinned owner page also distinguishes a projection from an organizer score. No numerical user/owner leaderboard claim is reproduced here, treated as a baseline, or presented as a result. No improvement over an organizer-confirmed score is established or promised.
 
 ## The threshold claim: a necessary correction
 
@@ -146,14 +141,10 @@ for a first experiment after blockers are resolved.
 | 3 · H64-C | Buried shallow-edge corroboration: cached depth_grad, grav_edge, tmi_edge | Coincident independent gradients might locate buried steps where catalogue surface expression is missing | Intrusive or depositional lithologic boundaries | Existing edge transforms only; posterior positional spread penalizes unresolved locations. Lower localization confidence at 300 m, medium cost; earlier basement lanes already tested broader family |
 | 4 · H64-D | Conductivity-boundary/topographic disagreement: cached cond_edge, ridge_s2, relief5 | Localized electrical transition near a subtle ridge could indicate fluid-altered structure omitted from a surface-fault catalogue | Saline playa sediments or non-fault clay layers | No new MT inversion or new data acquisition; exact marginal utility can reject broad uncertain anomalies. Lowest confidence, medium cost; conductivity-claycap family not globally new |
 
-All four depend on *existing named cache channels*, not newly proposed external
-layers. None is declared viable until the cache bytes and provenance are
-available. No external dataset was labeled obtainable without checking. Official
-free-source leads for later authentication are [USGS GeoDAWN](https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and)
-and [GDR 1391](https://gdr.openei.org/submissions/1391); direct acquisition was not
-possible here. No feature-only canary was run on real data because no feature
-stack was used. Cross-sensor correlation is not causal proof of a permeable fault,
-and fault detection is not direct geothermal-vent or reservoir confirmation.
+All four active hypotheses depend on *existing named cache channels*, not newly
+proposed external layers. None is viable until the cache bytes/provenance and
+registry semantics are resolved. Separate source reconnaissance checked the
+[USGS GeoDAWN ScienceBase record](https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7): it lists Area 1/Area 2 GeoTIFF grid archives, but no files were downloaded, file-level terms audited, or exact competition polygon overlaid. The linked [GDR 1391 page](https://gdr.openei.org/submissions/1391) returned “No submission found.” These are metadata checks only, not active off-lane feature proposals. No feature-only canary was run on real data because no feature stack was used. Cross-sensor correlation is not causal proof of a permeable fault, and fault detection is not direct geothermal-vent or reservoir confirmation.
 
 ## Next session, in order
 

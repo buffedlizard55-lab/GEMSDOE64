@@ -9,10 +9,11 @@
   "universal_overlap_blocker": true,
   "overlap_limit": 0.7,
   "support_definition": "finite prediction > 0 (inherited literal support rule)",
-  "implication": "Every nonempty candidate dot set in the allowed domain has forward overlap 1.0 with this prior; therefore it cannot pass the 0.70 gate.",
+  "implication": "Every nonempty candidate dot in the allowed domain is within 3 pixels of a positive prior pixel; forward overlap is therefore 1.0, above the 0.70 gate.",
   "source_commit": "6fc71d19d49dca4960d5434bd81b6dd06fcc030a",
   "source_path": "docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
   "repository": "buffedlizard55-lab/17GEMSDOE",
   "candidate_created": false,
-  "stop_before_placement": true
+  "stop_before_placement": true,
+  "overlap_radius_pixels": 3.0
 }

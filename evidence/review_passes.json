@@ -1,60 +1,82 @@
 {
+  "review_date": "2026-10-11",
+  "branch": "arena/d7f35782-gemsdoe64",
+  "review_status": "THREE_LOCAL_PASSES_COMPLETE; PUSH, REMOTE_CHECKS, AND PR_MERGE_PENDING",
   "pass_1": {
-    "scope": "Repository/source inventory, pinned data/prior audit, exact H33 reconstruction, synthetic theorem/selector tests, shared tools, negative run card and site",
-    "result": "Implemented a negative-result deliverable; production run stopped at the literal registry gate.",
-    "not_met": [
-      "No unique competition TIFF",
-      "No real calibrated model/holdout",
-      "No organizer-verified score"
+    "title": "Project scope, claim provenance, and geological source review",
+    "checks": [
+      "README retains the project brief and directs future work to the canonical negative run card and active docs site.",
+      "Four hypotheses are ranked inside the expected-DTI lane and name cached layers, physical signatures, non-fault mimics, qualitative benefit/cost, novelty limits, and why each remains untested.",
+      "The run card records the named mimic, exact method lane, holdout fields as not-run/null, registry witness and overlap, absent candidate hash/validator, short note length, source screen, and negative verdict.",
+      "Official-source reconnaissance is recorded as metadata-only. The coarse 3DEP query is explicitly 22 project polygons, not tiles or exact target-polygon coverage; no external source files were downloaded or integrated.",
+      "The decisive registry evidence is stated precisely: a three-pixel neighborhood around the pinned public prior covers the allowed off-catalogue domain; the complete registry and byte/pixel audit remain incomplete.",
+      "Score-provenance review removed the raw reported-results artifact and site link. No unverified user/owner leaderboard value is presented as a competition score; synthetic numbers and registry thresholds are separately labelled. Public raster filename numerals are identified as literal paths, not score evidence."
+    ],
+    "result": "PASS WITH EXPLICIT EVIDENCE LIMITS",
+    "unmet": [
+      "No authenticated competition data, shared feature-cache bytes, model outputs, buffered OOF predictions, or complete registry inputs.",
+      "No real feature canary, geological holdout, DTI/CI, candidate raster, organizer receipt, or score."
     ]
   },
   "pass_2": {
-    "scope": "Failure paths, shared-tool arithmetic/integrity, calibration isolation, mask/grid/range edge cases, static site links and publication guards",
-    "fixes": [
-      "Do not allow a missing holdout point estimate to promote",
-      "Reject empty feature canary input",
-      "Verify per-block TP + FN consistency",
-      "Do not exempt a prior merely because its basename matches",
-      "Validate actual candidate file grid in registry comparison",
-      "Require registry pins and reject invalid interior raster values",
-      "Require nonempty TIFF support and no masked interior pixels",
-      "Preserve a legacy Pages root redirect after API configuration returned 403"
+    "title": "Method arithmetic, software safety, and publication checks",
+    "checks": [
+      {
+        "check": "scripts/verify_expected_dti_rule.py",
+        "result": "PASS — isolated synthetic threshold case is numerically verified; exact spatial-kernel redundancy counterexample rejects use as a universal rule."
+      },
+      {
+        "check": "scripts/verify_synthetic.py",
+        "result": "PASS — exhaustive finite-distribution check and 32 synthetic jittered truth rasters; synthetic only, no calibration or competition inference."
+      },
+      {
+        "check": "pytest",
+        "result": "39 passed; 7 upstream rasterio/affine PendingDeprecationWarnings; no failures."
+      },
+      {
+        "check": "scripts/build_site.py and scripts/check_site.py",
+        "result": "PASS — four pages, no broken local links, no unauthorized download, zero approved TIFF links, zero production TIFFs."
+      },
+      {
+        "check": "Python compilation and JSON parsing",
+        "result": "PASS — src/scripts/tests compile; all JSON under evidence, docs/data, and research parses."
+      },
+      {
+        "check": "Content and artifact audit",
+        "result": "PASS — docs/data/reported_results.json is absent, no site reference remains, no production TIFF/ZIP is present, and the synthetic/provenance distinctions are explicit."
+      }
+    ],
+    "result": "PASS — SITE AND WRITER REMAIN FAIL-CLOSED",
+    "limitations": [
+      "A local fixture or synthetic calculation is not a production validation or HOLDOUT-DTI result.",
+      "No visual browser/device QA or live organizer/leaderboard/weekly-cap check was performed."
     ]
   },
   "pass_3": {
-    "scope": "Final requirement audit, rerun tests and artifact audits, deterministic site rebuild, PR checks and merge",
-    "status": "complete: local re-check and remote CI passed; deployment checked separately after merge",
-    "nonnegotiable": "Do not convert the negative run into a downloadable raster or claim a score.",
-    "tests_passed": 39,
-    "known_warnings": "7 upstream rasterio/affine PendingDeprecationWarnings; no test failures",
+    "title": "Final scope, merge-resolution, and pre-release gate",
+    "source_state": {
+      "local_head_before_resolution_commit": "c041f477",
+      "merged_base_target": "origin/main at 1c6d924",
+      "conflicts_resolved_and_staged": [
+        ".gitignore",
+        "README.md",
+        "index.html",
+        "research/run_card.json"
+      ],
+      "staged_diff_whitespace_check": "PASS",
+      "generated_docs_match_staged_tree": true
+    },
     "checks": [
-      "H33 reconstruction repeated from restored pinned inputs: zero support disagreements",
-      "Synthetic threshold verification repeated deterministically",
-      "Backward-prune case removes an initially useful but later redundant dot",
-      "Selector time/size limits fail rather than emit incomplete candidates",
-      "Four site pages pass local file/fragment checks",
-      "No production TIFF or ZIP in docs",
-      "Python compilation and git whitespace checks pass",
-      "Narrowed root data ignore rule so deployed JSON evidence is tracked; regression test added",
-      "Documented receipt-only feature/sample footprint discrepancy without attributing the prior upload error"
+      "The current site and run card remain negative; no real submission slot is used and no download is offered.",
+      "The former stale review narrative is now an archive pointer; this file records the three current local review passes.",
+      "PR #3 was last observed OPEN and CONFLICTING with no current check rollup; the local conflict resolution has not yet been committed or pushed."
     ],
-    "unmet_requirements": [
-      "No eligible unique production TIFF: mandatory stop gate makes that impossible under the current literal protocol",
-      "No real-data feature canary, OOF model, or HOLDOUT-DTI comparison",
-      "No complete all-prior pixel audit; only the decisive universal witness needed for the stop",
-      "No organizer receipt, live leaderboard/cap verification, or direct third-party source acquisition"
-    ],
-    "remote_ci": {
-      "source_commit": "5988787",
-      "conclusion": "success",
-      "url": "https://github.com/buffedlizard55-lab/GEMSDOE64/actions/runs/38171530980"
-    },
-    "parallel_integration": {
-      "merged_upstream_pr": 1,
-      "upstream_commit": "bf878b6",
-      "preserved": "Root research/site artifacts labeled historical; original README archived; current docs site/run card authoritative",
-      "checks": "Preserved synthetic probe rerun; current tests and site guards rerun"
-    },
-    "deployment_verified": "https://github.com/buffedlizard55-lab/GEMSDOE64/actions/runs/38171932984"
-  }
+    "result": "LOCAL REVIEW COMPLETE; NOT YET MERGED",
+    "pending_before_merge_claim": [
+      "Commit the staged merge resolution on this session branch.",
+      "Push only arena/d7f35782-gemsdoe64 and verify GitHub's updated mergeability and checks.",
+      "Merge PR #3 explicitly only after its remote state permits it."
+    ]
+  },
+  "nonnegotiable": "Do not turn the negative run into a downloadable raster, spend a weekly slot, or present a projection/synthetic value as a competition score."
 }

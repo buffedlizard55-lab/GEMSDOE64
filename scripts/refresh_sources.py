@@ -57,6 +57,7 @@ def main():
     result = dict(generated_utc=datetime.now(timezone.utc).isoformat(),
         evidence_class='SOURCE-INVENTORY-NOT-SCORE-OR-UNIQUENESS-CLEARANCE',
         method='GitHub commits, recursive trees and source HTML; live Pages not fetched',
+        filename_note='Raster paths and filename numerals are literal source metadata, not reported competition scores or verified score-to-file links. No score values are ingested.',
         registry_complete=False, organizer_registry_complete=False,
         repositories=len(rows), errors=sum(r['status'] == 'error' for r in rows),
         source_html_fetched=sum(r['status'] == 'source-fetched' for r in rows), rows=rows)

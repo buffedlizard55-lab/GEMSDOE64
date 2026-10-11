@@ -354,4 +354,5 @@ def saturation_certificate(registry_path, footprint, catalogue=None, *, expected
         covered_allowed_fraction=float(covered[allowed].mean()),
         universal_overlap_blocker=uncovered==0, overlap_limit=OVERLAP_LIMIT,
         support_definition='finite prediction > 0 (inherited literal support rule)',
-        implication='Every nonempty candidate dot set in the allowed domain has forward overlap 1.0 with this prior; therefore it cannot pass the 0.70 gate.' if uncovered==0 else 'No universal blockage established.')
+        overlap_radius_pixels=float(RADIUS_PX),
+        implication=(f'Every nonempty candidate dot in the allowed domain is within {RADIUS_PX:g} pixels of a positive prior pixel; forward overlap is therefore 1.0, above the 0.70 gate.' if uncovered==0 else 'No universal blockage established.'))

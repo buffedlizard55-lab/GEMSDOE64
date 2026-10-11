@@ -17,13 +17,13 @@
     "status": "PROVISIONAL_RESEARCH_HYPOTHESIS_NOT_TESTED",
     "mechanism": "A spatially coherent planar family of relocated hypocenters may delineate subsurface fault geometry whose uncertain surface projection indicates an unmapped trace; this is not simply 2-D event density.",
     "layers": [
-      "Public Nevada/nearby relocated hypocenters, subject to AOI coverage, field and license verification",
+      "Zenodo relocated Nevada/nearby earthquake catalogue (record open under CC-BY-4.0; file schema and exact competition-footprint coverage unverified)",
       "Competition template features and visible-only fault catalogue, currently unavailable"
     ],
     "named_non_fault_mimic": "Aftershock or induced-seismicity sequences, volcanic/dike activity, mining blasts, and location artefacts may appear planar without representing a new surface fault.",
     "mimic_control_process": "Not run. Future test must quality-filter events, assess time/depth coherence and plane-fit uncertainty, use negative controls, and evaluate the feature alone on buffered whole-segment spatial folds.",
     "novelty_rationale": "Conceptually distinct from a 2-D epicenter-density transform; novelty relative to the shared stack and every prior raster is unverified because neither is present.",
-    "source_and_coverage_status": "Zenodo DOI 10.5281/zenodo.11167510 is listed as CC-BY-4.0 for a Nevada/nearby catalogue, 2008-2023; exact competition-footprint coverage and local retrieval/integration have not been checked.",
+    "source_and_coverage_status": "Zenodo API record 11167510 was checked on 2026-10-11: open access, CC-BY-4.0, and the record lists nvreloc_catalog_newmag.txt plus station_terms.txt (about 13.8 MB combined). No file was downloaded or schema-audited; exact competition-footprint event coverage, field quality and integration remain unknown.",
     "implementation_cost": "Medium to high; 3-D clustering, robust plane fitting, uncertainty propagation, and surface projection.",
     "expected_dti": null,
     "expected_dti_note": "No numeric forecast; no holdout experiment was run."
@@ -49,6 +49,27 @@
     "competition_selection": {
       "status": "NOT_RUN_BLOCKED",
       "reason": "Competition data, shared cached feature stack, evaluator, writer, registry and dependencies are absent."
+    },
+    "calibration": {
+      "status": "NOT_RUN_BLOCKED",
+      "method": "Isotonic regression fit only on spatially blocked, buffered out-of-fold predictions.",
+      "prediction_sources": [
+        "ensemble",
+        "test-time augmentation",
+        "Monte Carlo dropout"
+      ],
+      "jitter_tolerance_pixels": [
+        1,
+        2
+      ],
+      "minimum_plausible_truth_rasters": 32,
+      "reason": "No model outputs, competition labels, shared feature stack or holdout tooling are present."
+    },
+    "expected_dti_selection": {
+      "status": "NOT_RUN_BLOCKED",
+      "selection_rule": "Greedily add the ridge candidate with the highest mean exact-kernel DTI marginal gain over at least 32 plausible truth rasters; then backward-prune until marginal gain is nonpositive.",
+      "incumbent_comparison": "Compare spacing/MCLP incumbent and candidate on the same calibrated surface; promote only when gain exceeds two spatial block-bootstrap standard errors.",
+      "reason": "Competition surfaces, shared exact evaluator, cached stack and candidate/registry rasters are absent."
     }
   },
   "holdout_dti": {
@@ -131,12 +152,67 @@
     "Required geospatial/ML runtime dependencies for the shared workflow."
   ],
   "score_claim_review": {
-    "user_cited_0_2778": "UNVERIFIED_CLAIM_NOT_LINKED_TO_ORGANIZER_RECEIPT_OR_ARTIFACT",
+    "user_cited_h33_value": "UNVERIFIED_CLAIM_NOT_LINKED_TO_ORGANIZER_RECEIPT_OR_ARTIFACT",
     "classification": "Neither HOLDOUT-DTI nor ORGANIZER-CONFIRMED in this project.",
     "leaderboard_feed": "NOT_BUILT; automated/manual mirroring excluded absent prior written permission."
   },
-  "next_action": "Restore or mount the shared template, authorized inputs and complete registry. Then run the synthetic probe, feature-alone leakage canaries, and preregistered buffered spatial holdout; keep the site NOT CLEARED unless every gate passes.",
+  "next_action": "Restore or mount the authorized inputs, shared template, exact evaluator/writer/validator and complete raster registry. Keep the project in the expected-DTI-optimal-selection lane; first close source/license/AOI gates, then run the synthetic probe, buffered spatial calibration, feature-alone leakage canaries and preregistered holdout. Keep verdict negative unless every gate passes.",
+  "source_screen": {
+    "reviewed_at_utc": "2026-10-11",
+    "geodawn_usgs_doi_10_5066_P93LGLVQ": {
+      "metadata_checked": true,
+      "catalog_lists_area1_area2_geotiff_grid_archives": true,
+      "downloaded_or_locally_hashed": false,
+      "usage_terms_audited": false,
+      "exact_competition_polygon_overlap_checked": false,
+      "record": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7"
+    },
+    "usgs_3dep_1_meter_index": {
+      "layer": 18,
+      "query_bbox_wgs84_from_geodawn_record": [
+        -120.0024,
+        37.3641,
+        -116.1415,
+        40.7247
+      ],
+      "project_polygon_intersections": 22,
+      "query_date_utc": "2026-10-11",
+      "is_tile_count": false,
+      "exact_competition_polygon_overlay_checked": false,
+      "query": "https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer/18/query?where=1%3D1&geometry=-120.0024%2C37.3641%2C-116.1415%2C40.7247&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnCountOnly=true&f=pjson"
+    },
+    "zenodo_10_5281_zenodo_11167510": {
+      "metadata_checked": true,
+      "open_access": true,
+      "license": "CC-BY-4.0",
+      "files_listed": [
+        "nvreloc_catalog_newmag.txt",
+        "station_terms.txt"
+      ],
+      "downloaded_or_schema_audited": false,
+      "exact_competition_footprint_coverage_checked": false,
+      "record": "https://zenodo.org/records/11167510"
+    },
+    "usgs_heat_flow_10_5066_P9BZPVUC": {
+      "metadata_checked": true,
+      "license": "CC0 1.0 Universal",
+      "files_downloaded": false,
+      "exact_competition_footprint_coverage_checked": false,
+      "record": "https://www.usgs.gov/data/heat-flow-maps-and-supporting-data-great-basin-usa"
+    },
+    "ingenious_gdr_1391": {
+      "osti_record_metadata_checked": true,
+      "gdr_1391_result": "No submission found",
+      "usable_files_and_terms_verified": false,
+      "record": "https://gdr.openei.org/submissions/1391"
+    },
+    "copernicus_sentinel1": {
+      "public_portal_availability_checked": true,
+      "exact_aoi_scene_stack_checked": false,
+      "record": "https://dataspace.copernicus.eu/"
+    }
+  },
   "historical_parallel_session": true,
   "superseded_by": "evidence/run_card.json",
-  "integration_note": "Preserved from PR #1. Availability/access statements are historical, not the current checkout state."
+  "integration_note": "Preserved as the earlier parallel-session card; current shared-tooling and registry evidence is in evidence/run_card.json."
 }

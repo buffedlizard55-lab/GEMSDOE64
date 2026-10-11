@@ -316,50 +316,50 @@
       "name": "Competition overview",
       "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/",
       "use": "Organizer rules and objective",
-      "status": "not-fetched-network-policy",
-      "verified_claim": null
+      "status": "public-reference-reviewed",
+      "verified_claim": "Official challenge context is linked for entrant review. Current schedule, eligibility and account-specific submission rules were not verified."
     },
     {
       "name": "Problem and metric",
       "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/",
       "use": "Authoritative submission and scoring specification",
-      "status": "not-fetched-network-policy",
-      "verified_claim": null
+      "status": "public-page-reviewed",
+      "verified_claim": "Official problem page reviewed; describes the distance-weighted Tversky challenge metric. The exact shared implementation is used locally; no organizer evaluator certification is claimed."
     },
     {
       "name": "About and resources",
       "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/",
       "use": "Additional official resources",
-      "status": "not-fetched-network-policy",
-      "verified_claim": null
+      "status": "linked-not-rechecked-this-pass",
+      "verified_claim": "Reference link only; current eligibility, schedule and resource changes require entrant verification."
     },
     {
       "name": "Data",
       "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
       "use": "Authenticated original data and sample submission",
-      "status": "not-fetched-network-policy",
-      "verified_claim": null
+      "status": "redirected-to-login",
+      "verified_claim": "Prior fetch redirected to login. No authenticated competition files or credentials were obtained."
     },
     {
       "name": "Leaderboard",
       "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
       "use": "Current leaderboard; prompt gives conflicting historic values",
-      "status": "not-fetched-network-policy",
-      "verified_claim": null
+      "status": "not-queried",
+      "verified_claim": "No values copied, polled, or cached. The project does not mirror the leaderboard; use the official page subject to its terms."
     },
     {
       "name": "Organizer reference solution",
       "url": "https://github.com/drivendataorg/gems-prize-reference-solution",
       "use": "Official CPU/GPU U-Net baseline, not exact DTI evaluator",
       "status": "primary-source-read",
-      "verified_claim": "README supports CPU execution and recommends GPU for speed; notebook uses Tversky loss alpha .2 beta .8."
+      "verified_claim": "README supports CPU execution and recommends GPU for speed; its training loss is not the official spatial-DTI evaluation."
     },
     {
       "name": "GeoDAWN magnetic/radiometric survey",
-      "url": "https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and",
+      "url": "https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7",
       "use": "Potential-field and radiometric inputs",
-      "status": "not-fetched-network-policy",
-      "verified_claim": null
+      "status": "sciencebase-metadata-and-file-listing-reviewed",
+      "verified_claim": "USGS/DOE metadata describes magnetic/radiometric surveys and lists Area 1/Area 2 GeoTIFF grid archives and survey outlines. No bytes were downloaded or hashed; file terms and exact competition-polygon overlap remain unchecked."
     },
     {
       "name": "INGENIOUS project",
@@ -372,8 +372,8 @@
       "name": "GDR INGENIOUS data",
       "url": "https://gdr.openei.org/submissions/1391",
       "use": "Free official data repository; acquisition blocked here",
-      "status": "not-fetched-network-policy",
-      "verified_claim": null
+      "status": "record-checked-no-submission-found",
+      "verified_claim": "The GDR 1391 page returned “No submission found” on 2026-10-11. Do not treat this link as proof of obtainable files."
     },
     {
       "name": "Competition PDF supplied by user",
@@ -402,6 +402,57 @@
       "use": "Primary-author preprint link; not retrieved in this runtime",
       "status": "not-fetched-network-policy",
       "verified_claim": null
+    },
+    {
+      "name": "Trugman (2024) relocated Nevada catalogue",
+      "url": "https://zenodo.org/records/11167510",
+      "use": "Potential 3-D hypocenter geometry screen; not the active method lane.",
+      "status": "zenodo-api-metadata-reviewed-open-cc-by-4.0",
+      "verified_claim": "Record lists nvreloc_catalog_newmag.txt and station_terms.txt for a Nevada/nearby 2008–2023 catalogue (about 13.8 MB combined). Files/schema and exact AOI event coverage were not checked."
+    },
+    {
+      "name": "USGS 3DEP 1-meter DEM index",
+      "url": "https://index.nationalmap.gov/arcgis/rest/services/3DEPElevationIndex/MapServer/18/query?where=1%3D1&geometry=-120.0024%2C37.3641%2C-116.1415%2C40.7247&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnCountOnly=true&f=pjson",
+      "use": "Potential terrain/drainage screen; coarse footprint query only.",
+      "status": "official-index-query-returned-22-project-polygons",
+      "verified_claim": "The 1-meter project layer query against GeoDAWN’s record bounding rectangle returned 22 polygons, not 22 tiles and not an exact competition-polygon overlay. Tile availability, quality, nodata and local download were not checked."
+    },
+    {
+      "name": "USGS Great Basin heat-flow data release",
+      "url": "https://www.usgs.gov/data/heat-flow-maps-and-supporting-data-great-basin-usa",
+      "use": "Background geothermal context; optional future source, not an active lane feature.",
+      "status": "official-record-cc0-files-not-downloaded",
+      "verified_claim": "USGS record marks the work CC0 and describes gridded background-conductive heat flow plus point data/residuals. Files, resolution and exact competition coverage were not checked."
+    },
+    {
+      "name": "Copernicus Data Space Ecosystem",
+      "url": "https://dataspace.copernicus.eu/",
+      "use": "Potential Sentinel-1 acquisition source; not an active lane feature.",
+      "status": "official-portal-reviewed-free-access-aoi-not-queried",
+      "verified_claim": "The portal describes free access to Copernicus data. No Sentinel-1 AOI/date query, account test, processing, or download was performed; no repeatable target scene stack is established."
+    },
+    {
+      "name": "USGS lidar fault-geomorphology analogue",
+      "url": "https://www.usgs.gov/publications/airborne-lidar-analysis-and-geochronology-faulted-glacial-moraines-tahoe-sierra",
+      "use": "Mechanistic background only; Tahoe/Sierra study is not target-area validation.",
+      "status": "canonical-usgs-publications-record-reviewed",
+      "verified_claim": "The current USGS Publications Warehouse page resolves. A prior long-form URL returned 404 and was replaced; the study remains a regional analogue only."
+    },
+    {
+      "name": "USGS Gabbs Valley 3-D geologic surfaces",
+      "url": "https://www.usgs.gov/data/stratigraphic-and-fault-surfaces-three-dimensional-geologic-map-southeastern-gabbs-valley",
+      "use": "Local structural example; not full-footprint coverage.",
+      "status": "official-record-cc0-local-coverage",
+      "verified_claim": "USGS record identifies CC0 terms and local southeastern Gabbs Valley coverage; it does not establish complete GEMS-area coverage."
+    },
+    {
+      "name": "USGS ComCat event API",
+      "url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+      "use": "Potential seismicity quality-control context.",
+      "status": "official-api-not-queried",
+      "verified_claim": "Official API link recorded. No query or download was performed for this project."
     }
-  ]
+  ],
+  "reviewed_utc": "2026-10-11",
+  "evidence_note": "Public metadata/page checks only. No competition data or new external geological source files were downloaded, locally hashed, or integrated."
 }

@@ -36,24 +36,26 @@ def main():
     Path('evidence/registry_blocker.json').write_text(json.dumps(certificate, indent=2)+'\n')
     if not certificate['universal_overlap_blocker']:
         raise RuntimeError('Preflight conditions changed. Re-review the lane; this is not an automatic promotion.')
-    card = dict(schema='gems64-run-card-v1', run_id='g64-edti-20261011-preflight-negative',
+    card_path = Path('evidence/run_card.json')
+    card = json.loads(card_path.read_text()) if card_path.exists() else {}
+    card.update(schema='gems64-run-card-v1', run_id='g64-edti-20261011-preflight-negative',
         reviewed_utc=datetime.now(timezone.utc).isoformat(),
         hypothesis='Calibrated multi-sensor ridge uncertainty plus exact expected-DTI placement can reduce redundant picks.',
         mechanism='Buffered spatial OOF isotonic probabilities; >=32 provenance-checked model truth draws; exact mean-gain add/backward prune.',
         non_fault_mimic='Differential erosion along lithologic contacts can align topographic and magnetic ridges without fault slip.',
-        holdout=dict(evidence_class='HOLDOUT-DTI', status='not-run', dti=None, ci95=None,
+        holdout=dict(evidence_class='NOT_RUN', status='not-run', dti=None, ci95=None,
             evaluator_version=VERSION, withheld_positive_pixels=None,
             reason='Universal registry blocker triggered before model fitting or candidate placement.'),
         correlation_overlap_vs_registry=dict(surface_spearman=None, final_dot_overlap=None,
             candidate_comparisons_performed=False, universal_lower_bound_for_any_nonempty_dots=1.0,
-            literal_limit=.70, certificate='registry_blocker.json',
+            literal_limit=.70, overlap_radius_pixels=3.0, certificate='registry_blocker.json',
             full_prior_raster_hash_pixel_audit_complete=False),
         raster_sha256=None, candidate_generated=False,
         validator_output=dict(status='not-run-no-production-raster',
             no_nan_inside_footprint=None, values_in_0_1=None, dtype_float32=None,
             crs_shape_transform_match=None, format_pass=None),
         submission_name=None, run_name='g64-edti-20261011-preflight-negative',
-        note='Expected-DTI lane stopped: a dense registry prior blocks every nonempty dot set under the literal overlap rule.',
+        note='Expected-DTI lane stopped: a registry prior blocks every nonempty dot set under the 3-pixel literal overlap rule.',
         verdict='negative', download_allowed=False, submission_slots_used=0,
         organizer_confirmed_score=None, organizer_receipt=None,
         failed_gates=['literal_registry_overlap_universally_blocked', 'no_buffered_oof_cache',
@@ -63,9 +65,11 @@ def main():
             stopped_before_training=True),
         evaluator_implementation_sha256=implementation_hashes(),
         limitation='No production TIFF created. Synthetic unit-test TIFFs are serialization fixtures only and never published.')
+    card['submission_note_limit_characters'] = 140
+    card['submission_note_character_count'] = len(card['note'])
     assert len(card['note']) <= 140
     assert not promotion_decision({})['download_allowed']
-    Path('evidence/run_card.json').write_text(json.dumps(card, indent=2, allow_nan=False)+'\n')
+    card_path.write_text(json.dumps(card, indent=2, allow_nan=False)+'\n')
     print('NEGATIVE: universal literal-overlap blocker. No production TIFF, no download, no slot.')
 
 
