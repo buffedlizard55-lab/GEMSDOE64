@@ -2,7 +2,7 @@ name: Tests and publication guard
 on:
   pull_request:
   push:
-    branches: [main, arena/d0ab4872-gemsdoe64]
+    branches: [main]
 permissions:
   contents: read
 jobs:
