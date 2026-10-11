@@ -1,14 +1,48 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="GEMSDOE64 expected-DTI research: a verified negative result, audit evidence and safe submission instructions.">
+<meta name="description" content="GEMSDOE64 lidar-scarp lane: measured negative result, one not-cleared candidate TIFF, audit evidence and submission guide.">
 <title>Submit safely · GEMSDOE64</title><link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
 <body><a class="skip" href="#main">Skip to content</a><header><nav class="wrap" aria-label="Main navigation">
-<a class="brand" href="index.html"><span class="mark">G64</span><span>GEMSDOE<small>Fault discovery lab</small></span></a><div class="navlinks"><a href="index.html">Overview</a><a href="executive-summary.html" aria-current="page">Submit safely</a><a href="research.html">Research</a><a href="sources.html">Sources</a></div></nav></header>
-<div class="ribbon"><div class="wrap"><strong>NOT CLEARED FOR SUBMISSION</strong><span>No approved TIFF · no slot used</span><a href="executive-summary.html">Read the submission decision →</a></div></div>
-<main id="main" class="wrap"><div class="page-head"><p class="eyebrow">Executive summary / Submission guide</p><h1>Can I download and submit?</h1><p class="lead"><strong>Not from this run.</strong> No TIFF is cleared or offered. The negative verdict is the deliverable.</p></div>
-<div class="note warn"><strong>No bypass:</strong> a valid GeoTIFF format, unique filename, or different file hash does not prove a valid new submission. The performance and registry gates must also pass.</div>
-<section><h2>Why this run stopped</h2><p>The shared registry rule treats every positive finite prediction as a dot and measures the fraction within three pixels of prior dots. One prior's three-pixel neighborhood covers the entire allowed off-catalogue domain, so every nonempty candidate has 100% forward overlap against a 70% limit. A different interpretation requires an explicit protocol change, not a private exception.</p><p>The exact shared feature cache and buffered out-of-fold model predictions are also unavailable. No geological holdout was run; no DTI, confidence interval or score improvement is claimed.</p></section>
-<section><h2>The submission process—once a future run passes</h2><ol class="steps"><li><strong>Read the verdict before downloading.</strong><p>The page must say an artifact passed the promotion gate and identify its immutable SHA-256. A negative or incomplete run has no TIFF download. This site is a static evidence viewer, not a browser training service.</p></li><li><strong>Verify holdout and uniqueness receipts.</strong><p>Require the evaluator version, withheld positive count, 95% interval, and gains exceeding two paired block-bootstrap SEs against spacing/MCLP on the same surface, plus a comparable historical best. Surface and final-dot registry checks and full hash/pixel comparisons must pass.</p></li><li><strong>Download the new single-band GeoTIFF.</strong><p>Use only the newly generated cleared file—not a reference, sample, prior raster or synthetic fixture. It must be float32, EPSG:32611, 100 m, shape 3730 × 3292, affine (100, 0, 243350, 0, −100, 4508550). All footprint values must be finite and in [0,1]. The shared export uses zero outside, no nodata sentinel, and no hidden interior mask.</p></li><li><strong>Check the exact serialized file.</strong><p>Run <code>python scripts/validate_submission.py FILE.tif</code>. If using a ZIP, it must contain exactly that one TIFF. The writer's name and note are limited to 140 characters. Local validation is not organizer acceptance.</p></li><li><strong>Use the separate slot selector.</strong><p>Confirm the actual weekly cap on the authenticated submission page and obtain slot authorization. Neither this site nor this run spends a slot. No weekly-cap value has been observed here.</p></li><li><strong>Submit and retain the organizer receipt.</strong><p>On DrivenData's “New submission” page choose the cleared file, paste its unique name/note where supported, and submit only after authorization. Archive the file hash and submission-page receipt. Only that receipt can support an ORGANIZER-CONFIRMED result.</p></li></ol></section>
-<section><h2>About the previous range error</h2><p>The rejected file was not supplied, so the root cause is unknown. The shared writer rejects values outside [0,1], NaN/infinity, sentinels, grid mismatches, empty support and hidden footprint pixels. It does not silently clip or “repair” bad model output.</p><div class="note">No current submission name or raster hash exists. The unique <em>run</em> identifier is <code>g64-edti-20261011-preflight-negative</code>; it must not be mistaken for a submission filename.</div></section>
-<section><div class="actions"><a class="button" href="data/run_card.json" download="g64-negative-run-card.json">Download the run card</a><a class="button secondary" href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official format specification ↗</a></div><p class="small" style="margin-top:15px">Organizer pages are provided for manual review. They were not accessible from this runtime.</p></section></main><footer class="wrap foot"><span>GEMSDOE64 / Expected-DTI selection lane<br>Evidence, not leaderboard projections. Negative results are deliverables.</span>
+<a class="brand" href="index.html"><span class="mark">G64</span><span>GEMSDOE<small>Fault discovery lab</small></span></a><div class="navlinks"><a href="index.html">Overview</a><a href="executive-summary.html" aria-current="page">Submit safely</a><a href="submission-guide.html">Submission guide</a><a href="research.html">Research</a><a href="sources.html">Sources</a></div></nav></header>
+<div class="ribbon"><div class="wrap"><strong>NOT CLEARED FOR SUBMISSION</strong><span>Candidate TIFF published · no weekly slot used</span><a href="executive-summary.html">Read the submission decision →</a></div></div>
+<main id="main" class="wrap"><div class="page-head"><p class="eyebrow">Executive summary / submission decision</p><h1>Should I submit this file?</h1>
+<p class="lead"><strong>Only if you accept a measured redundancy.</strong> The candidate is format-clean and byte-unique, but the lane's own
+promotion gate is <strong>not</strong> met, so the file is published as a labelled candidate and not as a promoted submission.</p></div>
+<div class="note warn"><strong>The short version:</strong> downloading and submitting is safe for the format (it cannot trigger the
+“Predicted values must be in range [0,1]” rejection: min 0.0, max 1.0, no NaN inside the footprint), but the evidence says it is unlikely
+to beat the owner-reported champion, and 88.8% of its dots coincide with an earlier submission's dot pattern.</div>
+<section><h2>Facts about the file</h2><dl class="kv"><dt>File</dt><dd><code>gems64-lane-ampsnr-37654-20261011.tif</code></dd>
+<dt>sha256</dt><dd><code>534eea95cfc4798e035698e447050b709cf63bbd7ea52c79cb6fae523b599b38</code></dd>
+<dt>ZIP</dt><dd><code>gems64-lane-ampsnr-37654-20261011.zip</code></dd>
+<dt>Submission name</dt><dd>gems64-lane-ampsnr-37654-20261011.tif (37/140 characters)</dd>
+<dt>Submission note</dt><dd>Native 2 m lidar scarp amp/SNR percentile surface; 37654 blue-noise dots &gt;=3 px off catalogue; byte/pixel-unique; NOT promotion-cleared (135/140 characters)</dd>
+<dt>Validator</dt><dd>float32, EPSG:32611, 100 m, values 0.0–1.0,
+all 18 checks passed (“range [0,1] guaranteed”: true;
+dots on the mapped catalogue: 0)</dd>
+<dt>Status</dt><dd>NOT cleared · locally validated within separately recorded inventory scope; not organizer acceptance or slot approval</dd></dl></section>
+<section><h2>Why the verdict is negative</h2><ol class="steps">
+<li><strong>Pooled instrument 1 favours the candidate, the stratum does not.</strong><p>Against the owner-reported champion the candidate gains
++0.04150 (SE 0.01716) on the population of state-map faults that lie off the mapped catalogue.
+Inside interior 20 km blocks, where range-front terrain cannot explain credit, the champion scores
+0.08767 against the candidate's 0.01433
+(paired -0.07333, SE 0.01060).</p></li>
+<li><strong>The terrain-matched control is not beaten.</strong><p>Dots drawn from the same relief × slope classes score
+0.12407 against the candidate's 0.13689
+(candidate minus control: +0.01282, SE 0.00722).</p></li>
+<li><strong>Instrument 2 shows no harm, and no edge.</strong><p>The published artifact scored as-is returns 0.00000 on
+all four folds <em>by construction</em> (its dots are ≥ 3 px from the whole catalogue while this instrument's truth is catalogue geometry) — a structural
+diagnostic, not a harm measurement. The protocol construction (per-fold placement from the visible catalogue) scores
+0.06183 (0.04957–0.07344) against the mass-matched random control
+0.07548 and the terrain-matched control 0.06299: statistically tied.</p></li>
+<li><strong>Uniqueness is byte-deep, not pattern-deep.</strong><p>byte- and pixel-unique, but most candidate dots sit within 3 px of an earlier submission&#x27;s dots; the literal and discriminating 3 px clauses are effectively unsatisfiable in this registry because two comparators cover &gt;=99.87% of the footprint</p></li></ol></section>
+<section><h2>The submission path, if you decide to use it</h2><p>Step-by-step instructions, including what to check before spending a slot,
+are on the <a href="submission-guide.html">submission guide</a>.</p>
+<ol class="steps"><li><strong>Read the verdict.</strong><p>No artifact here is approved for an automatic weekly slot; this is a labelled candidate.</p></li>
+<li><strong>Verify the hash.</strong><p>Download the TIFF (or the single-TIFF ZIP) and compare sha256 with the receipt.</p></li>
+<li><strong>Validate locally.</strong><p><code>python scripts/validate_submission.py FILE.tif</code> — local format checks only.</p></li>
+<li><strong>Submit only as an authorized operator.</strong><p>The lane never spends a slot itself. Retention of the submission-page receipt is the only
+path to an ORGANIZER-CONFIRMED number.</p></li></ol></section>
+<section><div class="actions"><a class="button" href="data/run_card.json" download="g64-run-card.json">Download the run card</a>
+<a class="button secondary" href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Official format specification ↗</a></div>
+<p class="small">Organizer pages are provided for manual review; they were fetched through a public mirror and are not re-verified here.</p></section></main><footer class="wrap foot"><span>GEMSDOE64 / Expected-DTI selection lane<br>Evidence, not leaderboard projections. Negative results are deliverables.</span>
 <span><a href="data/run_card.json">JSON run card</a> · <a href="https://github.com/buffedlizard55-lab/GEMSDOE64">Repository ↗</a></span></footer></body></html>

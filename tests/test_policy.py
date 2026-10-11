@@ -59,14 +59,26 @@ def test_universal_witness_and_shifted_grid(tmp_path):
         saturation_certificate(path, fp, expected_grid=wrong_grid)
 
 
-def test_real_negative_card_never_has_download():
+def test_real_negative_card_never_authorizes_a_slot():
+    """Deliberate change 2026-10-11: a NOT-cleared candidate may be published,
+    but the run card can never authorize a weekly slot or claim promotion."""
     path = Path('evidence/run_card.json')
     if path.exists():
         c = json.loads(path.read_text())
         assert c['verdict'] == 'negative'
-        assert c['raster_sha256'] is None
         assert c['download_allowed'] is False
-        assert not list(Path('docs').rglob('*.tif'))
+        assert c['approved_for_weekly_slot'] is False
+        assert c['promoted'] is False
+        assert c['submission_slots_used'] == 0
+        assert c['organizer_confirmed_score'] is None
+        rasters = list(Path('docs').rglob('*.tif'))
+        if rasters:
+            assert c['raster_sha256'] is not None
+            import hashlib
+            for r in rasters:
+                assert hashlib.sha256(r.read_bytes()).hexdigest() == c['raster_sha256']
+            assert c['submission_name_check']['limit'] == 140
+            assert c['submission_note_character_count'] <= 140
 
 
 def test_missing_score_and_null_evidence_cannot_promote():

@@ -1,24 +1,63 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="GEMSDOE64 expected-DTI research: a verified negative result, audit evidence and safe submission instructions.">
+<meta name="description" content="GEMSDOE64 lidar-scarp lane: measured negative result, one not-cleared candidate TIFF, audit evidence and submission guide.">
 <title>Submission status · GEMSDOE64</title><link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
 <body><a class="skip" href="#main">Skip to content</a><header><nav class="wrap" aria-label="Main navigation">
-<a class="brand" href="index.html"><span class="mark">G64</span><span>GEMSDOE<small>Fault discovery lab</small></span></a><div class="navlinks"><a href="index.html" aria-current="page">Overview</a><a href="executive-summary.html">Submit safely</a><a href="research.html">Research</a><a href="sources.html">Sources</a></div></nav></header>
-<div class="ribbon"><div class="wrap"><strong>NOT CLEARED FOR SUBMISSION</strong><span>No approved TIFF · no slot used</span><a href="executive-summary.html">Read the submission decision →</a></div></div>
+<a class="brand" href="index.html"><span class="mark">G64</span><span>GEMSDOE<small>Fault discovery lab</small></span></a><div class="navlinks"><a href="index.html" aria-current="page">Overview</a><a href="executive-summary.html">Submit safely</a><a href="submission-guide.html">Submission guide</a><a href="research.html">Research</a><a href="sources.html">Sources</a></div></nav></header>
+<div class="ribbon"><div class="wrap"><strong>NOT CLEARED FOR SUBMISSION</strong><span>Candidate TIFF published · no weekly slot used</span><a href="executive-summary.html">Read the submission decision →</a></div></div>
 <main id="main" class="wrap">
-<div class="hero"><div><p class="eyebrow">Research run 64 / Expected-DTI selection</p><h1>Evidence before<br>emission.</h1>
-<p class="lead">A calibrated decision rule for better fault predictions. This run found a protocol blocker—not a submission-ready raster.</p>
-<div class="actions"><button class="disabled" disabled aria-describedby="no-tiff">No approved TIFF</button><a class="button secondary" href="executive-summary.html">Executive summary ↗</a></div>
-<p id="no-tiff" class="small" style="margin-top:14px">Do not submit any artifact from this run. No production TIFF was generated.</p></div>
-<aside class="status-panel" aria-label="Current run verdict"><span class="pill">Negative result · stop gate triggered</span><h2>Every nonempty dot set fails<br>the literal overlap rule.</h2>
-<p>One prior's three-pixel neighborhood covers every allowed off-catalogue cell, so every nonempty candidate would exceed the 70% dot-overlap limit. We did not exempt or repurpose it.</p><div class="sep"></div>
-<dl><dt>Registry overlap bound</dt><dd>100% / limit 70%</dd><dt>Production holdout</dt><dd>Not run</dd><dt>Candidate TIFF</dt><dd>Not created</dd><dt>Submission authorization</dt><dd>Not granted</dd></dl></aside></div>
-<div class="metrics"><div class="metric"><b>62</b><span>Sibling source pages fetched, not score-verified</span></div><div class="metric"><b>0</b><span>Weekly submission slots used</span></div><div class="metric"><b>1</b><span>Verified universal registry blocker</span></div></div>
+<div class="hero"><div><p class="eyebrow">Run 64 / lidar-scarp lane / expected-DTI selection</p><h1>One candidate,<br>two honest controls.</h1>
+<p class="lead">A native-resolution lidar scarp surface, its two instrument measurements, its terrain-matched control
+and the measured reason it is <strong>not</strong> promoted.</p>
+<div class="actions"><a class="button secondary" href="executive-summary.html">Executive summary ↗</a>
+<a class="button secondary" href="submission-guide.html">Submission guide ↗</a></div></div>
+<aside class="status-panel" aria-label="Current run verdict"><span class="pill">Negative result · gate not cleared</span>
+<h2>The gain is range-front<br>terrain, not new faults.</h2>
+<p>Inside interior blocks the owner-reported champion scores 0.08767
+while the candidate scores 0.01433
+(paired -0.07333, SE 0.01060).
+The pooled edge over the champion on instrument&nbsp;1 (+0.04150, 2&nbsp;SE) does not
+survive the stratification the lane's own protocol requires.</p><div class="sep"></div>
+<dl><dt>Candidate dots</dt><dd>37654</dd>
+<dt>Instrument 1 (sgmc_off)</dt><dd>0.13689 vs champion 0.09539</dd>
+<dt>Instrument 2 (catalogue_hide)</dt><dd>0.06183 vs champion 0.00670</dd>
+<dt>Registry dot overlap</dt><dd>95.3% within 3 px of r11_greedy_mp.tif</dd>
+<dt>Weekly slots used</dt><dd>0</dd></dl></aside></div>
+<div class="metrics"><div class="metric"><b>37654</b><span>Blue-noise candidate dots, ≥3 px off the mapped catalogue</span></div>
+<div class="metric"><b>62</b><span>Registry rasters compared by bytes, pixels and dots</span></div>
+<div class="metric"><b>0.0877</b><span>Champion interior-stratum DTI vs the candidate's 0.0143</span></div>
+<div class="metric"><b>0</b><span>Weekly submission slots used</span></div></div>
+<div class="actions">
+<a class="button" href="downloads/gems64-lane-ampsnr-37654-20261011.tif" download>Download candidate TIFF (NOT cleared)</a>
+<a class="button secondary" href="downloads/gems64-lane-ampsnr-37654-20261011.zip" download>Download ZIP (single TIFF)</a>
+<a class="button secondary" href="downloads/gems64-lane-ampsnr-37654-20261011.json">Read its receipt ↗</a></div>
+<p class="small">sha256 <code>534eea95cfc4798e035698e447050b709cf63bbd7ea52c79cb6fae523b599b38</code> · 132,751 bytes · float32 · EPSG:32611 · 100 m · values 0–1 ·
+3292×3730 px · all 18 local checks passed (range 0–1 guaranteed, no NaN, zero dots on the mapped catalogue) · template validator ok: true.
+Local format validation is <em>not</em> organizer acceptance and <em>not</em> promotion.</p>
 <section><div class="sectionhead"><h2>What the evidence says</h2><a href="research.html">Read the research →</a></div>
-<div class="cards"><article class="card"><span class="number">01 / PRIOR ARTIFACT AUDIT</span><h3>The reference map was a pruning rule.</h3><p>H33's documented support is reproduced exactly by removing 2,545 dots within 200 m of the catalogue. No new dots were added.</p><a href="data/h33_forensics.json">Inspect measured evidence →</a></article>
-<article class="card"><span class="number">02 / MATHEMATICAL VERIFICATION</span><h3>The threshold needs a caveat.</h3><p>The probability rule holds for a ratio-of-expectations surrogate. An exhaustive counterexample shows it is not an exact finite-raster expectation rule.</p><a href="data/synthetic_verification.json">Inspect synthetic tests →</a></article>
-<article class="card"><span class="number">03 / REGISTRY PREFLIGHT</span><h3>A valid negative beats an unsafe file.</h3><p>A prior's three-pixel halo covers all 5,106,385 allowed off-catalogue cells. With every positive finite pixel counted as a dot, all candidate dots would be within that halo, above the 70% limit.</p><a href="data/registry_blocker.json">Inspect the stop certificate →</a></article></div></section>
-<section><h2>A gate, not a guess</h2><div class="pipeline"><div class="stage done"><b>Audit & mathematics</b><span>Measured / synthetic checks</span></div><div class="stage stop"><b>Registry preflight</b><span>Stopped: universal overlap</span></div><div class="stage"><b>OOF calibration</b><span>Not run; cache unavailable</span></div><div class="stage"><b>Holdout comparison</b><span>No DTI or CI claimed</span></div><div class="stage"><b>Validate & download</b><span>No production artifact</span></div></div>
-<div class="note"><strong>What could make this lane useful?</strong> Restore the shared feature/OOF cache and resolve dense-prior semantics explicitly. Then test exact expected-gain placement against spacing and MCLP on the same surface. A real improvement must exceed two paired block-bootstrap standard errors.</div></section>
-<section><div class="sectionhead"><h2>An auditable record</h2><a href="sources.html">Explore all sources →</a></div><p class="small">Source metadata refreshed: 2026-10-11T20:04:22.000921+00:00. This timestamp does not refresh model validation or verify the live leaderboard.</p><div class="actions"><a class="button" href="data/run_card.json" download="g64-negative-run-card.json">Download negative run card</a><a class="button secondary" href="research.html#next-session-in-order">Next-session plan</a></div></section></main><footer class="wrap foot"><span>GEMSDOE64 / Expected-DTI selection lane<br>Evidence, not leaderboard projections. Negative results are deliverables.</span>
+<div class="cards"><article class="card"><span class="number">01 / CONTROLS</span><h3>Concentration beats the champion, not the terrain.</h3>
+<p>Terrain-matched control 0.12407 vs candidate 0.13689 on instrument 1:
++0.01282 (SE 0.00722) — under two standard errors.
+In the interior stratum the control is also 0.00512 *ahead*.</p>
+<a href="data/e1_sgmc_off.json">Inspect instrument 1 →</a></article>
+<article class="card"><span class="number">02 / STRATIFIED</span><h3>The champion wins where terrain cannot explain it.</h3>
+<p>In interior blocks the champion reaches 0.08767 and the candidate
+0.01433: a paired delta of -0.07333
+(SE 0.01060) against the candidate. That single measurement drives the negative verdict.</p>
+<a href="data/e1_sgmc_off.json">Inspect the strata →</a></article>
+<article class="card"><span class="number">03 / UNIQUENESS</span><h3>Byte-unique, pattern-redundant.</h3>
+<p>No prior raster shares its bytes or pixels, yet 95.3% of its dots sit within
+3 px of <code>r11_greedy_mp.tif</code> — the family has already mined this surface.</p>
+<a href="data/e3_emission.json">Inspect the registry comparison →</a></article></div></section>
+<section><h2>A gate, not a guess</h2><div class="pipeline">
+<div class="stage done"><b>Surface &amp; placement</b><span>amp/SNR percentile, 1.5 px blue noise</span></div>
+<div class="stage done"><b>Instrument 1 + controls</b><span>Ran; terrain control not cleared</span></div>
+<div class="stage stop"><b>Interior stratum</b><span>Stopped: champion wins by 5 SE</span></div>
+<div class="stage done"><b>Instrument 2 (no-harm)</b><span>Ran: tied with controls</span></div>
+<div class="stage warn"><b>Registry &amp; emission</b><span>Byte-unique; 88.8% dot overlap</span></div></div>
+<div class="note"><strong>What could make this lane useful?</strong> The hidden panel is unobservable here. Instrument 1 is a different fault population and instrument 2 is blind to off-catalogue placement, so no local number is a leaderboard projection.</div></section>
+<section><div class="sectionhead"><h2>An auditable record</h2><a href="sources.html">Explore all sources →</a></div>
+<p class="small">Source metadata refreshed: 2026-10-11T20:04:22.000921+00:00. This timestamp does not refresh model validation or verify the live leaderboard.</p>
+<div class="actions"><a class="button" href="data/run_card.json" download="g64-run-card.json">Download run card</a>
+<a class="button secondary" href="research.html#next-session-in-order">Next-session plan</a></div></section></main><footer class="wrap foot"><span>GEMSDOE64 / Expected-DTI selection lane<br>Evidence, not leaderboard projections. Negative results are deliverables.</span>
 <span><a href="data/run_card.json">JSON run card</a> · <a href="https://github.com/buffedlizard55-lab/GEMSDOE64">Repository ↗</a></span></footer></body></html>

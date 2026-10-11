@@ -1,189 +1,194 @@
-# Review findings — expected-DTI selection lane
+# Review findings — lidar-scarp lane, run 64
 
 ## Decision
 
-**NEGATIVE / NOT CLEARED FOR SUBMISSION.** No new competition TIFF was created.
-There is no approved download and no slot was used. This is an explicit failure
-to meet the request for a new deliverable TIFF, not a claim that a placeholder
-satisfies that request. The user's own mandatory stop/promotion rules take
-precedence over publishing an unvalidated file.
+**NEGATIVE / NOT CLEARED FOR SUBMISSION.** One candidate TIFF was generated,
+hashed, validated and published for download **labelled as not-cleared**. No
+weekly slot was used, no promotion is claimed, and the owner-reported champion
+is not beaten on the evidence that this run was able to measure where the
+terrain-class mimic cannot explain the gain.
 
-## What was actually available
+Every number below carries its evidence class:
 
-The starting GEMSDOE64 commit `c45c7fa9816d15f3bffdada2be9297b6f87e39ee`
-contained only an 11-byte README. No previous pipeline, cache, trainable model,
-holdout best, or next-session task list existed in this checkout. Those claims
-in the prompt describe other sessions, not this repository.
+* `PROXY-INSTRUMENT (sgmc_off)` — a state-geological-map fault population located
+  more than 300 m from the mapped catalogue, evaluated on the shared evaluator
+  (`gems57-pooled-hide-v3-se`). It is *not* the hidden panel and it favours
+  rock-exposed terrain.
+* `HOLDOUT-DTI (catalogue_hide)` — whole-component hide-and-recover on the mapped
+  catalogue, shared evaluator, 4 label-blind quadrant folds, 80 px buffer.
+* `REGISTRY-MEASUREMENT` — byte, pixel, rank and dot-overlap comparisons against
+  the reachable registry rasters.
+* `ORGANIZER-CONFIRMED` — **none exists in this repository**.
 
-The shared evaluator, metric, holdout, writer and validator were imported from
-[60GEMSDOE at a fixed commit](https://github.com/buffedlizard55-lab/60GEMSDOE/tree/6444fa6552335190f0bc89661acf725ed73e7fcb/src/gems57).
-Original file hashes and local corrections are recorded. One implementation is
-used; there is no private scoring or TIFF-writing fork in the lane package.
-The advertised 35-channel cache receipt points to `/tmp/gems32/work/feature_stack.npy`;
-its bytes were not present in the checkout or in the inspected Git trees.
-A receipt is not a cache. No substitute feature stack was rebuilt.
-The [pinned feature receipt](https://github.com/buffedlizard55-lab/60GEMSDOE/blob/6444fa6552335190f0bc89661acf725ed73e7fcb/registry/feature_receipt.json)
-reports 5,165,852 footprint cells, while the downloaded sample has 5,167,373 finite
-cells: a **receipt-level difference of 1,521 cells**. Feature bytes were unavailable,
-so this is not a measured feature-mask comparison. It is a format/provenance
-warning: do not use a narrower feature-validity mask to put NaNs inside the
-sample footprint. This does not establish the cause of the user's rejected file.
+## What was actually built
 
+A **catalogue-independent** surface: the lane never uses distance-to-catalogue,
+catalogue density or any catalogue-derived feature to rank cells. The pipeline is
+12 quantised 2 m lidar scarp channels and 7 quantised 3 m scarp channels, decoded
+from their published manifests, reduced to named components at 100 m (amplitude,
+SNR-weighted amplitude, step, crest/base curvature, vergence asymmetry,
+cross-strike consistency, coherence, relief, 3 m replication, coverage), then
+percentile-ranked inside an eligible domain (lidar-covered cells, at least 3 px
+from the mapped catalogue, outside the cultural mask) and thinned by a greedy
+1.5 px blue-noise selection.
 
-Pinned sample/catalogue TIFFs were recovered through GitHub bridges. They have
-the expected grid, but a matching third-party hash is not independent proof of
-official origin. `labels.tif` in the inspected sibling is the same catalogue,
-not independent hidden-fault truth. Public source metadata were subsequently
-checked through official catalog pages; no external data bytes were acquired.
-No authenticated DrivenData login, leaderboard query, or weekly-cap observation
-was made.
+The run also ablated every component and the pre-declared equal-weight composite
+(0.45 amplitude / 0.30 coherence / 0.25 3 m replication) at 24 000 dots each
+(`PROXY-INSTRUMENT (sgmc_off)`). The composite is the **worst arm measured**
+(DTI 0.02372, credit 0.0540 per dot), because coherence (0.03217 / 0.0733) and the
+3 m replication gate (0.02390 / 0.0544) carry almost nothing and the gate even
+*anti*-correlates with the state-map population (canary AUC 0.343). The adopted
+surface is therefore the strongest single component, `amp_snr = sqrt(ex_max · ex_mean)`
+(0.10352 / 0.2377), with `amp_mean` (0.10291), `base` (0.10263) and `step`
+(0.10252) statistically beside it; `relief` reaches 0.08366 and `vergence`,
+`coh`, `replicate3m` stay at or below 0.05. That is a selection made **on the
+instrument**, and every receipt says so.
 
-## Why the GEMSDOE32 artifact could be effective
+## Instrument 1 — `PROXY-INSTRUMENT (sgmc_off)`
 
-This is a measured algorithm reconstruction, not a causal leaderboard analysis.
-The published H33-2-B2 TIFF has **37,654 positive cells**. Its predecessor has
-**40,199**. Removing predecessor dots at Euclidean catalogue distance **≤2 pixels**
-produces the H33 support exactly: **2,545 deletions, zero additions, zero pixel
-disagreements**. Both arrays were read and compared on the pinned grid. The H33
-file SHA-256 is `c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9`.
-These are ARTIFACT MEASUREMENTS, not scores.
+Domain: 2 967 065 eligible cells, 62 122 truth pixels (≥3 px from the catalogue),
+4 label-blind quadrant folds, 200 px (20 km) block bootstrap, 1 000 draws.
+The owner-reported champion `GEMSDOE32__h33-2-b2-zeros.tif` (sha256 `c55bafc4…`)
+is re-measured on the same instrument as a comparator arm — never as a score.
 
-Sources:
-- [Published H33 artifact audit](https://github.com/buffedlizard55-lab/GEMSDOE32/blob/b39e16ee85f83e3291951f56b615d657a071bb2b/docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-audit.json)
-- [H33 source page](https://github.com/buffedlizard55-lab/GEMSDOE32/blob/b39e16ee85f83e3291951f56b615d657a071bb2b/docs/index.html)
-- `evidence/h33_forensics.json` and `scripts/audit_h33.py` in this repository.
+| arm (37 654 dots unless noted) | DTI | 95 % CI | credit per dot |
+|---|---|---|---|
+| lane `amp_snr` 37 k | **0.13689** | 0.10660–0.16868 | 0.2110 |
+| terrain-matched control (8 relief × 4 slope classes) | 0.12407 | — | 0.1939 |
+| mass-matched random | 0.06373 | — | 0.0976 |
+| distance-only control (farthest cells) | 0.00353 | — | 0.0054 |
+| owner-reported champion `h33-2-b2` | 0.09539 | — | 0.1465 |
+| lane 160 k dots | 0.23246 | — | 0.1627 |
 
-With T = TP, F = FP and K = truth count, the shared kernel metric gives
-D = α(T+F)+βK when α+β=1. Deleting a dot with lost true credit t and saved false
-credit f improves the realized ratio exactly when
+Paired block-bootstrap differences **candidate − arm**:
 
-    (1 − α S) t < α S f,  where S = T / D.
+| arm | Δ | SE | verdict |
+|---|---|---|---|
+| champion `h33-2-b2` | **+0.04150** | 0.01716 | clears 2 SE |
+| terrain-matched control | +0.01282 | 0.00722 | **does not clear 2 SE** |
+| random mass-matched | +0.07316 | 0.01248 | clears 2 SE |
+| lane 160 k | −0.09557 | 0.00776 | larger-mass arm wins |
 
-Thus deletion helps if it saves penalty with little loss of unique coverage.
-Known-fault-adjacent predictions may spend mass on already explained structures;
-a sparse layout may reduce kernel redundancy. But distance to a known fault is
-not proof that an unseen splay is absent. The 200 m pruning rule can also delete
-real hidden continuations. We cannot attribute an organizer score to any of
-these mechanisms without hidden truth or a defensible independent experiment.
+Two things kill the discovery claim on this instrument.
 
-The H33 score-to-file claim and the prompt's leaderboard snapshots are **unverified**: no organizer receipt connects a value to the exact artifact, account, and competition phase. The pinned owner page also distinguishes a projection from an organizer score. No numerical user/owner leaderboard claim is reproduced here, treated as a baseline, or presented as a result. No improvement over an organizer-confirmed score is established or promised.
+1. **The gain is concentrated at the range front.** 117 of 323 blocks (36 %) are
+   classified range-front (they contain catalogue cells in the top relief decile)
+   and hold 74 % of the instrument truth. Inside the 206 interior blocks the
+   ordering inverts: champion 0.08767, candidate 0.01433 — a paired difference of
+   **−0.07333 (SE 0.01060)**, i.e. the champion beats the candidate by roughly
+   3.5 SE where range-front incision cannot earn the credit. Instrument 1 also
+   rewards mass monotonically (0.23246 at 160 k dots), which is the signature of a
+   terrain-class proxy rather than of a fault detector.
+2. **A stricter truth changes nothing.** Using only truth cells more than 800 m
+   from the mapped catalogue (51 742 px), the pooled numbers barely move
+   (candidate 0.13635, champion 0.08481) and the interior ordering is identical
+   (champion 0.08140, candidate 0.01541, terrain-matched control 0.02135).
 
-## The threshold claim: a necessary correction
+The internal control comparisons are equally informative: a *fixed sibling
+artifact* (the champion), which no arm of this run can influence, beats the
+candidate inside the interior stratum; and the terrain-matched control is
+statistically indistinguishable from the candidate. On this instrument the lane
+surface is, at best, a range-front relief detector.
 
-For independent binary decisions without spatial credit, define the **ratio of
-expected counts**
+## Instrument 2 — `HOLDOUT-DTI (catalogue_hide)`
 
-    S(A) = sum(i in A) p_i / [α |A| + β sum(i) p_i].
+Whole-component hide-and-recover with per-fold placement rebuilt from the visible
+catalogue only, 60 988 withheld positive pixels, 161 physical clusters.
 
-Adding a cell improves this surrogate iff `p_i > α S(A)`. At an optimum, the
-threshold is `α S*`; for F1, α=β=1/2. At a hypothetical surrogate value 0.30,
-α=0.2 gives the arithmetic threshold 0.06. Those are hypothetical mathematical
-values, not a measured HOLDOUT-DTI or competition score.
+| arm | DTI | 95 % CI |
+|---|---|---|
+| mass-matched random | 0.07548 | 0.06885–0.08142 |
+| terrain-matched control | 0.06299 | 0.05355–0.07230 |
+| lane candidate | 0.06183 | 0.04957–0.07344 |
+| owner-reported champion | 0.00670 | 0.00597–0.00745 |
 
-We checked 204,800 additions across 200 probability vectors and all their
-256 subsets: no surrogate-rule contradictions. **But expectation of a ratio
-is not generally the ratio of expectations.** Exhaustive enumeration of four
-Bernoulli truths found a counterexample: the proposed pixel probability exceeds
-α times the exact expected score, while the exact expected score decreases.
-The probabilities and all calculations are in `evidence/synthetic_verification.json`.
-This falsifies the unrestricted finite-raster claim; it does not falsify the
-population/surrogate F1 result attributed to Lipton, Elkan and Narayanaswamy.
-[Primary-author preprint link, not fetched here](https://arxiv.org/abs/1402.1892).
+Paired against the candidate: random −0.01366 (SE 0.00615, not 2 SE),
+terrain-matched −0.00116 (SE 0.00349), champion +0.05513 (SE 0.00601, clears
+2 SE). **This instrument cannot promote the candidate.** It is a no-harm check and
+a faint-scarp sensitivity check: the candidate is statistically tied with both
+controls, which is the honest reading of "no measurable harm, no measurable
+edge". The **published artifact as-is** scores 0.00000 on all four folds by
+construction, because its dots sit ≥ 3 px from the entire catalogue and this
+instrument's truth *is* catalogue geometry; that row is a structural diagnostic
+(what the file targets is off-catalogue faulting), not a harm measurement. The champion's 0.00670 is *structurally* poor because the champion was
+built to avoid the mapped catalogue, and this instrument scores exactly that
+catalogue; the number is reported, never used as a comparative claim.
 
-For the shared spatial metric, truth coverage is a maximum over predictions,
-whereas the FP term sums prediction costs. A new dot may cover many truth cells;
-its ΔTP can exceed its nearest-truth credit and even one. The correct realized
-inclusion test is
+## Registry comparison — `REGISTRY-MEASUREMENT`
 
-    ΔTP > α S [ΔTP + 1 − nearest_truth_kernel_credit].
+62 single-band rasters on the pinned grid were decoded and compared (bytes,
+decoded pixels, rank correlation, dot overlap, dot-set Jaccard).
 
-A scalar calibrated probability cannot encode redundancy or the joint spatial
-truth distribution. The reference selector therefore averages **each draw's
-actual ratio**, re-evaluates all additions, and then removes dots while removal
-increases the mean. It does not assume submodularity for lazy updates. Thirty-two
-synthetic jittered line rasters verified exact agreement with the literal
-brute-force metric oracle. They are not trained ensemble/TTA/MC-dropout outputs,
-not calibration evidence, and never a holdout score. The reference implementation
-has explicit size/time limits and is not a production-scale optimizer.
+* `byte_unique` **true**, `pixel_unique` **true** — no prior raster shares the
+  candidate's bytes or its decoded positive support.
+* Two comparators saturate the footprint: `calib_r13lattice_00904.tif` and
+  `r13_lattice_s5_00904.tif` (206 895 dots each) place a 3 px neighbourhood over
+  **99.87 %** of the footprint, so *every* nonempty candidate exceeds the literal
+  "≤ 70 % within 3 px" clause against them (IR-H71-UNIQ-01).
+* With comparators of near-total halo coverage set aside, the discriminating
+  reading still fails: **88.8 %** of the candidate's dots lie within 3 px of
+  `gems32-bayesopt-dilation-scarp-d28-20261004-*` (45 000 dots) and **95.3 %**
+  within 3 px of `r11_greedy_mp.tif` (272 853 dots), with only 6.1 % / 0.9 %
+  exact-dot Jaccard. The lane's top cells are the same physical scarp cells that
+  earlier submissions already mined; the candidate is a fresh dot set on a
+  heavily used surface. Verdict: `negative` (logged as a near-duplicate, not
+  exempted).
 
-## Decisive registry stop
+## Why the owner-reported champion scores highest
 
-[17GEMSDOE's E-proba-multiscale artifact](https://github.com/buffedlizard55-lab/17GEMSDOE/blob/6fc71d19d49dca4960d5434bd81b6dd06fcc030a/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif)
-has positive finite values at **all 5,167,373 footprint cells**. Its 3-pixel halo
-covers **all 5,106,385 off-catalogue allowed cells**. The downloaded witness hash
-is `ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be`.
-The sample, catalogue, and witness grids were checked before the calculation.
+This run's measurements add to the sibling reconstruction (its support is
+reproduced by pruning, 2 545 deletions and zero additions):
 
-Under the template's literal rule that every positive prediction pixel is a dot,
-any nonempty candidate has forward overlap 1.0 with this prior, whatever its
-geology or rank correlation. This is a universal obstruction, not a measured
-candidate correlation or evidence of scientific copying. Excluding dense priors
-could make a sensible *revised* protocol, but that change is not authorized by
-this prompt. This session retains the literal rule and stops before production
-fitting/placement. No surface or final dots exist to compare. Full byte/pixel
-comparison against every prior is **not complete**; it is unnecessary to prove
-this single-witness failure, and would remain mandatory for a promotion.
+* On the honest-like population the champion is **not** a strong fault detector:
+  `PROXY-INSTRUMENT (sgmc_off)` 0.09539 at 37 654 dots versus 0.13689 for the
+  lane candidate; `HOLDOUT-DTI (catalogue_hide)` 0.00670.
+* Where it *is* strong is the interior stratum of the state-map population
+  (0.08767 with the same dot budget, 6× the candidate) and the 800 m strict
+  truth (0.08140). Its geometry therefore earns credit in low-relief,
+  interior terrain — exactly the population where a lidar-visible alluvial scarp
+  detector *should* earn it and where this run's surface does not.
+* The plausible explanation, consistent with every measurement here, is that the
+  champion's advantage comes from **placement across a broad, interior, non-halo
+  field** rather than from a stronger per-pixel detector: it is spread out
+  (median 1.97 km from the mapped network in the sibling reconstruction, maximum
+  21.9 km), it is not confined to range fronts, and it is not a duplicate of the
+  scarp-feature submissions that saturate the registry's overlap clauses.
+* **Is a higher-scoring submission achievable?** The evidence here says yes in
+  principle and not from this lane: the field must earn credit in the interior
+  stratum, must beat a terrain-matched control there by more than 2 SE, and must
+  not be a near-duplicate of the scarp-feature family. No arm of this run does
+  the first two, so no promotion is offered. The published candidate is a
+  format-valid, hash-verifiable, byte-unique artifact with a measured pooled edge
+  over the champion on one proxy instrument — and a measured 3.5 SE deficit in
+  the stratum that decides the verdict.
 
-## Four ranked in-lane geological hypotheses — not tested claims
+## Artefacts
 
-There was no implementation to differ from in the starting repository. We do not
-claim global novelty across every sibling's source code. In fact scarp, magnetic,
-radiometric, and basement-edge families have already appeared in the supplied
-history. The proposed novel intervention here is the **calibration/expected-DTI
-placement rule**, not rediscovery of those layers. Rankings below are qualitative
-engineering priorities, not predicted DTI values. Only H64-A would be eligible
-for a first experiment after blockers are resolved.
-
-| Priority | Hypothesis and specific cached layers | Physical signature and reason for off-catalogue recovery | Non-fault mimic | Distinction / expected opportunity / cost |
-|---|---|---|---|---|
-| 1 · H64-A | Weak cross-sensor ridge consensus: cached det_elev_slope, curv_s1/s2, tmi_edge/rtp_edge, grav_edge | Modest aligned scarp curvature and potential-field edges may jointly support subtle or partly buried extensions too weak for a single-layer threshold | Differential erosion at lithologic contacts | Preserve cache features; calibrate OOF uncertainty, then replace spacing with exact expected-gain placement. Highest relative opportunity, medium cost; cache/OOF absent |
-| 2 · H64-B | Along-strike continuity with localized uncertainty: cached ridge_s1/s2/s3, coherence_s2, strike_cos/sin | Multiscale ridge agreement could maintain degraded fault expression under patchy surface cover without catalogue continuation features | Drainage incision or terrace margins | Same selection lane, not a new line detector; retain plausible shifted truths rather than an arbitrary exclusion radius. Medium opportunity, medium cost |
-| 3 · H64-C | Buried shallow-edge corroboration: cached depth_grad, grav_edge, tmi_edge | Coincident independent gradients might locate buried steps where catalogue surface expression is missing | Intrusive or depositional lithologic boundaries | Existing edge transforms only; posterior positional spread penalizes unresolved locations. Lower localization confidence at 300 m, medium cost; earlier basement lanes already tested broader family |
-| 4 · H64-D | Conductivity-boundary/topographic disagreement: cached cond_edge, ridge_s2, relief5 | Localized electrical transition near a subtle ridge could indicate fluid-altered structure omitted from a surface-fault catalogue | Saline playa sediments or non-fault clay layers | No new MT inversion or new data acquisition; exact marginal utility can reject broad uncertain anomalies. Lowest confidence, medium cost; conductivity-claycap family not globally new |
-
-All four active hypotheses depend on *existing named cache channels*, not newly
-proposed external layers. None is viable until the cache bytes/provenance and
-registry semantics are resolved. Separate source reconnaissance checked the
-[USGS GeoDAWN ScienceBase record](https://www.sciencebase.gov/catalog/item/657e1d85d34e23d3533209f7): it lists Area 1/Area 2 GeoTIFF grid archives, but no files were downloaded, file-level terms audited, or exact competition polygon overlaid. The linked [GDR 1391 page](https://gdr.openei.org/submissions/1391) returned “No submission found.” These are metadata checks only, not active off-lane feature proposals. No feature-only canary was run on real data because no feature stack was used. Cross-sensor correlation is not causal proof of a permeable fault, and fault detection is not direct geothermal-vent or reservoir confirmation.
+| artifact | value |
+|---|---|
+| candidate TIFF | `docs/downloads/gems64-lane-ampsnr-37654-20261011.tif` |
+| sha256 | `534eea95cfc4798e…` (full hash in the run card and the adjacent receipt) |
+| validator | float32, EPSG:32611, 100 m, 3730 × 3292, values 0.0–1.0, template report ok |
+| submission name / note | 36 / 135 characters (limit 140) |
+| weekly slots used | 0 |
+| instrument 1 | `evidence/e1_sgmc_off.json` |
+| instrument 2 | `evidence/e2_catalogue_hide.json` |
+| registry | `evidence/e3_emission.json`, `evidence/registry_index.json` |
+| run card | `evidence/run_card.json` (schema `gems64-run-card-v2`) |
 
 ## Next session, in order
 
-1. Resolve the registry semantics explicitly upstream: keep this negative verdict
-   unless the owner changes how dense continuous rasters participate in dot overlap.
-2. Restore the exact shared feature-cache bytes with hashes, band descriptions,
-   official provenance and model/OOF manifests. Do not reconstruct an untracked substitute.
-3. Rebuild a single shared, nested buffered blocked experiment from whole components;
-   fit each catalogue-derived feature on visible faults only. Run every feature's
-   canary before modeling; investigate AUC >0.90 (also its inverse).
-4. Train/calibrate without evaluation-label access; preserve spatially correlated
-   ensemble, TTA and genuine MC-dropout variation, with non-wrapping 1–2 pixel
-   positional perturbations. Thirty-two copies or independent jitter alone do not
-   substitute for epistemic uncertainty. Check calibration on unbalanced population
-   prevalence; catalogue probability is not automatically unmapped-fault probability.
-5. Scale the exact-gain reference algorithm using sparse/local coverage updates,
-   retaining a full oracle test. Compare with frozen spacing and MCLP on the **same
-   surface**, same fold masks, and the same truth; compare to a comparable historical
-   best. Pool terms before resampling 20 km blocks; require gain >2 paired SEs.
-6. Only if all gates pass: write using the shared writer; run the on-disk validator;
-   do SHA and decoded-pixel checks against the full declared registry; publish one
-   unique TIFF with a ≤140-character note. Promotion to a weekly slot is a separate
-   authorized selector operation after checking the actual submission-page cap.
-
-## Range-error response and limitations
-
-The user's earlier file was not supplied, so its rejection cause is unknown.
-Possibilities include nodata sentinels, unnormalized output, infinity, or NaN
-inside the footprint. This writer never silently clips/repairs model output.
-Binary dots are already in [0,1]; all-finite zero-outside export is stricter than
-“NaN only outside,” so no NaN can leak inside. It checks float32, EPSG:32611,
-100 m pixels, exact shape/affine, footprint, catalogue masking, nonempty support,
-and the serialized TIFF and ZIP. Tests deliberately reject bad range/sentinels
-and verify a synthetic round-trip fixture, but **no production validator pass**
-is claimed. A local format pass is not organizer acceptance.
-
-The official [reference README](https://github.com/drivendataorg/gems-prize-reference-solution/blob/aebe92f7c8a990f0e3443451b7a825d9afd6336b/README.md)
-explicitly supports CPU-only execution. “GPU needed” and “only blocker is data
-placement” are not accurate descriptions of this checkout. The notebook's
-Tversky training loss is not an official spatial-DTI test oracle. We verified
-internal metric arithmetic against a separate literal implementation, not a
-live organizer test endpoint.
+1. Build the **interior-first** field the evidence points at: rank cells whose
+   geometry is inconsistent with range-front relief (low-relief, interior
+   blocks, high vergence asymmetry and cross-strike consistency) and evaluate it
+   on the interior stratum of both instruments before anything else.
+2. Freeze that field and budget in `PREREGISTRATION.md` **before** reading any
+   instrument, then run the pooled and interior comparisons once.
+3. Add the missing control arms: mass-matched random *inside* the interior
+   stratum and a sparse-spread control with the champion's shape (median ~2 km
+   from the network).
+4. Re-run the registry comparison with the two saturated lattice comparators
+   marked non-discriminating in the same receipt, and record exact-dot Jaccard
+   alongside the 3 px overlap so the duplicate reading cannot be misread.
+5. Do not spend a slot until the interior comparison clears 2 SE against the
+   terrain-matched control *and* against the sparse-spread control.

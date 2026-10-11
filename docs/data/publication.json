@@ -1,0 +1,26 @@
+{
+  "schema": "gems64-publication-v1",
+  "generated_utc": "2026-10-11T22:03:53+00:00",
+  "policy": "exactly one NOT-cleared candidate may be published; promoted artifacts cannot be rendered by this builder; no other raster may exist under docs/",
+  "candidate_published": true,
+  "candidate": {
+    "tif": "downloads/gems64-lane-ampsnr-37654-20261011.tif",
+    "zip": "downloads/gems64-lane-ampsnr-37654-20261011.zip",
+    "receipt": "downloads/gems64-lane-ampsnr-37654-20261011.json",
+    "sha256": "534eea95cfc4798e035698e447050b709cf63bbd7ea52c79cb6fae523b599b38",
+    "zip_sha256": "7d69edb826457ac458bd73ba9e206bf51baec6c900a192f737d6fa4d339e55cb",
+    "submission_name": "gems64-lane-ampsnr-37654-20261011.tif",
+    "note": "Native 2 m lidar scarp amp/SNR percentile surface; 37654 blue-noise dots >=3 px off catalogue; byte/pixel-unique; NOT promotion-cleared",
+    "approved_for_weekly_slot": false,
+    "promoted": false,
+    "registry_verdict": "negative",
+    "duplicate_flags": [
+      "data/inputs/registry/calib_r13lattice_00904.tif",
+      "data/inputs/registry/gems32-bayesopt-dilation-scarp-d28-20261004-nan.tif",
+      "data/inputs/registry/gems32-bayesopt-dilation-scarp-d28-20261004-zeros.tif",
+      "data/inputs/registry/r11_greedy_mp.tif",
+      "data/inputs/registry/r13_lattice_s5_00904.tif",
+      "data/inputs/registry/r14_union_tips10_lat6.tif"
+    ]
+  }
+}

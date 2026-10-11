@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="GEMSDOE64 lidar-scarp lane: measured negative result, one not-cleared candidate TIFF, audit evidence and submission guide.">
+<title>Submission guide · GEMSDOE64</title><link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
+<body><a class="skip" href="#main">Skip to content</a><header><nav class="wrap" aria-label="Main navigation">
+<a class="brand" href="index.html"><span class="mark">G64</span><span>GEMSDOE<small>Fault discovery lab</small></span></a><div class="navlinks"><a href="index.html">Overview</a><a href="executive-summary.html">Submit safely</a><a href="submission-guide.html" aria-current="page">Submission guide</a><a href="research.html">Research</a><a href="sources.html">Sources</a></div></nav></header>
+<div class="ribbon"><div class="wrap"><strong>NOT CLEARED FOR SUBMISSION</strong><span>Candidate TIFF published · no weekly slot used</span><a href="executive-summary.html">Read the submission decision →</a></div></div>
+<main id="main" class="wrap"><div class="page-head"><p class="eyebrow">Submission guide</p><h1>Download, validate, submit — in that order.</h1>
+<p class="lead">This page exists so that nobody has to guess which file is which, or whether a file is cleared.</p></div>
+<section><h2>1. What you can download here</h2>
+<div class="table-wrap"><table><thead><tr><th>Artifact</th><th>What it is</th><th>What it is not</th></tr></thead><tbody>
+<tr><td><code>downloads/gems64-lane-ampsnr-37654-20261011.tif</code></td><td>Single-band float32 GeoTIFF on the pinned competition grid, 37,654 dots at value 1.0, zeros elsewhere.</td><td>Not organizer-accepted, not promotion-cleared.</td></tr>
+<tr><td><code>downloads/gems64-lane-ampsnr-37654-20261011.zip</code></td><td>The same TIFF alone in a ZIP, for portals that want an archive.</td><td>Contains no extra files, no evidence, no sample.</td></tr>
+<tr><td><code>downloads/gems64-lane-ampsnr-37654-20261011.json</code></td><td>The writer's receipt: hash, byte count, validator output, name and note.</td><td>Not a submission-page receipt; it proves nothing about the leaderboard.</td></tr>
+</tbody></table></div></section>
+<section><h2>2. Verify before you submit</h2><ol class="steps">
+<li><strong>Hash the file.</strong><p><code>sha256sum gems64-lane-ampsnr-37654-20261011.tif</code> must match the receipt.</p></li>
+<li><strong>Check the grid and the range.</strong><p>EPSG:32611, 100 m, 3730×3292, transform (100, 0, 243350, 0, −100, 4508550). Every value inside the
+footprint finite and in [0,1]; the writer refuses to emit anything else and never clips silently.</p></li>
+<li><strong>Run the local validator.</strong><p><code>.venv/bin/python scripts/validate_submission.py FILE.tif</code>. A local pass is necessary, never sufficient.</p></li>
+<li><strong>Check the catalogue distance.</strong><p>Every dot must be at least 3 px (300 m) from the mapped catalogue; the emitted file satisfies this by construction
+and the receipt records the minimum.</p></li></ol></section>
+<section><h2>3. Submit as an authorized operator</h2><ol class="steps">
+<li><strong>Confirm the weekly cap yourself</strong> on the authenticated DrivenData page. This repository has never observed a cap value and never spends a slot.</li>
+<li><strong>Upload the TIFF</strong> (or the ZIP) on the competition's “New submission” page and paste the recorded name and note if the portal asks for them.</li>
+<li><strong>Keep the receipt.</strong><p>Only the submission-page receipt can support an <code>ORGANIZER-CONFIRMED</code> number. Copy it into
+<code>evidence/organizer_receipt.json</code> if it exists; until then every score in this repository is a labelled instrument.</p></li>
+<li><strong>If the portal rejects the file</strong>, stop and record the full error text verbatim. Do not “fix” it by guessing at nodata handling.</li></ol></section>
+<section><h2>4. What would make a future candidate worth a slot</h2><p>The lane's frozen gates are in <code>PREREGISTRATION.md</code>:
+beat the terrain-matched control by more than 2 paired SEs <em>inside the interior stratum</em>, keep instrument 2 within noise of its controls,
+clear the byte/pixel uniqueness check, and record the dot-pattern overlap honestly even when the literal clause is unsatisfiable.</p></section>
+<section><div class="actions"><a class="button" href="data/run_card.json" download="g64-run-card.json">Download run card</a>
+<a class="button secondary" href="executive-summary.html">Back to the decision ↗</a></div></section></main><footer class="wrap foot"><span>GEMSDOE64 / Expected-DTI selection lane<br>Evidence, not leaderboard projections. Negative results are deliverables.</span>
+<span><a href="data/run_card.json">JSON run card</a> · <a href="https://github.com/buffedlizard55-lab/GEMSDOE64">Repository ↗</a></span></footer></body></html>
