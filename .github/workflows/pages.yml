@@ -29,12 +29,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - run: python scripts/build_site.py && python scripts/check_site.py
-      # The interactive integration lacks Pages write access. The explicitly
-      # scoped workflow token is the standard authorized deployment identity.
-      - name: Select workflow Pages publishing
-        run: gh api --method PUT "repos/$GITHUB_REPOSITORY/pages" -f build_type=workflow
-        env:
-          GH_TOKEN: ${{ github.token }}
+      # Pages is already enabled. Do not request an administrative mode change:
+      # Pages deployments use the scoped pages:write + OIDC token directly.
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

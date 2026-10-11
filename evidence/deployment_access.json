@@ -13,5 +13,11 @@
   },
   "fallback": "Root index.html redirects to docs/index.html, compatible with the existing main/root Pages configuration.",
   "automatic_source_refresh_deployment": "not yet verified; workflow deployment will be checked after merge",
-  "live_preview": "HTTP 200 on port 8000; server binds 0.0.0.0"
+  "live_preview": "HTTP 200 on port 8000; server binds 0.0.0.0",
+  "legacy_deployment": {
+    "conclusion": "success",
+    "commit": "c3ef1b26e7b50432fec1b6e02e675cd1e6615828",
+    "url": "https://github.com/buffedlizard55-lab/GEMSDOE64/actions/runs/38171756129"
+  },
+  "workflow_configuration_step": "Failed; removed administrative mode-change request. Testing standard configure/deploy actions against already enabled Pages."
 }
