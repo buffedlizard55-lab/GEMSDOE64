@@ -1,0 +1,14 @@
+{
+  "evidence_class": "REGISTRY-MEASUREMENT",
+  "checked_utc_date": "2026-10-11",
+  "artifact": "docs/downloads/gems64-scarpcover-60000-98d317b7-zeros.tif",
+  "raster_sha256": "1551f1b545a08fdb8ac49059c83ca2b1843f026c3f3fdbbe92195c7d668ef1a7",
+  "artifact_bytes": 822200,
+  "dots": 60000,
+  "site_check": "scripts/check_site.py -> ok:true, 4 pages, 2 production rasters, both declared in the run card, sha256 re-verified from the built tree",
+  "tests": "PYTHONPATH=src python -m pytest -q -> 47 passed",
+  "validator": "scripts/validate_submission.py -> format_pass true; bounds and transform identical to the sample template; 60000 nonzero; min 0.0 max 1.0; 0 NaN; 0 infinite",
+  "uniqueness": "worst |Spearman rho| 0.0700 against 62 registry rasters (limit 0.90); worst excess-over-null dot overlap 0.2504 (h60_officialstack_50k.tif)",
+  "metric_note": "tp_w/dti recomputed after the metric_terms fix (shifted_max over p*k); verified against gems57.metric.dti_bruteforce to <2e-6 per component",
+  "not_a_score": true
+}

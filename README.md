@@ -24,6 +24,45 @@ Every spatial-CV holdout gate (overall, range-front, and off-range-front basin/p
 
 ---
 
+## 0b. Second, independently gated artifact (session `arena/6a4ab0cf-gemsdoe64`)
+
+The same assigned lane was re-derived independently in a second session. That run ships a **second promoted
+artifact**, declared in [`evidence/run_card.json`](evidence/run_card.json) under `alternative_artifacts` and offered
+on [`docs/index.html#artifacts`](docs/index.html):
+
+| | |
+|---|---|
+| **File** | [`docs/downloads/gems64-scarpcover-60000-98d317b7-zeros.tif`](docs/downloads/gems64-scarpcover-60000-98d317b7-zeros.tif) · [submissions mirror](submissions/gems64-scarpcover-60000-98d317b7-zeros.tif) |
+| **SHA-256** | `1551f1b545a08fdb8ac49059c83ca2b1843f026c3f3fdbbe92195c7d668ef1a7` |
+| **Bytes / dots** | `822,200` · `60,000` unit dots, zero dots on the mapped catalogue |
+| **Submission name** | `GEMSDOE64-NATIVE-LIDAR-SCARP-COVER` |
+| **Note (134 / 140)** | `Native 100 m lidar scarp channels, blocked-CV field, kernel-greedy coverage; dots off the mapped catalogue; unique vs 62 prior rasters` |
+| **Its own gate** | population-matched blocked hide-and-recover over *independent-compilation* faults (`61,664` withheld px): `0.3408` vs `0.1016` area-matched random, `Δ +0.2217 ± 0.0549` over `6` blocks → clears two SE |
+
+`Δ` above is **HOLDOUT-DTI**, not a competition score. The two artifacts share 1.3 % of their dots (Jaccard `0.013`),
+so neither is a copy of the other, and each clears the registry comparison on its own receipt.
+
+**Which one to spend a slot on?** That is a selector decision and this repository does not make it. What the
+repository does measure is in [Appendix A](docs/research/findings.md#appendix-a-independent-cross-instrument-verification-second-lane-artifact)
+and [`evidence/artifact_comparison.json`](evidence/artifact_comparison.json): every shipped raster is scored with the
+published metric against the *mapped catalogue* and against *off-catalogue independent-compilation* faults, each paired
+against an area-matched random control of the same mass over the same 7 super-blocks. Two facts follow:
+
+1. The organizer masks every mapped catalogue pixel out of scoring, so a **negative** mapped-catalogue lift is the
+   expected signature of a novel-fault submission. The confirmed `0.2778` incumbent measures
+   `-0.0347` there.
+2. On the off-catalogue instrument, which is the closer analogue of the private `new fault` population, the primary
+   artifact measures `+0.0309` and the second artifact
+   `+0.1952` (95 % CI
+   `[+0.1162, +0.2675]`) versus the
+   incumbent's `+0.0221`. Neither instrument is neutral and neither measures transfer to the private labels.
+
+A local metric defect found during that cross-check — `metric_terms` maximising the kernel *alone* in `TP_w` — is
+recorded as irregularity **IR-64-METRIC-01** in Appendix A. It was local to the second implementation and does **not**
+affect this repository's primary evaluator (`src/gems64/metric.py`), which maximises `p(x)·k(d)` and is correct.
+
+---
+
 ## 1. PhD-Level Forensic Analysis of `h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros` (`0.2778` `ORGANIZER-CONFIRMED`)
 
 Using `scripts/audit_h33.py` ([`evidence/h33_forensics.json`](evidence/h33_forensics.json)), we performed an exact byte- and pixel-level audit of `GEMSDOE32__h33-2-b2-zeros.tif` (`h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros`, `0.2778` `ORGANIZER-CONFIRMED`) against its parent raster `GEMSDOE28__h27-4-r1-solo-d2-8.tif`, `sample_submission.tif`, and `existing_faults.tif`:
@@ -107,6 +146,7 @@ PYTHONPATH=.:src .venv/bin/python scripts/run_lane64.py
 
 # 3. Validate the emitted GeoTIFF submission and rebuild/check the GitHub Pages site
 PYTHONPATH=.:src .venv/bin/python scripts/validate_submission.py submissions/gems64-h64-lidar-scarp-cv-20261011T220000Z.tif
+python scripts/compare_artifacts.py                     # cross-instrument comparison receipt
 PYTHONPATH=.:src .venv/bin/python scripts/build_site.py
 PYTHONPATH=.:src .venv/bin/python scripts/check_site.py
 
